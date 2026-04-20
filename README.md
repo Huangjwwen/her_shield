@@ -1,4 +1,3 @@
-```markdown
 # 「Her Shield」— Workplace Women's Rights Guardian Agent
 
 <p align="center">
@@ -331,4 +330,3 @@ This project is open-sourced under the [MIT License](LICENSE).
 <p align="center">
   © SheSaysTeam
 </p>
-```
