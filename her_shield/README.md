@@ -328,5 +328,5 @@ docker run -d -p 8080:80 tad-shield
 </p>
 
 <p align="center">
-  © 2026 她说了算队
+  © 她说了算队
 </p>
