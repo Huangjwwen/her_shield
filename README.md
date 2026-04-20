@@ -1,332 +1,332 @@
-# 「Her Shield」— Workplace Women's Rights Guardian Agent
+# 「她盾」——职场女性权益守护智能体
 
 <p align="center">
-  <img src="logo.png" alt="Her Shield Logo" width="120">
+  <img src="logo.png" alt="她盾Logo" width="120">
 </p>
 
 <p align="center">
-  <strong>Behind you stands a "Her" who understands the law and you</strong><br>
-  <em>AI-Powered Workplace Women's Rights Guardian Companion</em>
+  <strong>你的身后，站着一个懂法更懂你的"她"</strong><br>
+  <em>AI驱动的职场女性权益守护伴侣</em>
 </p>
 
 <p align="center">
-  Precise Identification · Evidence Preservation · Path Guidance · Emotional Support
+  精准识别 · 证据保全 · 路径指引 · 情感支持
 </p>
 
 <p align="center">
-  <a href="#-project-introduction">Project Introduction</a> •
-  <a href="#-core-features">Core Features</a> •
-  <a href="#-technical-architecture">Technical Architecture</a> •
-  <a href="#-quick-start">Quick Start</a>
+  <a href="#-项目介绍">项目介绍</a> •
+  <a href="#-核心功能">核心功能</a> •
+  <a href="#-技术架构">技术架构</a> •
+  <a href="#-快速开始">快速开始</a>
 </p>
 
 ---
 
-> **2026 Tencent Kaiwu Global AI Open Competition · D06 Legal AI Application Innovation & Practice**
-> 17th China University Student Service Outsourcing Innovation and Entrepreneurship Competition AI Special Event Entry
-> Team: SheSaysTeam
+> **2026 腾讯开悟全球 AI 公开赛 · D06 法律 AI 应用创新与实践**
+> 第十七届中国大学生服务外包创新创业大赛 AI 专项赛参赛作品
+> 团队：她说了算队
 
 ---
 
-## 📖 Project Introduction
+## 📖 项目介绍
 
-### Project Manifesto
+### 项目宣言
 
-**「Her Shield」** — Workplace Women's Rights Guardian Agent
+**「她盾」** —— 职场女性权益守护智能体
 
-> When you hesitate, it gives you the confidence to break through
+> 在你犹豫时，给你破局的底气
 > 
-> When you're hurt, it gives you the warmth of an embrace
+> 在你受伤时，给你拥抱的温度
 
-### Core Positioning
+### 核心定位
 
-**Her Shield is not just a tool, but a complete solution "from emotion to action"**
+**她盾，不只是一个工具，而是一套「从情绪到行动」的完整解决方案**
 
-When a working woman faces gender discrimination or sexual harassment, the real dilemma is never a single issue, but a broken chain:
+当职场女性遭遇性别歧视或性骚扰时，真正的困境从来不是单一问题，而是一条断裂链：
 
-- 🔴 **Unsure** whether it's illegal or not
-- 🔴 **Don't know** how to respond
-- 🔴 **Can't** collect evidence
-- 🔴 **Afraid** to take the first step towards justice
+- 🔴 **不确定**这算不算违法
+- 🔴 **不知道**该如何应对
+- 🔴 **不会**收集证据
+- 🔴 **不敢**迈出维权第一步
 
-👉 **Her Shield's goal is to reconnect this broken chain**
+👉 **她盾的目标，就是把这条断裂链重新接上**
 
-### Core Value
+### 核心价值
 
-| Before | → | After |
+| 转变前 | → | 转变后 |
 |--------|:-:|--------|
-| Emotional dysregulation | → | Clear cognition |
-| Clueless | → | Clear path |
-| Isolated and helpless | → | Supported, confident |
+| 情绪失控 | → | 认知清晰 |
+| 无从下手 | → | 路径明确 |
+| 孤立无援 | → | 被支持、有底气 |
 
-**Core Innovation:** A fusion agent combining Legal Expertise × AI Efficiency × Emotional Support
+**核心创新：** 法律能力 × AI效率 × 情感承接 的融合型智能体
 
-| Solution Type | Characteristics |
-|---------------|----------------|
-| Traditional Legal Platforms | Professional but cold |
-| Community Platforms | Empathetic but not professional |
-| **Her Shield** | 👉 **Can both judge and accompany; provide answers and support** |
+| 方案类型 | 特点 |
+|----------|------|
+| 传统法律平台 | 专业但冷 |
+| 社区平台 | 有共鸣但不专业 |
+| **她盾** | 👉 **既能判断，也能陪伴；既给答案，也给支撑** |
 
 ---
 
-## ✨ Core Features
+## ✨ 核心功能
 
-### Six Intelligent Modules
+### 六大智能模块
 
-#### 🔍 Judgment Layer (Help users "see clearly")
+#### 🔍 判断层（让用户"看清"）
 
-| Module | Description | Core Capabilities |
-|--------|-------------|--------------------|
-| **Her Eye · Conduct Radar** | Identify inappropriate workplace conduct, provide response suggestions | ⚡ Real-time legality determination · 📖 Plain-language law explanation · 💬 Three-level response scripts |
-| **Her Right · Rights Guide** | Quickly assess rights status, clarify direction for action | 🎯 Scenario-based matching · 📊 Visualized rights checklist · 🔍 Traceable legal basis |
+| 模块 | 描述 | 核心能力 |
+|------|------|----------|
+| **她眼·言行雷达** | 识别职场不当言行，提供应对建议 | ⚡ 实时违法判定 · 📖 法条白话解读 · 💬 三档话术生成 |
+| **她权·权利指南** | 快速检测权益状况，明确维权方向 | 🎯 场景化匹配 · 📊 权利清单可视化 · 🔍 法律依据可追溯 |
 
-#### 🧾 Evidence Layer (Give users "confidence")
+#### 🧾 证据层（让用户"有底气"）
 
-| Module | Description | Core Capabilities |
-|--------|-------------|--------------------|
-| **Her Evidence · Evidence Preservation** | Professional guidance on evidence collection, enhance rights protection confidence | 🔗 Evidence chain thinking guidance · 📋 Solutions for six typical scenarios · ⚖️ Legal boundary reminders |
+| 模块 | 描述 | 核心能力 |
+|------|------|----------|
+| **她证·证据保全** | 专业指导证据收集，增强维权底气 | 🔗 证据链思维引导 · 📋 六大典型场景方案 · ⚖️ 合法边界提示 |
 
-#### 🧭 Action Layer (Enable users "to act")
+#### 🧭 行动层（让用户"能行动"）
 
-| Module | Description | Core Capabilities |
-|--------|-------------|--------------------|
-| **Her Action · Action Navigation** | Full-process rights protection path, professional step-by-step guidance | 📊 Six-step ladder path · ⏰ Key deadline reminders · 🔀 Branch decision support |
+| 模块 | 描述 | 核心能力 |
+|------|------|----------|
+| **她行·行动导航** | 全流程维权路径，专业步骤指导 | 📊 六步阶梯路径 · ⏰ 关键时效提醒 · 🔀 分支决策支持 |
 
-#### 💬 Support Layer (Keep users "from breaking down")
+#### 💬 支持层（让用户"不崩溃"）
 
-| Module | Description | Core Capabilities |
-|--------|-------------|--------------------|
-| **Her Heart · Emotional Harbor** | Emotional expression support, warm companionship and listening | 💖 Emotion-first principle · 🌈 Non-judgmental responses · 🫂 Empathetic interaction |
-| **Her Voice · Resonance Echoes** | Share rights protection experiences, mutual growth community | 🎭 Anonymization protection · 📚 Real case library · 🤝 Peer support mechanism |
+| 模块 | 描述 | 核心能力 |
+|------|------|----------|
+| **她心·情绪树洞** | 情感倾诉支持，暖心陪伴倾听 | 💖 情绪优先原则 · 🌈 非评判式回应 · 🫂 共情式交互 |
+| **她声·共鸣回响** | 分享维权经历，互助成长社区 | 🎭 匿名化保护 · 📚 真实案例库 · 🤝 同伴互助机制 |
 
-### Typical Usage Path
+### 典型使用路径
 
 ```
-📌 Unsure if it's gender discrimination/harassment? → Her Eye · Conduct Radar
-📌 Want to know what protections your situation has? → Her Right · Rights Guide
-📌 Ready to take action? → Her Evidence · Evidence Preservation → Her Action · Action Navigation
-📌 Feeling wronged, scared, conflicted? → Her Heart · Emotional Harbor
-📌 Want to see others' stories? → Her Voice · Resonance Echoes
+📌 不确定是否性别歧视/骚扰？ → 她眼·言行雷达
+📌 想知道当前状态受哪些保护？ → 她权·权利指南
+📌 准备维权？ → 她证·证据保全 → 她行·行动导航
+📌 感到委屈、害怕、纠结？ → 她心·情绪树洞
+📌 想看其她人的维权故事？ → 她声·共鸣回响
 ```
 
 ---
 
-## 🎯 Use Scenarios
+## 🎯 使用场景
 
-### Scenario 1: Marital/Pregnancy Invisible Discrimination During Interview (Job Seeking)
+### 场景一：面试遭遇婚育隐形歧视（求职期）
 
-**User Persona:** Xiao Li · 25 years old, fresh graduate · Interviewing for product manager position at an internet company
+**用户画像：** 小李 · 25岁应届生 · 面试互联网公司产品经理岗
 
-1. **Real-time radar scan:** Immediately open 「Her Eye · Conduct Radar」 after the interview, input HR's follow-up questions
-2. **AI legal determination:** System determines the question likely violates Article 43 of the Law on the Protection of Women's Rights and Interests
-3. **One-click response generation:** Obtain suggestions for "high EQ rebuttal"
-4. **Rights protection path guidance:** If not hired because of this, 「Her Action · Action Navigation」 provides complaint process
+1. **实时雷达扫描：** 面试结束后立即打开「她眼·言行雷达」，输入HR的追问
+2. **AI 法律定性：** 系统判定该问题涉嫌违反《妇女权益保障法》第43条
+3. **话术一键生成：** 获取「高情商回怼」建议
+4. **维权路径指引：** 若因此未被录用，「她行·维权导航」提供投诉流程
 
-**Result:** ✅ Xiao Li no longer second-guesses, uses generated script to politely question, interview proceeds to next round smoothly
+**结果：** ✅ 小李不再内耗，用生成的话术礼貌反问，面试顺利进入下一轮
 
-### Scenario 2: Forced Demotion and Salary Cut During Pregnancy (Workplace Negotiation)
+### 场景二：孕期被恶意调岗降薪（在职博弈）
 
-**User Persona:** Ms. Zhang · 32 years old · 4 months pregnant · Verbally notified of job transfer and salary reduction
+**用户画像：** 张女士 · 32岁 · 怀孕4个月 · 被口头通知调岗降薪
 
-1. **Rights confirmation:** Input current situation in 「Her Right · Rights Guide」, system highlights relevant legal protections
-2. **Evidence collection guidance:** 「Her Evidence · Evidence Preservation」 generates evidence collection guide
-3. **Full-process navigation:** 「Her Action · Action Navigation」 plans a three-step strategy
+1. **权益确权：** 在「她权·权益指南」输入现状，系统高亮显示相关法律保护
+2. **诱导取证：** 「她证·证据保全」生成取证攻略
+3. **全流程导航：** 「她行·维权导航」规划三步走战略
 
-**Result:** ✅ Company realizes high cost of violation, proactively withdraws job transfer notice
+**结果：** ✅ 公司意识到违法成本过高，主动撤回调岗通知
 
-### Scenario 3: Late-night Workplace Sexual Harassment (Crisis Response)
+### 场景三：深夜遭遇职场性骚扰（危机应对）
 
-**User Persona:** Ms. Wang · 28 years old · Receives explicit WeChat messages late at night from direct supervisor
+**用户画像：** 王女士 · 28岁 · 深夜收到直属领导露骨的暧昧微信
 
-1. **Emotional first aid:** Immediately enter 「Her Heart · Emotional Harbor」
-2. **Stealth evidence collection:** Use "guideless mode" in 「Her Evidence · Evidence Preservation」
-3. **Resonance echoes:** See similar successful cases in 「Her Voice · Resonance Echoes」
+1. **情感急救：** 第一时间进入「她心·情绪树洞」
+2. **隐形取证：** 使用「她证·证据保全」的"无痕指引"模式
+3. **共鸣回响：** 在「她声·共鸣回响」看到类似案例的胜诉经历
 
-**Result:** ✅ Evidence chain complete, company intervenes and disciplines the supervisor involved
-
----
-
-## 🛠️ Technical Architecture
-
-### Tech Stack
-
-| Architecture Layer | Technology Components | Purpose |
-|--------------------|-----------------------|---------|
-| Interaction Layer | HTML5 + CSS3 + Vanilla JS · Electron Desktop | Zero-dependency pure static, low barrier, high compatibility, one-click deployment |
-| Intelligence Layer | Tencent Yuanqi 5 dedicated agents (Bearer Token auth) | Scenario recognition, legal provision matching, evidence guidance, rights protection path, emotional support |
-| Invocation Layer | `yuanqi.tencent.com/openapi/v1/agent/chat/completions` | Unified API entry |
-| Knowledge Layer | Law on Women's Rights Protection, Labor Contract Law, Civil Code, Labor Law, Special Regulations on Protection of Female Employees | Injected into each agent's System Prompt |
-| Security Layer | HTTPS · Disclaimer · No storage of sensitive user input | Protect user privacy and security |
-
-### Technical Highlights
-
-- 5 independent agents with distinct responsibilities, can be iterated independently
-- Simulated data fallback mechanism ensures demo usability
-- Session ID management enables multi-turn continuous questioning
-- Clear placeholder examples and loading feedback lower usage barriers for non-technical users
+**结果：** ✅ 证据链闭环，公司介入调查并处理了涉事领导
 
 ---
 
-## 📁 Project Structure
+## 🛠️ 技术架构
+
+### 技术栈
+
+| 架构层 | 技术组件 | 作用 |
+|--------|----------|------|
+| 交互层 | HTML5 + CSS3 + Vanilla JS · Electron 桌面端 | 零依赖纯静态，低门槛高兼容，支持一键部署 |
+| 智能层 | 腾讯元器 5 大专用智能体（Bearer Token 鉴权） | 场景识别、法条匹配、证据指导、维权路径、情感支持 |
+| 调用层 | `yuanqi.tencent.com/openapi/v1/agent/chat/completions` | 统一 API 入口 |
+| 知识层 | 妇女权益保障法 · 劳动合同法 · 民法典 · 劳动法 · 女职工劳动保护特别规定 | 注入各智能体 System Prompt |
+| 安全层 | HTTPS · 免责声明 · 不存储用户敏感输入 | 保护用户隐私安全 |
+
+### 技术亮点
+
+- 5 个独立智能体各司其职，职责边界清晰可独立迭代
+- 模拟数据降级机制保障演示可用性
+- 会话 ID 管理实现多轮对话连续追问
+- 清晰的 placeholder 示例与加载反馈降低非技术用户使用门槛
+
+---
+
+## 📁 项目结构
 
 ```
 Her_shield/
-├── index.html          # Homepage entry
-├── features.html       # Core features page
-├── logo.png            # Project Logo
-├── package.json        # Project configuration file
-├── Dockerfile          # Docker deployment config
+├── index.html          # 主页入口
+├── features.html       # 核心功能页面
+├── logo.png            # 项目 Logo
+├── package.json        # 项目配置文件
+├── Dockerfile          # Docker 部署配置
 ├── css/
-│   └── style.css       # Global styles
+│   └── style.css       # 全局样式文件
 ├── js/
-│   └── app.js          # JavaScript business logic
+│   └── app.js          # JavaScript 业务逻辑
 └── electron/
-    └── main.js         # Electron main process
+    └── main.js         # Electron 主进程
 ```
 
 ---
 
-## 🚀 Quick Start
+## 🚀 快速开始
 
-### Method 1: Web Preview
+### 方式一：Web 端预览
 
 ```bash
-# Enter project directory
+# 进入项目目录
 cd Her_shield
 
-# Method 1: Using npm script
+# 方式1：使用 npm script
 npm run dev
 
-# Method 2: Directly using npx
+# 方式2：直接使用 npx
 npx http-server . -p 8080 -c-1
 ```
 
-Then visit http://localhost:8080
+然后访问 http://localhost:8080
 
-### Method 2: Electron Desktop
+### 方式二：Electron 桌面端
 
 ```bash
-# Enter project directory
+# 进入项目目录
 cd Her_shield
 
-# Install Electron (first run)
+# 安装 Electron（首次运行）
 npm run install-electron
 
-# Launch desktop app
+# 启动桌面应用
 npm start
 ```
 
-### Method 3: Docker Deployment
+### 方式三：Docker 部署
 
 ```bash
-# Build image
+# 构建镜像
 docker build -t tad-shield .
 
-# Run container
+# 运行容器
 docker run -d -p 8080:80 tad-shield
 
-# Visit http://localhost:8080
+# 访问 http://localhost:8080
 ```
 
 ---
 
-## 🔌 Tencent Yuanqi Agent Integration
+## 🔌 腾讯元器智能体对接
 
-The project has reserved integration interfaces with Tencent Yuanqi agents. Please configure actual APIs in the corresponding functions in `js/app.js`:
+项目已预留与腾讯元器智能体的对接接口，请在 `js/app.js` 中的对应函数位置配置实际的 API：
 
-| Function Name | Module |
-|---------------|--------|
-| `callSmartAgent_radar()` | Her Eye · Conduct Radar |
-| `callSmartAgent_selfcheck()` | Her Right · Rights Guide |
-| `callSmartAgent_evidence()` | Her Evidence · Evidence Preservation |
-| `callSmartAgent_guide()` | Her Action · Action Navigation |
-| `callSmartAgent_harbor()` | Her Heart · Emotional Harbor |
-
----
-
-## 🎨 Design Specifications
-
-### Color System
-
-| Purpose | Color Value | Description |
-|---------|-------------|-------------|
-| Primary Color | `#9370DB` | Warm purple, representing female strength and gentleness |
-| Secondary Color | `#F5F5F5` | Light gray background |
-| Text Color | `#333333` | Main text color |
-| Emphasis Color | `#000000` | Key emphasized content |
-
-### Design Features
-
-- 🌸 Simple and elegant interface style
-- 📱 Responsive design, adapts to multiple devices
-- ♿ Focus on accessible experience
+| 函数名 | 功能模块 |
+|--------|---------|
+| `callSmartAgent_radar()` | 她眼·言行雷达 |
+| `callSmartAgent_selfcheck()` | 她权·权利指南 |
+| `callSmartAgent_evidence()` | 她证·证据保全 |
+| `callSmartAgent_guide()` | 她行·行动导航 |
+| `callSmartAgent_harbor()` | 她心·情绪树洞 |
 
 ---
 
-## 💡 Social Value
+## 🎨 设计规范
 
-### Her Shield's significance is not just solving problems, but changing a "silent structure"
+### 颜色体系
 
-In reality, most women don't fail to assert their rights because they don't want to, but because:
+| 用途 | 色值 | 说明 |
+|-----|------|------|
+| 主色调 | `#9370DB` | 暖紫色，代表女性力量与温柔 |
+| 辅助色 | `#F5F5F5` | 浅灰色背景 |
+| 文字色 | `#333333` | 主要文字颜色 |
+| 强调色 | `#000000` | 重点强调内容 |
 
-- They're unsure if they are "qualified to assert rights"
-- They don't know where to start
-- They miss the optimal timing due to hesitation
+### 设计特点
 
-👉 **What Her Shield does:**
-
-| Barrier Reduction | Specific Implementation |
-|-------------------|--------------------------|
-| 🧠 Reduce the **psychological barrier** to rights protection | Emotional support, companionship, so users no longer feel alone |
-| 📋 Reduce the **information barrier** to action | Plain-language legal explanations, clear rights checklist |
-| 🔧 Reduce the **technical barrier** to evidence collection | Operational-level evidence guidance, step-by-step teaching |
-
-### Beyond cold algorithms and code
-
-We firmly believe: **Technology is rational, but the people using it have warmth.**
-
-**For individuals,** "Her Shield" is a lamp in the dark night, a lawyer ready at hand in the pocket, so every request for help gets a response, and every grievance finds a place.
-
-**For society,** we are not just solving individual cases, but also accumulating a "risk insight" into China's workplace gender environment, promoting workplace civilization from "post-event remedy" to "pre-event prevention."
+- 🌸 简洁优雅的界面风格
+- 📱 响应式设计，适配多种设备
+- ♿ 注重无障碍访问体验
 
 ---
 
-## 👥 About the Team
+## 💡 社会价值
 
-- **Team Name:** SheSaysTeam
-- **Competition Track:** 2026 Tencent Kaiwu Global AI Open Competition · D06 Legal AI Application Innovation & Practice
-- **Development Tools:** CodeBuddy / Tencent Yuanqi / DeLi Open Platform API
-- **Technical Form:** Lightweight Web App (HTML5 + CSS3 + Vanilla JS) + Tencent Yuanqi 5 dedicated agent API integration + Electron desktop packaging
+### 她盾的意义，不只是解决问题，而是在改变一种"沉默结构"
+
+现实中，大多数女性不是不维权，而是：
+
+- 不确定自己是否"有资格维权"
+- 不知道从哪里开始
+- 在犹豫中错过最佳时机
+
+👉 **她盾所做的，是：**
+
+| 降低门槛 | 具体实现 |
+|----------|----------|
+| 🧠 降低维权的**心理门槛** | 情绪承接、陪伴支持，让用户不再孤单 |
+| 📋 降低行动的**信息门槛** | 法条白话解读、权利清单明确 |
+| 🔧 降低证据收集的**技术门槛** | 操作级取证指导，一步步教用户如何保存证据 |
+
+### 在冷冰冰的算法与代码之外
+
+我们始终坚信：**技术是理性的，但使用技术的人是有温度的。**
+
+**对于个人而言**，"她盾"是深夜里的一盏灯，是口袋里随时待命的律师，让每一次求助都有回应，让每一份委屈都有归处。
+
+**对于社会而言**，我们不仅是在解决个案，更是在积累一份中国职场性别环境的"风险洞察"，推动职场文明从"事后补救"走向"事前预防"。
 
 ---
 
-## ⚖️ Legal Disclaimer
+## 👥 关于团队
 
-> **Disclaimer:** This agent provides legal information for reference only and does not constitute professional legal advice. Please consult a licensed attorney for specific rights protection matters.
-
-### Useful Hotlines
-
-- 📞 **National Labor Rights Protection Hotline:** 12333
-- 📞 **Legal Aid Hotline:** 12348
-- 📞 **Women's Rights Protection Hotline:** 12338
+- **团队名称**: 她说了算队
+- **参赛赛道**: 2026 腾讯开悟全球 AI 公开赛 · D06 法律 AI 应用创新与实践
+- **开发工具**: CodeBuddy / 腾讯元器 / 得理开放平台 API
+- **技术形态**: 轻量化 Web 应用（HTML5 + CSS3 + Vanilla JS）+ 腾讯元器 5 大专用智能体 API 接入 + Electron 桌面端封装
 
 ---
 
-## 📄 License
+## ⚖️ 法律声明
 
-This project is open-sourced under the [MIT License](LICENSE).
+> **免责声明**: 本智能体仅提供法律信息参考，不构成专业法律意见，具体维权请咨询执业律师。
+
+### 实用热线
+
+- 📞 **全国劳动维权热线**: 12333
+- 📞 **法律援助热线**: 12348
+- 📞 **妇女权益保护热线**: 12338
+
+---
+
+## 📄 许可证
+
+本项目采用 [MIT License](LICENSE) 开源协议。
 
 ---
 
 <p align="center">
-  <strong>Her Shield</strong> — Protecting every working woman's rights with technology 🌸
+  <strong>她盾</strong> —— 用科技守护每一位职场女性的权益 🌸
 </p>
 
 <p align="center">
-  <em>So that no working woman feels alone when facing gender discrimination or sexual harassment—<br>
-  Knowing what rights she has, what the other party is doing wrong, and what to do next.</em>
+  <em>让每一位职场女性在面对性别歧视或性骚扰时不再孤立无援——<br>
+  知道自己有什么权利、知道对方哪里违法、知道下一步怎么办。</em>
 </p>
 
 <p align="center">
-  © SheSaysTeam
+  © 2026 她说了算队
 </p>
