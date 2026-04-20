@@ -5,6 +5,15 @@
 </p>
 
 <p align="center">
+  <a href="README.en.md">
+    <img src="https://img.shields.io/badge/English-🇬🇧-blue" alt="English">
+  </a>
+  <a href="README.md">
+    <img src="https://img.shields.io/badge/中文-🇨🇳-red" alt="中文">
+  </a>
+</p>
+
+<p align="center">
   <strong>你的身后，站着一个懂法更懂你的"她"</strong><br>
   <em>AI驱动的职场女性权益守护伴侣</em>
 </p>
