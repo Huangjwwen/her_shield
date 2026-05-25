@@ -272,15 +272,10 @@ docker run -d -p 8080:80 tad-shield
 使用的环境变量包括：
 
 - KEY_CONSULTATION
-
 - KEY_RADAR
-
 - KEY_SELFCHECK
-
 - KEY_EVIDENCE
-
 - KEY_GUIDE
-
 - KEY_HARBOR
 
 ### 3. 前端改造
@@ -290,7 +285,6 @@ docker run -d -p 8080:80 tad-shield
 前端只发送：
 
 - agentType
-
 - messages
 
 不再发送 Authorization。
@@ -300,15 +294,10 @@ docker run -d -p 8080:80 tad-shield
 她声模块已支持：
 
 - 发帖
-
 - 帖子展示
-
 - localStorage 本地保存
-
 - CloudBase stories 数据库存储
-
 - 手机号、身份证号、邮箱脱敏
-
 - 标签筛选
 
 ### 5. 缓存
@@ -329,6 +318,9 @@ https://her-shield-d7gyrtfxm65f3e782-1410225134.ap-shanghai.app.tcloudbase.com/p
 
 https://her-shield-d7gyrtfxm65f3e782-1410225134.ap-shanghai.app.tcloudbase.com/story
 
+## 注意事项
+
+比赛提交前需要重新生成所有元器 appkey，并更新 CloudBase 环境变量。
 
 ## 🎨 设计规范
 
