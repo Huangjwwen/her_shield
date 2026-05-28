@@ -199,6 +199,14 @@ function copyHistoryItem(moduleName, id) {
 function deleteHistoryItem(moduleName, id) {
     historyStorage[moduleName] = historyStorage[moduleName].filter(r => r.id != id);
     localStorage.setItem(moduleName + 'History', JSON.stringify(historyStorage[moduleName]));
+    
+    // 同步清理 checklist 勾选状态
+    if (moduleName === 'evidence') {
+        const savedState = JSON.parse(localStorage.getItem('evidenceChecklistState') || '{}');
+        delete savedState[id];
+        localStorage.setItem('evidenceChecklistState', JSON.stringify(savedState));
+    }
+    
     renderHistory(moduleName);
     showToast('已删除该记录');
 }
