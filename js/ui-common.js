@@ -120,6 +120,10 @@ let historyStorage = {
     harbor: []
 };
 
+// 各模块可注册自定义历史渲染器（如 radar 的红橙绿风险报告）。
+// 用法：在模块的 init 函数里 customHistoryRenderers.radar = renderRadarHistory;
+const customHistoryRenderers = {};
+
 // 通用历史记录函数
 function loadHistory(moduleName) {
     try {
@@ -159,7 +163,13 @@ function saveHistory(moduleName, userInput, botResponse) {
 function renderHistory(moduleName) {
     const historyList = document.getElementById(moduleName + 'HistoryList');
     if (!historyList) return;
-    
+
+    // 若该模块注册了自定义渲染器，交给它处理（如 radar 富文本风险报告）
+    if (customHistoryRenderers[moduleName]) {
+        customHistoryRenderers[moduleName](historyList, historyStorage[moduleName]);
+        return;
+    }
+
     const history = historyStorage[moduleName];
     if (history.length === 0) {
         const emptyText = {

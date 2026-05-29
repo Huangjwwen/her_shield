@@ -2554,3 +2554,184 @@ body {
 ::-webkit-scrollbar-thumb:hover {
     background: #aaa;
 }
+
+/* ==================== 言行雷达·风险报告 ==================== */
+.radar-report {
+    border: 1px solid #ece6f7;
+    border-left: 5px solid var(--primary-color);
+    border-radius: var(--border-radius);
+    background: var(--bg-white);
+    padding: 16px 18px;
+    margin-top: 8px;
+    box-shadow: var(--shadow-sm);
+}
+
+/* 四级配色（左边框 + 风险标） */
+.radar-report.risk-high { border-left-color: #e5484d; }
+.radar-report.risk-mid  { border-left-color: #f76808; }
+.radar-report.risk-low  { border-left-color: #f5a623; }
+.radar-report.risk-none { border-left-color: #30a46c; }
+
+/* 风险标 */
+.radar-badge {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: var(--border-radius-sm);
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+.risk-high .radar-badge { background: #fdecec; color: #c62a2f; }
+.risk-mid  .radar-badge { background: #fff1e7; color: #c2410c; }
+.risk-low  .radar-badge { background: #fff8e6; color: #a16207; }
+.risk-none .radar-badge { background: #e9f7ef; color: #1a7f47; }
+
+.radar-badge-icon { font-size: 16px; }
+.radar-badge-level { font-size: 16px; }
+.radar-badge-summary { font-weight: 400; color: var(--text-gray); font-size: 14px; }
+.radar-badge-warn {
+    font-weight: 500;
+    font-size: 12px;
+    color: #c2410c;
+    background: #fff3e0;
+    border-radius: 10px;
+    padding: 2px 8px;
+}
+
+/* 暖心正文 */
+.radar-narrative {
+    color: var(--text-dark);
+    line-height: 1.8;
+    font-size: 15px;
+    margin-bottom: 14px;
+}
+
+/* 分区标题 */
+.radar-block { margin-top: 14px; }
+.radar-h4 {
+    font-size: 14px;
+    color: var(--primary-dark);
+    margin-bottom: 8px;
+    padding-left: 8px;
+    border-left: 3px solid var(--primary-light);
+}
+
+/* 话术卡片 */
+.script-card {
+    background: var(--bg-light);
+    border-radius: var(--border-radius-sm);
+    padding: 10px 12px;
+    margin-bottom: 8px;
+}
+.script-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+}
+.script-tag {
+    font-size: 12px;
+    font-weight: 600;
+    color: #fff;
+    background: var(--primary-color);
+    border-radius: 10px;
+    padding: 2px 10px;
+}
+.sc-firm .script-tag   { background: #f76808; }
+.sc-formal .script-tag { background: #7B5DC4; }
+.script-copy {
+    border: none;
+    background: transparent;
+    color: var(--primary-color);
+    cursor: pointer;
+    font-size: 12px;
+}
+.script-copy:hover { text-decoration: underline; }
+.script-text { color: var(--text-dark); font-size: 14px; line-height: 1.7; }
+
+/* 法条卡片 */
+.law-card {
+    border: 1px solid #eee;
+    border-radius: var(--border-radius-sm);
+    padding: 10px 12px;
+    margin-bottom: 8px;
+}
+.law-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+.law-name { font-weight: 600; color: var(--primary-dark); font-size: 14px; }
+.law-source {
+    font-size: 11px;
+    color: var(--text-gray);
+    background: #f0f0f0;
+    border-radius: 8px;
+    padding: 1px 8px;
+    white-space: nowrap;
+}
+.law-source.src-deli { color: #1a7f47; background: #e9f7ef; }
+.law-content { color: var(--text-gray); font-size: 13px; line-height: 1.7; }
+
+/* 类案卡片 */
+.case-card {
+    border: 1px dashed #d9cef0;
+    border-radius: var(--border-radius-sm);
+    padding: 10px 12px;
+    margin-bottom: 8px;
+}
+.case-title { font-weight: 600; color: var(--text-dark); font-size: 13px; margin-bottom: 4px; }
+.case-point { color: var(--text-gray); font-size: 13px; line-height: 1.7; }
+
+/* 可折叠：判定依据 */
+.radar-basis {
+    margin-top: 14px;
+    border-top: 1px dashed #e5dff2;
+    padding-top: 10px;
+}
+.radar-basis summary {
+    cursor: pointer;
+    color: var(--primary-color);
+    font-size: 13px;
+    font-weight: 500;
+    list-style: none;
+}
+.radar-basis summary::-webkit-details-marker { display: none; }
+.radar-basis summary::before { content: "▸ "; }
+.radar-basis[open] summary::before { content: "▾ "; }
+.basis-list { list-style: none; margin: 10px 0 0; padding: 0; }
+.basis-list li {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 5px 0;
+    font-size: 13px;
+}
+.basis-name { color: var(--text-dark); }
+.basis-status {
+    font-size: 12px;
+    border-radius: 8px;
+    padding: 1px 8px;
+    white-space: nowrap;
+}
+.basis-status.st-yes   { color: #c62a2f; background: #fdecec; }
+.basis-status.st-doubt { color: #c2410c; background: #fff1e7; }
+.basis-status.st-no    { color: #1a7f47; background: #e9f7ef; }
+.basis-status.st-na    { color: var(--text-light); background: #f3f3f3; }
+.basis-note { color: var(--text-light); font-size: 12px; }
+.basis-extra { color: var(--text-gray); font-size: 12px; margin-top: 6px; }
+
+/* 免责声明 */
+.radar-disclaimer {
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px dashed #e5dff2;
+    color: var(--text-light);
+    font-size: 12px;
+    line-height: 1.6;
+}
