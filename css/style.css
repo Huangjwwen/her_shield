@@ -3297,7 +3297,11 @@ body {
 .story-filter-reset:hover { background: #efe7ff; }
 
 /* 紧凑的提交表单（不喧宾夺主） */
+/* display:block 是关键：覆盖 .chat-input-area 继承下来的 display:flex，
+   否则 h3 / input / textarea / button 会被横排，且 input 会被拉到与
+   textarea 等高、文字垂直居中——视觉上和右侧 textarea 顶端对齐错位。 */
 #storiesChat .stories-submit {
+    display: block;
     border-top: 1px solid rgba(147, 112, 219, 0.1);
     padding: 12px 30px 16px;
     background: var(--bg-light);
