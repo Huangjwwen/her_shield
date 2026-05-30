@@ -3232,3 +3232,112 @@ body {
     font-size: 12px;
     line-height: 1.6;
 }
+
+/* ==================== 她声·共鸣回响（卡片 + 紧凑提交）==================== */
+
+/* 故事卡片 */
+.story-item {
+    background: var(--bg-white);
+    border: 1px solid rgba(147, 112, 219, 0.12);
+    border-left: 4px solid var(--primary-light);
+    border-radius: var(--border-radius);
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    transition: box-shadow .2s ease, transform .2s ease;
+}
+.story-item:hover {
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-1px);
+}
+.story-item-title {
+    color: var(--primary-dark);
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0 0 6px;
+}
+.story-item-content {
+    color: var(--text-dark);
+    font-size: 14px;
+    line-height: 1.7;
+    margin: 0 0 8px;
+    white-space: pre-line;
+}
+.story-item-foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+#storiesChat .story-tag {
+    background: #f3e8ff;
+    color: #7e22ce;
+    border: none;
+    border-radius: 999px;
+    padding: 3px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background .15s ease;
+}
+#storiesChat .story-tag:hover { background: #e9d5ff; }
+.story-item-time { color: var(--text-light); font-size: 12px; }
+
+/* 筛选状态条 */
+.story-filter-reset {
+    background: var(--bg-light);
+    color: var(--primary-color);
+    border: 1px dashed var(--primary-light);
+    border-radius: var(--border-radius-sm);
+    padding: 6px 12px;
+    font-size: 13px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: left;
+}
+.story-filter-reset:hover { background: #efe7ff; }
+
+/* 紧凑的提交表单（不喧宾夺主） */
+#storiesChat .stories-submit {
+    border-top: 1px solid rgba(147, 112, 219, 0.1);
+    padding: 12px 30px 16px;
+    background: var(--bg-light);
+}
+#storiesChat .stories-submit h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin: 0 0 8px;
+}
+#storiesChat .stories-submit input,
+#storiesChat .stories-submit textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid rgba(147, 112, 219, 0.2);
+    border-radius: var(--border-radius-sm);
+    font-size: 13px;
+    background: var(--bg-white);
+    font-family: inherit;
+    margin-bottom: 8px;
+}
+#storiesChat .stories-submit textarea {
+    min-height: 56px;
+    max-height: 120px;
+    resize: vertical;
+    line-height: 1.6;
+}
+#storiesChat .stories-submit input:focus,
+#storiesChat .stories-submit textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+}
+#storiesChat .stories-submit .input-actions {
+    margin-top: 4px;
+    justify-content: flex-end;
+}
+#storiesChat .stories-submit .btn-primary {
+    padding: 8px 24px;
+    font-size: 14px;
+    width: auto;
+    min-width: 100px;
+    white-space: nowrap;
+}
