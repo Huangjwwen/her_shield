@@ -48,35 +48,41 @@ function initStories() {
     }
 
     function renderStories(filterTag = '') {
-        let list = document.getElementById('storyList');
+        // 渲染目标 = .stories-list（正确位置，而非 input-actions）
+        const list = document.querySelector('#storiesChat .stories-list');
+        if (!list) return;
 
-        if (!list) {
-            list = document.createElement('div');
-            list.id = 'storyList';
-            list.style.marginTop = '20px';
-            submitBtn.parentElement.appendChild(list);
-        }
+        const safe = (typeof escapeHtml === 'function')
+            ? escapeHtml
+            : (s => String(s == null ? '' : s));
 
         const stories = getStories();
         const filteredStories = filterTag
             ? stories.filter(story => story.tag === filterTag)
             : stories;
 
-        list.innerHTML = filteredStories.map(story => `
-            <div style="padding: 16px; margin-bottom: 12px; border-radius: 12px; background: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
-                <h3 style="margin-bottom: 8px;">${story.title}</h3>
-                <p style="line-height: 1.6;">${story.content}</p>
-                <button class="story-tag" data-tag="${story.tag}" style="margin-top: 8px; border: none; background: #f3e8ff; color: #7e22ce; padding: 4px 10px; border-radius: 999px; cursor: pointer;">
-                    ${story.tag}
-                </button>
-                <div style="font-size: 12px; color: #999; margin-top: 8px;">${story.time}</div>
+        const resetBar = filterTag
+            ? `<button type="button" class="story-filter-reset">← 显示全部（当前：${safe(filterTag)}）</button>`
+            : '';
+
+        const cards = filteredStories.map(story => `
+            <div class="story-item">
+                <h4 class="story-item-title">${safe(story.title)}</h4>
+                <p class="story-item-content">${safe(story.content)}</p>
+                <div class="story-item-foot">
+                    <button type="button" class="story-tag" data-tag="${safe(story.tag)}">${safe(story.tag)}</button>
+                    <span class="story-item-time">${safe(story.time)}</span>
+                </div>
             </div>
         `).join('');
 
-        document.querySelectorAll('.story-tag').forEach(btn => {
-            btn.addEventListener('click', () => {
-                renderStories(btn.dataset.tag);
-            });
+        list.innerHTML = resetBar + (cards || '<p class="history-empty">这个标签下还没有故事～</p>');
+
+        document.querySelectorAll('#storiesChat .story-tag').forEach(btn => {
+            btn.addEventListener('click', () => renderStories(btn.dataset.tag));
+        });
+        document.querySelectorAll('#storiesChat .story-filter-reset').forEach(btn => {
+            btn.addEventListener('click', () => renderStories(''));
         });
     }
 
