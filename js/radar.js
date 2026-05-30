@@ -106,15 +106,27 @@ function renderRadarReport(data) {
             `</div>`;
     }
 
-    // 相似案例
+    // 相似案例（v1.2 schema：title 必填 + 可选 court/case_number/date + 必填 facts/judgment/key_point）
     const cases = data.case_references || [];
     if (cases.length) {
-        html += `<div class="radar-block"><h4 class="radar-h4">相似案例</h4>` +
-            cases.map(c => `
+        const renderCase = (c) => {
+            const meta = [c.court, c.case_number, c.date].filter(Boolean).map(radarEscape).join(' · ');
+            const row = (label, val, cls) => val
+                ? `<div class="case-row ${cls}"><span class="case-label">${label}</span><span class="case-val">${radarEscape(val)}</span></div>`
+                : '';
+            return `
                 <div class="case-card">
-                    <div class="case-title">${radarEscape(c.title)}</div>
-                    <div class="case-point">${radarEscape(c.key_point)}</div>
-                </div>`).join('') +
+                    <div class="case-head">
+                        <span class="case-title">${radarEscape(c.title || '—')}</span>
+                    </div>
+                    ${meta ? `<div class="case-meta">${meta}</div>` : ''}
+                    ${row('案情', c.facts, 'cs-facts')}
+                    ${row('判决', c.judgment, 'cs-judgment')}
+                    ${row('裁判要点', c.key_point, 'cs-point')}
+                </div>`;
+        };
+        html += `<div class="radar-block"><h4 class="radar-h4">相似案例</h4>` +
+            cases.map(renderCase).join('') +
             `</div>`;
     }
 
@@ -263,7 +275,14 @@ function getRadarMock(content) {
                 { name: "《中华人民共和国就业促进法》", article: "第二十七条", content: "用人单位招用人员，除国家规定的不适合妇女的工种或者岗位外，不得以性别为由拒绝录用妇女或者提高对妇女的录用标准。", source: "得理" }
             ],
             case_references: [
-                { title: "（示例）某公司招聘限定男性被诉就业性别歧视案", key_point: "用人单位在招聘中限定性别被认定构成就业性别歧视，判决赔礼道歉并赔偿精神损害抚慰金。" }
+                {
+                    title: "（示例）小丽与某公司平等就业权纠纷案",
+                    court: "上海市浦东新区人民法院",
+                    date: "2023",
+                    facts: "女求职者投递简历后，公司以\"想招男性\"为由婉拒，原岗位招聘要求并未限定性别。",
+                    judgment: "判决公司赔偿精神损害抚慰金 3000 元。",
+                    key_point: "法院认为，用人单位在公示任职条件之外额外设置性别门槛、对女性求职者区别对待，已构成对劳动者平等就业权的侵犯，应依法承担侵权责任。"
+                }
             ],
             response_scripts: {
                 gentle: "请问这个岗位限定男性是出于什么样的岗位要求呢？我对这份工作很有信心，希望能有公平竞争的机会。",
@@ -293,7 +312,16 @@ function getRadarMock(content) {
             law_references: [
                 { name: "《中华人民共和国妇女权益保障法》", article: "第二十五条", content: "禁止违背妇女意愿、以言语、文字、图像、肢体行为等方式对其实施性骚扰。", source: "得理" }
             ],
-            case_references: [],
+            case_references: [
+                {
+                    title: "（示例）周某强制猥亵案",
+                    court: "安徽省芜湖市镜湖区人民法院",
+                    date: "2023",
+                    facts: "某公司负责人将女求职者哄骗至宾馆房间，以散布谣言、影响行业立足相威胁，对其实施亲吻、摸胸等猥亵行为。",
+                    judgment: "以强制猥亵罪判处有期徒刑六个月，自愿赔偿被害人精神损失 4 万元。",
+                    key_point: "法院认为，行为人利用招募女职工过程中的地位优势、心理优势，以散布谣言败坏名誉相威胁，足以使被害人不敢反抗，已达到强制猥亵罪中\"胁迫\"的程度。"
+                }
+            ],
             response_scripts: {
                 gentle: "抱歉，工作之外的这些安排我不太方便，我们还是把精力放在工作本身吧。",
                 firm: "你的这些话让我很不舒服，请立刻停止。我们之间只有工作关系。",
@@ -325,7 +353,14 @@ function getRadarMock(content) {
             { name: "《中华人民共和国妇女权益保障法》", article: "第四十三条第（二）项", content: "用人单位在招录（聘）过程中，除国家另有规定外，不得实施下列行为：……（二）除个人基本信息外，进一步询问或者调查女性求职者的婚育情况；", source: "得理" }
         ],
         case_references: [
-            { title: "（示例）某劳动合同纠纷案", key_point: "法院认定劳动者婚育状况属个人隐私，用人单位不得据此解除劳动合同，也不得将限制生育作为录用条件。" }
+            {
+                title: "（示例）严女士与某公司平等就业权纠纷案",
+                court: "上海市浦东新区人民法院",
+                date: "2023",
+                facts: "公司将怀孕检测列为入职体检项目，发现求职者已怀孕后以\"岗位规划调整\"为由取消录用，但同岗位仍在外发布招聘信息。",
+                judgment: "认定构成就业歧视，公司承担缔约过失责任，赔偿严女士相关损失 3 万余元。",
+                key_point: "法院认为，将妊娠测试作为入职体检项目违反《妇女权益保障法》第四十三条，得知应聘者怀孕后恶意取消招聘岗位，侵害了劳动者平等就业权，应承担缔约过失责任。"
+            }
         ],
         response_scripts: {
             gentle: "关于刚才问的婚育情况，我觉得这属于我的个人隐私，和工作能力没有直接关系，咱们还是聊聊岗位要求吧。",

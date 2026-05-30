@@ -3174,14 +3174,59 @@ body {
 .law-source.src-deli { color: #1a7f47; background: #e9f7ef; }
 .law-content { color: var(--text-gray); font-size: 13px; line-height: 1.7; }
 
-/* 类案卡片 */
+/* 类案卡片（v1.2：含 法院/案号/日期 meta 行 + 案情/判决/裁判要点 三段） */
 .case-card {
     border: 1px dashed #d9cef0;
+    border-left: 3px solid var(--primary-light);
     border-radius: var(--border-radius-sm);
     padding: 10px 12px;
     margin-bottom: 8px;
+    background: #fcfaff;
 }
-.case-title { font-weight: 600; color: var(--text-dark); font-size: 13px; margin-bottom: 4px; }
+.case-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+.case-title {
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 13px;
+    line-height: 1.5;
+}
+.case-meta {
+    color: var(--text-light);
+    font-size: 11px;
+    margin-bottom: 6px;
+    line-height: 1.5;
+}
+.case-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    color: var(--text-gray);
+    font-size: 13px;
+    line-height: 1.7;
+    margin-top: 3px;
+}
+.case-row .case-label {
+    flex-shrink: 0;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--primary-color);
+    background: #f3e8ff;
+    border-radius: 4px;
+    padding: 1px 6px;
+    line-height: 1.5;
+    align-self: flex-start;
+    margin-top: 1px;
+}
+.case-row.cs-judgment .case-label { color: #c2410c; background: #fff1e7; }
+.case-row.cs-point    .case-label { color: #1a7f47; background: #e9f7ef; }
+.case-row .case-val { flex: 1; }
+/* 兼容旧单段 key_point 写法（防止旧历史数据崩） */
 .case-point { color: var(--text-gray); font-size: 13px; line-height: 1.7; }
 
 /* 可折叠：判定依据 */
