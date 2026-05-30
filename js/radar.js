@@ -22,13 +22,29 @@ function radarEscape(text) {
     return div.innerHTML;
 }
 
-// 尝试把响应解析成报告 JSON（容错：去除 ```json 围栏、首尾空白）
+// 尝试把响应解析成报告 JSON
+// 容错：去除 ```json 围栏、首尾空白、以及元器返回内容前后常见的隐形字符
+// （BOM ﻿ / 零宽空格 ​-‍ / 不间断空格   / 字间隔 ⁠）
 function tryParseRadar(str) {
     if (str == null) return null;
     if (typeof str === 'object') return str;
-    let s = String(str).trim();
+    let s = String(str);
+    // 1. 去掉首尾隐形字符 + 空白
+    s = s.replace(/^[﻿​-‍⁠ \s]+/, '')
+         .replace(/[﻿​-‍⁠ \s]+$/, '');
+    // 2. 若被 ```json ... ``` 围栏包裹，剥掉
     const fence = s.match(/```(?:json)?\s*([\s\S]*?)```/i);
-    if (fence) s = fence[1].trim();
+    if (fence) {
+        s = fence[1]
+            .replace(/^[﻿​-‍⁠ \s]+/, '')
+            .replace(/[﻿​-‍⁠ \s]+$/, '');
+    }
+    // 3. 截取从第一个 { 或 [ 到最后一个 } 或 ] 之间的内容（兜底防止前后还有杂字）
+    const start = s.search(/[{[]/);
+    const end = Math.max(s.lastIndexOf('}'), s.lastIndexOf(']'));
+    if (start !== -1 && end > start) {
+        s = s.slice(start, end + 1);
+    }
     try {
         return JSON.parse(s);
     } catch (e) {
