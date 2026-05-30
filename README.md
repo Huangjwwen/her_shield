@@ -253,6 +253,75 @@ docker run -d -p 8080:80 tad-shield
 
 ---
 
+## 复赛已完成功能
+
+### 1. CloudBase 后端代理
+
+项目已通过 CloudBase 云函数实现 API 代理，前端不再直接请求元器 API。
+
+前端请求流程：
+
+前端页面 → CloudBase proxy 云函数 → 元器 API → 返回前端
+
+这样可以避免 appkey 暴露在浏览器源码中。
+
+### 2. 密钥下沉
+
+元器 appkey 已放入 CloudBase 云函数环境变量中，前端不再保存真实 key。
+
+使用的环境变量包括：
+
+- KEY_CONSULTATION
+- KEY_RADAR
+- KEY_SELFCHECK
+- KEY_EVIDENCE
+- KEY_GUIDE
+- KEY_HARBOR
+
+### 3. 前端改造
+
+`callYuanqiAPI` 已改为请求 CloudBase proxy 接口。
+
+前端只发送：
+
+- agentType
+- messages
+
+不再发送 Authorization。
+
+### 4. 她声模块
+
+她声模块已支持：
+
+- 发帖
+- 帖子展示
+- localStorage 本地保存
+- CloudBase stories 数据库存储
+- 手机号、身份证号、邮箱脱敏
+- 标签筛选
+
+### 5. 缓存
+
+proxy 云函数中已加入内存缓存逻辑。
+
+同样的 agentType 和 messages 第二次请求会直接返回缓存结果，并带有：
+
+`fromCache: true`
+
+## 接口地址
+
+### proxy
+
+https://her-shield-d7gyrtfxm65f3e782-1410225134.ap-shanghai.app.tcloudbase.com/proxy
+
+### story
+
+https://her-shield-d7gyrtfxm65f3e782-1410225134.ap-shanghai.app.tcloudbase.com/story
+
+## 注意事项
+
+比赛提交前需要重新生成所有元器 appkey，并更新 CloudBase 环境变量。
+
 ## 🎨 设计规范
 
 ### 颜色体系

@@ -25,32 +25,32 @@ const YUANQI_CONFIG = {
     AGENTS: {
         // 智能咨询模块（通用咨询）
         consultation: {
-            appkey: 't5XTXdztRxbZBWDkdFbdWJFl9qSnwCEh',
+            appkey: '',
             appid: '2037893130997763264'
         },
         // 言行雷达模块
         radar: {
-            appkey: 't5XTXdztRxbZBWDkdFbdWJFl9qSnwCEh',
+            appkey: '',
             appid: '2037893130997763264'
         },
         // 权益指南模块
         selfcheck: {
-            appkey: 'E2aXPzs6oSyDcLvP11NTu9tAap0T0rk3',
+            appkey: '',
             appid: '2041405236168255296'
         },
         // 证据保全模块
         evidence: {
-            appkey: 'V7Lgtt3lMn3699JabHBSt1oA4Sk7Fvst',
+            appkey: '',
             appid: '2041711833478227776'
         },
         // 行动导航模块
         guide: {
-            appkey: 'nzt6hu1R5IUYBDIQzpROO08SDNVy0MAs',
+            appkey: '',
             appid: '2041721348920706112'
         },
         // 情绪树洞模块
         harbor: {
-            appkey: 'jdbbNZkSS05Lh1bLpnqTSZYDyFxZyea7',
+            appkey: '',
             appid: '2043227755042047040'
         }
     }
@@ -149,14 +149,19 @@ async function callYuanqiAPI(agentType, userMessage, useStream = false) {
 
         console.log('调用腾讯元器 API:', agentType, requestBody);
 
-        const response = await fetch(YUANQI_CONFIG.API_ENDPOINT, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${agentConfig.appkey}`
-            },
-            body: JSON.stringify(requestBody)
-        });
+        const response = await fetch(
+            'https://her-shield-d7gyrtfxm65f3e782-1410225134.ap-shanghai.app.tcloudbase.com/proxy',
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                agentType,
+                messages
+                })
+            }
+        );
 
         if (!response.ok) {
             const errorText = await response.text();
