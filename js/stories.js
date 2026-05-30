@@ -48,13 +48,34 @@ function initStories() {
             .replace(/[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}/g, '邮箱已隐藏');
     }
 
+    // 种子版本号：每次更新 defaultStories 内容请把它 +1，
+    // 老用户的 localStorage 缓存就会被自动迁移到新种子（用户提交的故事保留）。
+    const SEED_VERSION = 2;
+
     function getStories() {
+        const savedVersion = parseInt(localStorage.getItem('herShieldStoriesSeedVersion') || '0', 10);
         const saved = localStorage.getItem('herShieldStories');
-        if (saved) {
-            return JSON.parse(saved);
+
+        // 版本一致 → 直接用缓存
+        if (saved && savedVersion === SEED_VERSION) {
+            try { return JSON.parse(saved); } catch (e) { /* 损坏则重置 */ }
         }
-        localStorage.setItem('herShieldStories', JSON.stringify(defaultStories));
-        return defaultStories;
+
+        // 版本不一致（或首次访问）→ 重置种子，但保留用户提交（tag === '#用户分享'）
+        let userStories = [];
+        if (saved) {
+            try {
+                const old = JSON.parse(saved);
+                if (Array.isArray(old)) {
+                    userStories = old.filter(s => s && s.tag === '#用户分享');
+                }
+            } catch (e) { /* 解析失败就放弃旧数据 */ }
+        }
+
+        const merged = [...defaultStories, ...userStories];
+        localStorage.setItem('herShieldStories', JSON.stringify(merged));
+        localStorage.setItem('herShieldStoriesSeedVersion', String(SEED_VERSION));
+        return merged;
     }
 
     function saveStories(stories) {
