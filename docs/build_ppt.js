@@ -111,58 +111,87 @@ function addPageBackground(slide) {
   });
 }
 
-// ==================== Slide 1:封面 ====================
+// ==================== Slide 1:封面(精美版 · 含 logo) ====================
 {
   const s = pres.addSlide();
   s.background = { color: C.bgSoft };
-  // 大装饰圆
+
+  // 左上暖粉柔和装饰
   s.addShape(pres.shapes.OVAL, {
-    x: -2, y: -2, w: 5, h: 5,
+    x: -1.8, y: -2, w: 4.8, h: 4.8,
+    fill: { color: C.accent, transparency: 75 }, line: { type: 'none' }
+  });
+  // 右下主紫色大圆
+  s.addShape(pres.shapes.OVAL, {
+    x: 6.8, y: 3.2, w: 5.5, h: 5.5,
     fill: { color: C.primaryLight, transparency: 65 }, line: { type: 'none' }
   });
+  // 中部细线轮廓(增加层次)
   s.addShape(pres.shapes.OVAL, {
-    x: 7.5, y: 3.5, w: 3.5, h: 3.5,
-    fill: { color: C.accent, transparency: 70 }, line: { type: 'none' }
+    x: 3.6, y: 3.8, w: 5.0, h: 5.0,
+    fill: { color: 'FFFFFF', transparency: 100 },
+    line: { color: C.primary, width: 0.6, transparency: 70 }
   });
 
-  // 项目标志
+  // === 左侧 logo ===
+  // logo 底光圈(让 logo 浮起来)
+  s.addShape(pres.shapes.OVAL, {
+    x: 0.5, y: 0.95, w: 3.85, h: 3.85,
+    fill: { color: 'FFFFFF', transparency: 30 }, line: { type: 'none' }
+  });
+  // logo 图片本体
+  s.addImage({
+    path: path.join(__dirname, '..', 'logo.png'),
+    x: 0.65, y: 1.1, w: 3.55, h: 3.55
+  });
+
+  // === 右侧文字区 ===
+  // 英文小标(空格分隔,charSpacing 加宽)
   s.addText('SHE · SHIELD', {
-    x: 0.6, y: 0.5, w: 4, h: 0.3,
-    fontSize: 11, fontFace: F.sans, bold: true, color: C.primary, charSpacing: 6, margin: 0
+    x: 4.55, y: 1.05, w: 5, h: 0.35,
+    fontSize: 12, fontFace: F.sans, bold: true, color: C.primary, charSpacing: 10, margin: 0
   });
 
-  // 主标题
+  // 主标题"她盾"
   s.addText('她盾', {
-    x: 0.6, y: 1.4, w: 8, h: 1.4,
-    fontSize: 96, fontFace: F.serif, bold: true, color: C.primaryDark, margin: 0
+    x: 4.55, y: 1.45, w: 5, h: 1.5,
+    fontSize: 110, fontFace: F.serif, bold: true, color: C.primaryDark, margin: 0
   });
 
   // 副标题
   s.addText('职场女性权益守护智能体', {
-    x: 0.6, y: 2.85, w: 8, h: 0.5,
-    fontSize: 24, fontFace: F.sans, color: C.text, charSpacing: 4, margin: 0
+    x: 4.55, y: 3.05, w: 5, h: 0.5,
+    fontSize: 22, fontFace: F.sans, color: C.text, charSpacing: 3, margin: 0
   });
 
-  // 装饰横线
+  // 装饰短横线(暖粉)
   s.addShape(pres.shapes.LINE, {
-    x: 0.6, y: 3.5, w: 0.8, h: 0,
-    line: { color: C.accent, width: 3 }
+    x: 4.55, y: 3.7, w: 0.7, h: 0,
+    line: { color: C.accent, width: 3.5 }
   });
 
-  // tagline
-  s.addText('你的身后,站着一个懂法更懂你的「她」', {
-    x: 0.6, y: 3.7, w: 8, h: 0.4,
-    fontSize: 16, fontFace: F.sans, italic: true, color: C.primaryDark, margin: 0
+  // tagline 斜体引语
+  s.addText('"你的身后,站着一个懂法更懂你的「她」"', {
+    x: 4.55, y: 3.85, w: 5.0, h: 0.5,
+    fontSize: 14, fontFace: F.sans, italic: true, color: C.primaryDark, margin: 0
   });
 
-  // 底部信息
-  s.addText('团队:她说了算队', {
-    x: 0.6, y: 4.85, w: 8.8, h: 0.3,
-    fontSize: 13, fontFace: F.sans, color: C.textGray, margin: 0
+  // === 底部信息行 ===
+  s.addShape(pres.shapes.LINE, {
+    x: 0.5, y: 4.78, w: 9, h: 0,
+    line: { color: C.primaryLight, width: 0.5, transparency: 40 }
   });
-  s.addText('第十七届中国大学生服务外包创新创业大赛 · 腾讯开悟全球 AI 公开赛 D06', {
-    x: 0.6, y: 5.15, w: 8.8, h: 0.3,
-    fontSize: 11, fontFace: F.sans, color: C.textLight, margin: 0
+  s.addText('团队 · 她说了算队', {
+    x: 0.5, y: 4.9, w: 4.5, h: 0.3,
+    fontSize: 12, fontFace: F.sans, bold: true, color: C.primaryDark, margin: 0
+  });
+  s.addText('第十七届中国大学生服务外包大赛 · 腾讯开悟全球 AI 公开赛 D06', {
+    x: 4.8, y: 4.9, w: 4.9, h: 0.3,
+    fontSize: 10, fontFace: F.sans, color: C.textGray, align: 'right', margin: 0
+  });
+  s.addText('2026', {
+    x: 4.8, y: 5.18, w: 4.9, h: 0.2,
+    fontSize: 9, fontFace: F.sans, color: C.textLight, align: 'right', charSpacing: 3, margin: 0
   });
 }
 
@@ -1120,7 +1149,7 @@ function addPageBackground(slide) {
 }
 
 // ==================== 写出 ====================
-const outPath = path.join(__dirname, '她盾_答辩_v0.pptx');
+const outPath = path.join(__dirname, '她盾_答辩_v0.1.pptx');
 pres.writeFile({ fileName: outPath }).then(file => {
   console.log('Written:', file);
 }).catch(err => {
