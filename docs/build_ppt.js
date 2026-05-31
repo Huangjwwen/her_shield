@@ -245,11 +245,13 @@ function addPageBackground(slide) {
     { name: '行动层', desc: '不敢维权' },
     { name: '归属层', desc: '孤立无援' },
   ];
+  // 灰→紫渐变(体现"从冷漠到守护"的修复叙事)
+  const chainColors = ['CCC8D8', 'B8A9E0', '9370DB', '8B5CF6', '7B5DC4'];
   chain.forEach((c, i) => {
     const x = 0.4 + i * 1.85;
     s.addShape(pres.shapes.OVAL, {
       x, y: 3.85, w: 0.7, h: 0.7,
-      fill: { color: C.primary }, line: { type: 'none' }
+      fill: { color: chainColors[i] }, line: { type: 'none' }
     });
     s.addText(String(i + 1), {
       x, y: 3.85, w: 0.7, h: 0.7,
@@ -274,100 +276,195 @@ function addPageBackground(slide) {
   });
 }
 
-// ==================== Slide 3:差异化对比表 ====================
+// ==================== Slide 3:2×2 定位矩阵 ====================
 {
   const s = pres.addSlide();
   addPageBackground(s);
   addHeaderFooter(s, 3);
-  addSlideTitle(s, '差异化定位', '为什么不是另一个法律咨询 / 女性社区');
+  addSlideTitle(s, '差异化定位', '法律深度 × 情感支持 — 她盾占据独家象限');
 
-  const header = ['方案', '即时响应', '法条精准', '取证指导', '场景垂直', '低门槛', '情感支持'];
-  const rows = [
-    ['通用法律咨询(律图等)', '✗', '✓', '✗', '✗', '✗', '✗'],
-    ['女性社区(小红书等)',   '✓', '✗', '✗', '部分', '✓', '✓'],
-    ['传统法律援助(妇联)',   '✗', '✓', '部分', '✓', '✗', '部分'],
-    ['她盾(本作品)',         '✓', '✓', '✓', '✓', '✓', '✓'],
+  // 矩阵区域:x 1.7-7.3, y 1.55-4.85  (5.6"宽 × 3.3"高)
+  const mxL = 1.7, mxR = 7.3, myT = 1.55, myB = 4.85;
+  const cx = (mxL + mxR) / 2;  // 4.5
+  const cy = (myT + myB) / 2;  // 3.2
+
+  // 右上象限高亮(她盾独占)
+  s.addShape(pres.shapes.RECTANGLE, {
+    x: cx, y: myT, w: mxR - cx, h: cy - myT,
+    fill: { color: C.bgSoft, transparency: 30 }, line: { type: 'none' }
+  });
+
+  // 坐标轴(十字)
+  s.addShape(pres.shapes.LINE, {
+    x: mxL, y: cy, w: mxR - mxL, h: 0,
+    line: { color: C.textGray, width: 1 }
+  });
+  s.addShape(pres.shapes.LINE, {
+    x: cx, y: myT, w: 0, h: myB - myT,
+    line: { color: C.textGray, width: 1 }
+  });
+  // 轴箭头(右端 / 上端)
+  s.addText('→', { x: mxR - 0.05, y: cy - 0.15, w: 0.3, h: 0.3, fontSize: 14, color: C.textGray, margin: 0 });
+  s.addText('↑', { x: cx - 0.15, y: myT - 0.2, w: 0.3, h: 0.3, fontSize: 14, color: C.textGray, margin: 0 });
+
+  // 轴标签
+  s.addText('法律专业深度', {
+    x: mxR + 0.05, y: cy - 0.15, w: 1.4, h: 0.3,
+    fontSize: 10, fontFace: F.sans, bold: true, color: C.primaryDark, valign: 'middle', margin: 0
+  });
+  s.addText('情感支持 / 低门槛', {
+    x: cx + 0.1, y: myT - 0.35, w: 2.0, h: 0.3,
+    fontSize: 10, fontFace: F.sans, bold: true, color: C.primaryDark, margin: 0
+  });
+
+  // 4 个方案标点 (cx, cy 是中心)
+  // 通用法律 = 右下 (专业高 + 情感低)
+  // 女性社区 = 左上 (专业低 + 情感高)
+  // 法律援助 = 右下中(专业中高 + 情感低)
+  // 她盾 = 右上 (双高 = 独家)
+  const dots = [
+    { name: '通用法律咨询',    sub: '律图/找法网',  x: cx + 1.5,  y: cy + 0.9,  color: 'B0B0B0', isMine: false },
+    { name: '女性社区',         sub: '小红书/豆瓣',  x: cx - 1.6,  y: cy - 0.7,  color: 'B0B0B0', isMine: false },
+    { name: '传统法律援助',     sub: '妇联/援助中心', x: cx + 0.6,  y: cy + 1.3,  color: 'B0B0B0', isMine: false },
+    { name: '她盾',             sub: '本作品',       x: cx + 1.3,  y: cy - 1.1,  color: C.primary,  isMine: true  },
   ];
-  const headerRow = header.map((t, i) => ({
-    text: t,
-    options: {
-      bold: true, color: 'FFFFFF', fill: { color: C.primaryDark }, align: 'center',
-      fontFace: F.sans, fontSize: 11
+  dots.forEach((d) => {
+    const r = d.isMine ? 0.18 : 0.13;
+    s.addShape(pres.shapes.OVAL, {
+      x: d.x - r, y: d.y - r, w: r * 2, h: r * 2,
+      fill: { color: d.color }, line: { type: 'none' }
+    });
+    if (d.isMine) {
+      // 我们这个加光晕
+      s.addShape(pres.shapes.OVAL, {
+        x: d.x - 0.35, y: d.y - 0.35, w: 0.7, h: 0.7,
+        fill: { color: C.primary, transparency: 70 }, line: { type: 'none' }
+      });
     }
-  }));
-  const tableBody = [
-    headerRow,
-    ...rows.map((row, ri) => row.map((cell, ci) => {
-      const isMine = ri === rows.length - 1;
-      const isTagCol = ci === 0;
-      return {
-        text: cell,
-        options: {
-          color: isMine ? 'FFFFFF' : C.text,
-          fill: { color: isMine ? C.primary : (ri % 2 === 0 ? 'FFFFFF' : 'F8F6FC') },
-          bold: isMine || isTagCol,
-          align: isTagCol ? 'left' : 'center',
-          fontFace: F.sans,
-          fontSize: 11
-        }
-      };
-    }))
-  ];
-  s.addTable(tableBody, {
-    x: 0.4, y: 1.6, w: 9.2, colW: [2.7, 1.05, 1.05, 1.15, 1.15, 1.05, 1.05],
-    rowH: [0.45, 0.5, 0.5, 0.5, 0.55],
-    border: { type: 'solid', pt: 0.5, color: 'EAE3F5' }
+    s.addText(d.name, {
+      x: d.x - 1.1, y: d.y + 0.18, w: 2.2, h: 0.28,
+      fontSize: d.isMine ? 13 : 10, fontFace: F.sans,
+      bold: d.isMine, color: d.isMine ? C.primaryDark : C.textGray,
+      align: 'center', margin: 0
+    });
+    s.addText(d.sub, {
+      x: d.x - 1.1, y: d.y + 0.45, w: 2.2, h: 0.24,
+      fontSize: 8, fontFace: F.sans, color: C.textLight, italic: true,
+      align: 'center', margin: 0
+    });
+  });
+
+  // 右下角注解
+  s.addText('唯一占据"专业 + 温度"双高象限', {
+    x: mxR + 0.1, y: myT + 0.5, w: 2.4, h: 0.6,
+    fontSize: 11, fontFace: F.serif, italic: true, bold: true,
+    color: C.primaryDark, margin: 0
+  });
+  // 引用线
+  s.addShape(pres.shapes.LINE, {
+    x: cx + 1.3, y: cy - 1.1, w: mxR + 0.05 - (cx + 1.3), h: myT + 0.7 - (cy - 1.1),
+    line: { color: C.primary, width: 1, dashType: 'dash' }
   });
 
   s.addText('我们既能判断,也能陪伴;既给答案,也给支撑。', {
-    x: 0.4, y: 4.85, w: 9.2, h: 0.35,
-    fontSize: 14, fontFace: F.serif, italic: true, color: C.primaryDark,
+    x: 0.4, y: 4.95, w: 9.2, h: 0.3,
+    fontSize: 13, fontFace: F.serif, italic: true, color: C.primaryDark,
     align: 'center', margin: 0
   });
 }
 
-// ==================== Slide 4:6 模块总览 ====================
+// ==================== Slide 4:六大智能体放射状(中心她盾 + 6 卡片) ====================
 {
   const s = pres.addSlide();
   addPageBackground(s);
   addHeaderFooter(s, 4);
-  addSlideTitle(s, '六大智能体矩阵', '从识别到陪伴,各司其职');
+  addSlideTitle(s, '六大智能体矩阵', '一句话承诺 · 一一对应五层困境');
 
+  // 中心圆背景 + 文字
+  const cx = 5.0, cy = 3.3;
+  // 外光圈
+  s.addShape(pres.shapes.OVAL, {
+    x: cx - 1.0, y: cy - 1.0, w: 2.0, h: 2.0,
+    fill: { color: C.primaryLight, transparency: 65 }, line: { type: 'none' }
+  });
+  // 主圆
+  s.addShape(pres.shapes.OVAL, {
+    x: cx - 0.75, y: cy - 0.75, w: 1.5, h: 1.5,
+    fill: { color: C.primaryDark }, line: { type: 'none' }
+  });
+  s.addText('她盾', {
+    x: cx - 0.75, y: cy - 0.55, w: 1.5, h: 0.65,
+    fontSize: 36, fontFace: F.serif, bold: true, color: 'FFFFFF',
+    align: 'center', valign: 'middle', margin: 0
+  });
+  s.addText('SHE · SHIELD', {
+    x: cx - 0.75, y: cy + 0.10, w: 1.5, h: 0.25,
+    fontSize: 8, fontFace: F.sans, bold: true, color: C.primaryLight,
+    align: 'center', valign: 'middle', charSpacing: 4, margin: 0
+  });
+
+  // 6 个模块卡片位置(六边形排列,顺时针 12 点起)
   const mods = [
-    { name: '她眼·言行雷达', tag: '判断', desc: '要件式判定 + 风险分级 + 法条/类案锚定' },
-    { name: '她权·权益指南', tag: '确权', desc: '场景化权利清单 + 法条号 + 白话解释' },
-    { name: '她证·证据保全', tag: '留痕', desc: 'SHA-256 证据指纹 + 6 大典型场景取证' },
-    { name: '她行·维权导航', tag: '行动', desc: '6 步阶梯路径 + 时效提醒 + 分支决策' },
-    { name: '她心·情绪树洞', tag: '陪伴', desc: 'CBT 轻支持 + 语音引导 + 危机干预' },
-    { name: '她声·共鸣回响', tag: '社群', desc: '匿名经历分享 + 标签筛选 + 真实案例' },
+    { name: '她眼·言行雷达',   promise: '"一句话告诉我,这事违法吗?"', layer: '认知层', emoji: '👁',  shade: C.primaryDark  },
+    { name: '她权·权益指南',   promise: '"我现在有哪些权利?"',         layer: '认知层', emoji: '⚖️', shade: C.primary      },
+    { name: '她证·证据保全',   promise: '"这些证据怎么留住才有效?"',   layer: '证据层', emoji: '🔐', shade: C.primaryHover },
+    { name: '她行·维权导航',   promise: '"下一步我该做什么?"',         layer: '行动层', emoji: '🧭', shade: C.primary      },
+    { name: '她心·情绪树洞',   promise: '"今晚我想找个人说说话。"',     layer: '情绪层', emoji: '💗', shade: C.accent       },
+    { name: '她声·共鸣回响',   promise: '"原来不只我一个人这样。"',     layer: '归属层', emoji: '🌸', shade: C.primaryLight },
   ];
-  const startX = 0.4, startY = 1.55;
-  const cardW = 2.95, cardH = 1.55, gapX = 0.15, gapY = 0.2;
+
+  // 6 个角度(12点、2点、4点、6点、8点、10点)
+  const angles = [90, 30, -30, -90, -150, 150];
+  const radius = 2.4; // 中心到卡片中心距
+  const cardW = 2.6, cardH = 1.05;
+
   mods.forEach((m, i) => {
-    const col = i % 3, row = Math.floor(i / 3);
-    const x = startX + col * (cardW + gapX);
-    const y = startY + row * (cardH + gapY);
-    addCard(s, x, y, cardW, cardH, { borderColor: C.primary });
-    // 标签徽
-    s.addShape(pres.shapes.ROUNDED_RECTANGLE, {
-      x: x + cardW - 0.85, y: y + 0.15, w: 0.7, h: 0.32,
-      fill: { color: C.accent, transparency: 30 }, line: { type: 'none' },
-      rectRadius: 0.16
+    const rad = angles[i] * Math.PI / 180;
+    const px = cx + radius * Math.cos(rad);
+    const py = cy - radius * Math.sin(rad);  // y 向下为正
+    const x = px - cardW / 2;
+    const y = py - cardH / 2;
+
+    // 连线(中心圆到卡片)
+    s.addShape(pres.shapes.LINE, {
+      x: cx, y: cy, w: px - cx, h: py - cy,
+      line: { color: C.primaryLight, width: 1, dashType: 'dash', transparency: 40 }
     });
-    s.addText(m.tag, {
-      x: x + cardW - 0.85, y: y + 0.15, w: 0.7, h: 0.32,
-      fontSize: 10, fontFace: F.sans, bold: true, color: C.primaryDark,
+
+    // 卡片白底
+    s.addShape(pres.shapes.RECTANGLE, {
+      x, y, w: cardW, h: cardH,
+      fill: { color: C.bgWhite },
+      line: { color: 'EAE3F5', width: 0.75 },
+      shadow: { type: 'outer', color: '9370DB', opacity: 0.1, blur: 6, offset: 1, angle: 135 }
+    });
+    // 左 4px 紫
+    s.addShape(pres.shapes.RECTANGLE, {
+      x, y, w: 0.05, h: cardH,
+      fill: { color: m.shade }, line: { type: 'none' }
+    });
+
+    // 困境层徽标(右上)
+    s.addShape(pres.shapes.ROUNDED_RECTANGLE, {
+      x: x + cardW - 0.65, y: y + 0.08, w: 0.55, h: 0.25,
+      fill: { color: C.accent, transparency: 30 }, line: { type: 'none' },
+      rectRadius: 0.12
+    });
+    s.addText(m.layer, {
+      x: x + cardW - 0.65, y: y + 0.08, w: 0.55, h: 0.25,
+      fontSize: 8, fontFace: F.sans, bold: true, color: C.primaryDark,
       align: 'center', valign: 'middle', margin: 0
     });
-    // 名称
+
+    // 模块名
     s.addText(m.name, {
-      x: x + 0.2, y: y + 0.15, w: cardW - 1.05, h: 0.4,
-      fontSize: 16, fontFace: F.serif, bold: true, color: C.primaryDark, margin: 0
+      x: x + 0.14, y: y + 0.08, w: cardW - 0.85, h: 0.32,
+      fontSize: 12, fontFace: F.serif, bold: true, color: C.primaryDark, margin: 0
     });
-    // 描述
-    s.addText(m.desc, {
-      x: x + 0.2, y: y + 0.6, w: cardW - 0.3, h: 0.85,
-      fontSize: 11, fontFace: F.sans, color: C.textGray, margin: 0
+    // 承诺语
+    s.addText(m.promise, {
+      x: x + 0.14, y: y + 0.42, w: cardW - 0.2, h: 0.55,
+      fontSize: 10, fontFace: F.sans, italic: true, color: C.textGray, margin: 0
     });
   });
 }
@@ -436,22 +533,47 @@ function addPageBackground(slide) {
     fontSize: 13, align: 'center', valign: 'middle', margin: 0
   });
 
-  // 核心说明
+  // 对比框:通用 GPT vs 得理 API(预防"为什么不用 ChatGPT"质疑)
+  // 左:GPT
   s.addShape(pres.shapes.RECTANGLE, {
-    x: 0.5, y: 4.0, w: 9.0, h: 1.0,
-    fill: { color: C.bgSoft }, line: { color: C.primaryLight, width: 0.75 }
+    x: 0.5, y: 3.95, w: 4.4, h: 1.1,
+    fill: { color: 'F5F5F5' }, line: { color: 'D0D0D0', width: 0.75 }
   });
   s.addShape(pres.shapes.RECTANGLE, {
-    x: 0.5, y: 4.0, w: 0.05, h: 1.0,
-    fill: { color: C.primary }, line: { type: 'none' }
+    x: 0.5, y: 3.95, w: 0.05, h: 1.1,
+    fill: { color: 'B0B0B0' }, line: { type: 'none' }
+  });
+  s.addText('通用大模型(如 ChatGPT)', {
+    x: 0.65, y: 4.0, w: 4.2, h: 0.3,
+    fontSize: 12, fontFace: F.sans, bold: true, color: '666666', margin: 0
   });
   s.addText([
-    { text: '得理 API 承担两个关键角色:', options: { bold: true, color: C.primaryDark, breakLine: true } },
-    { text: '① 法规检索 — 在判定前实时检索相关法条作为评估依据', options: { color: C.text, breakLine: true } },
-    { text: '② 类案匹配 — 真实判例锚定,法条引用可追溯至案号、法院、年份', options: { color: C.text } },
+    { text: '✗ 可能伪造案号 / 编造法条', options: { color: '666666', breakLine: true } },
+    { text: '✗ 黑盒判定,不可追溯', options: { color: '666666' } },
   ], {
-    x: 0.7, y: 4.05, w: 8.7, h: 0.9,
-    fontSize: 12, fontFace: F.sans, margin: 0
+    x: 0.65, y: 4.32, w: 4.2, h: 0.7,
+    fontSize: 11, fontFace: F.sans, paraSpaceAfter: 3, margin: 0
+  });
+
+  // 右:得理
+  s.addShape(pres.shapes.RECTANGLE, {
+    x: 5.1, y: 3.95, w: 4.4, h: 1.1,
+    fill: { color: C.bgSoft }, line: { color: C.primary, width: 1 }
+  });
+  s.addShape(pres.shapes.RECTANGLE, {
+    x: 5.1, y: 3.95, w: 0.05, h: 1.1,
+    fill: { color: C.primary }, line: { type: 'none' }
+  });
+  s.addText('得理 API + 工作流编排', {
+    x: 5.25, y: 4.0, w: 4.2, h: 0.3,
+    fontSize: 12, fontFace: F.sans, bold: true, color: C.primaryDark, margin: 0
+  });
+  s.addText([
+    { text: '✓ 真实判例锚定 — 可查裁判文书网', options: { color: C.text, breakLine: true } },
+    { text: '✓ 代码节点确定性映射 — 同问同答', options: { color: C.text } },
+  ], {
+    x: 5.25, y: 4.32, w: 4.2, h: 0.7,
+    fontSize: 11, fontFace: F.sans, paraSpaceAfter: 3, margin: 0
   });
 }
 
@@ -462,7 +584,7 @@ function addPageBackground(slide) {
   addHeaderFooter(s, 6);
   addSlideTitle(s, '言行雷达 — 工作流深度', '为什么"同问同答":等级由规则裁定');
 
-  // 5 个节点
+  // 5 个节点(第 5 步深紫底白字)
   const nodes = [
     { n: '①', title: '门控判断', sub: '召回优先\n沾边即放行' },
     { n: '②', title: '案情要素抽取', sub: '结构化 JSON\n类型/要件/严重度' },
@@ -471,63 +593,103 @@ function addPageBackground(slide) {
     { n: '⑤', title: '代码节点\n确定性映射', sub: '规则引擎\n出风险等级' },
   ];
   const startX = 0.35;
-  const nodeW = 1.78, nodeH = 1.6;
+  const nodeW = 1.78, nodeH = 1.4;
   const gap = 0.08;
   nodes.forEach((nd, i) => {
     const x = startX + i * (nodeW + gap);
     const isLast = i === nodes.length - 1;
+    // 第 5 步深紫底白字
+    const bgColor = isLast ? C.primaryDark : C.bgWhite;
+    const textColor = isLast ? 'FFFFFF' : C.primaryDark;
+    const subColor = isLast ? 'EADCFF' : C.textGray;
+    const numColor = isLast ? C.accent : C.primary;
     s.addShape(pres.shapes.RECTANGLE, {
-      x, y: 1.85, w: nodeW, h: nodeH,
-      fill: { color: isLast ? C.bgSoft : C.bgWhite },
-      line: { color: isLast ? C.primary : 'EAE3F5', width: isLast ? 2 : 0.75 }
+      x, y: 1.65, w: nodeW, h: nodeH,
+      fill: { color: bgColor },
+      line: { color: isLast ? C.primaryDark : 'EAE3F5', width: isLast ? 0 : 0.75 }
     });
-    s.addShape(pres.shapes.RECTANGLE, {
-      x, y: 1.85, w: 0.05, h: nodeH,
-      fill: { color: isLast ? C.primary : C.primaryLight }, line: { type: 'none' }
-    });
-    // 序号
+    if (!isLast) {
+      s.addShape(pres.shapes.RECTANGLE, {
+        x, y: 1.65, w: 0.05, h: nodeH,
+        fill: { color: C.primaryLight }, line: { type: 'none' }
+      });
+    }
     s.addText(nd.n, {
-      x: x + 0.15, y: 1.95, w: 0.5, h: 0.4,
-      fontSize: 22, fontFace: F.serif, bold: true, color: C.primary, margin: 0
+      x: x + 0.15, y: 1.72, w: 0.5, h: 0.35,
+      fontSize: 20, fontFace: F.serif, bold: true, color: numColor, margin: 0
     });
-    // 标题
     s.addText(nd.title, {
-      x: x + 0.15, y: 2.35, w: nodeW - 0.3, h: 0.6,
-      fontSize: 12, fontFace: F.serif, bold: true, color: C.primaryDark, margin: 0
+      x: x + 0.15, y: 2.08, w: nodeW - 0.3, h: 0.55,
+      fontSize: 11, fontFace: F.serif, bold: true, color: textColor, margin: 0
     });
-    // 副
     s.addText(nd.sub, {
-      x: x + 0.15, y: 2.95, w: nodeW - 0.3, h: 0.6,
-      fontSize: 10, fontFace: F.sans, color: C.textGray, margin: 0
+      x: x + 0.15, y: 2.6, w: nodeW - 0.3, h: 0.55,
+      fontSize: 9, fontFace: F.sans, color: subColor, margin: 0
     });
   });
 
-  // 中间连线 -> 用透明箭头
+  // 节点间箭头
   for (let i = 0; i < nodes.length - 1; i++) {
     const x = startX + (i + 1) * nodeW + i * gap;
     s.addText('→', {
-      x: x - 0.02, y: 2.5, w: 0.12, h: 0.4,
-      fontSize: 14, fontFace: F.sans, color: C.primary,
+      x: x - 0.02, y: 2.2, w: 0.12, h: 0.4,
+      fontSize: 13, fontFace: F.sans, color: C.primary,
       align: 'center', valign: 'middle', bold: true, margin: 0
     });
   }
 
-  // 底部金句
-  s.addShape(pres.shapes.RECTANGLE, {
-    x: 0.4, y: 3.85, w: 9.2, h: 1.1,
-    fill: { color: C.bgSoft }, line: { color: C.primaryLight, width: 0.75 }
+  // === 婚育案例串讲(具体输入 → 实际走过流程) ===
+  s.addText('以"HR 问我打算什么时候生孩子" 为例 →', {
+    x: 0.4, y: 3.2, w: 9.2, h: 0.3,
+    fontSize: 11, fontFace: F.serif, italic: true, bold: true, color: C.primaryDark, margin: 0
   });
-  s.addShape(pres.shapes.RECTANGLE, {
-    x: 0.4, y: 3.85, w: 0.05, h: 1.1,
-    fill: { color: C.primary }, line: { type: 'none' }
+  // 5 个步骤实际输出
+  const trace = [
+    { step: '① 涉及', text: '门控放行' },
+    { step: '② 要素', text: '[婚育询问 / 招聘环节]' },
+    { step: '③ 检索', text: '妇权法43条 + 严女士案' },
+    { step: '④ 要件', text: '3要件满足 / 无加重' },
+    { step: '⑤ 映射', text: '🟠 中危' },
+  ];
+  const tStartX = 0.4, tY = 3.55, tW = 1.78, tGap = 0.08;
+  trace.forEach((t, i) => {
+    const x = tStartX + i * (tW + tGap);
+    const isLast = i === trace.length - 1;
+    s.addShape(pres.shapes.RECTANGLE, {
+      x, y: tY, w: tW, h: 0.55,
+      fill: { color: isLast ? C.midBg : C.bgSoft },
+      line: { color: isLast ? C.mid : C.primaryLight, width: 0.5 }
+    });
+    s.addText(t.step, {
+      x: x + 0.1, y: tY + 0.04, w: tW - 0.2, h: 0.22,
+      fontSize: 9, fontFace: F.sans, bold: true,
+      color: isLast ? C.mid : C.primary, margin: 0
+    });
+    s.addText(t.text, {
+      x: x + 0.1, y: tY + 0.27, w: tW - 0.2, h: 0.25,
+      fontSize: 10, fontFace: F.sans,
+      bold: isLast, color: isLast ? C.mid : C.text, margin: 0
+    });
   });
-  s.addText('关键创新:', {
-    x: 0.6, y: 3.95, w: 9.0, h: 0.3,
-    fontSize: 12, fontFace: F.sans, bold: true, color: C.primaryDark, margin: 0
+
+  // 底部 — 元器后台 3 张截图占位
+  s.addText('📷 元器工作流后台截图占位', {
+    x: 0.4, y: 4.3, w: 9.2, h: 0.3,
+    fontSize: 9, fontFace: F.sans, italic: true, color: C.textLight, margin: 0
   });
-  s.addText('风险等级不是 AI 主观打分,而是由代码节点按法律要件 + 加重情节按规则确定性映射。同一输入永远同一等级。', {
-    x: 0.6, y: 4.25, w: 9.0, h: 0.7,
-    fontSize: 12, fontFace: F.sans, color: C.text, margin: 0
+  const shotLabels = ['节点展开图', '代码节点逻辑', '输入/输出示例'];
+  shotLabels.forEach((label, i) => {
+    const x = 0.4 + i * 3.1;
+    s.addShape(pres.shapes.RECTANGLE, {
+      x, y: 4.6, w: 2.9, h: 0.55,
+      fill: { color: C.bgWhite },
+      line: { color: C.primaryLight, width: 0.75, dashType: 'dash' }
+    });
+    s.addText(`TODO: ${label}`, {
+      x, y: 4.6, w: 2.9, h: 0.55,
+      fontSize: 10, fontFace: F.sans, italic: true, color: C.textLight,
+      align: 'center', valign: 'middle', margin: 0
+    });
   });
 }
 
@@ -581,8 +743,18 @@ function addPageBackground(slide) {
     x: rx, y: ry, w: 0.05, h: 2.95,
     fill: { color: C.accent }, line: { type: 'none' }
   });
-  s.addText('🔄 反误判机制', {
-    x: rx + 0.15, y: ry + 0.1, w: 3.9, h: 0.4,
+  // 紫色循环箭头 ICON(替代 🔄 emoji)
+  s.addShape(pres.shapes.OVAL, {
+    x: rx + 0.15, y: ry + 0.12, w: 0.36, h: 0.36,
+    fill: { color: 'FFFFFF' }, line: { color: C.primary, width: 2.5 }
+  });
+  s.addText('↻', {
+    x: rx + 0.15, y: ry + 0.10, w: 0.36, h: 0.40,
+    fontSize: 22, fontFace: F.sans, bold: true, color: C.primary,
+    align: 'center', valign: 'middle', margin: 0
+  });
+  s.addText('反误判机制', {
+    x: rx + 0.6, y: ry + 0.1, w: 3.4, h: 0.4,
     fontSize: 16, fontFace: F.serif, bold: true, color: C.primaryDark, margin: 0
   });
   s.addText('被门控判"不涉及"时,用户可一键触发深度分析,跳过门控直接进入要件式评估。', {
@@ -715,18 +887,34 @@ function addPageBackground(slide) {
   addHeaderFooter(s, 9);
   addSlideTitle(s, '准确率数据', '在 100 条锚定测试集上的实测表现');
 
-  // 左:大数字
+  // 左:圆环仪表盘(donut)
   s.addText('整体准确率', {
-    x: 0.4, y: 1.7, w: 4.5, h: 0.3,
-    fontSize: 14, fontFace: F.sans, color: C.textGray, margin: 0
+    x: 0.4, y: 1.65, w: 4.5, h: 0.3,
+    fontSize: 14, fontFace: F.sans, color: C.textGray, align: 'center', margin: 0
   });
+  // donut chart(占位:XX 待评测完成填数字)
+  s.addChart(pres.charts.DOUGHNUT, [{
+    name: 'accuracy',
+    labels: ['正确', '错误'],
+    values: [85, 15]   // 占位,真实数据出后改
+  }], {
+    x: 0.7, y: 2.0, w: 3.9, h: 2.5,
+    chartColors: [C.primary, 'EAE3F5'],
+    showLegend: false,
+    showTitle: false,
+    holeSize: 70,
+    chartArea: { fill: { color: C.bg }, border: { color: C.bg, pt: 0 } }
+  });
+  // 中心叠加大字 "XX%"
   s.addText('XX%', {
-    x: 0.4, y: 2.0, w: 4.5, h: 1.4,
-    fontSize: 96, fontFace: F.serif, bold: true, color: C.primaryDark, margin: 0
+    x: 0.7, y: 2.65, w: 3.9, h: 1.2,
+    fontSize: 56, fontFace: F.serif, bold: true, color: C.primaryDark,
+    align: 'center', valign: 'middle', margin: 0
   });
-  s.addText('95% 置信区间 ±7%', {
-    x: 0.4, y: 3.4, w: 4.5, h: 0.3,
-    fontSize: 12, fontFace: F.sans, italic: true, color: C.textGray, margin: 0
+  s.addText('95% CI ±7%', {
+    x: 0.7, y: 3.65, w: 3.9, h: 0.3,
+    fontSize: 11, fontFace: F.sans, italic: true, color: C.textGray,
+    align: 'center', margin: 0
   });
 
   // 各等级召回
@@ -844,9 +1032,16 @@ function addPageBackground(slide) {
       x: x + 0.15, y: 2.0, w: 2.7, h: 0.7,
       fontSize: 12, fontFace: F.serif, bold: true, color: C.primaryDark, margin: 0
     });
-    s.addText(c.meta, {
+    // 案号 + 法院做成紫色徽章(可被 grep 到的"可核对"信号)
+    s.addShape(pres.shapes.ROUNDED_RECTANGLE, {
       x: x + 0.15, y: 2.7, w: 2.7, h: 0.3,
-      fontSize: 9, fontFace: F.sans, color: C.textGray, italic: true, margin: 0
+      fill: { color: C.bgSoft }, line: { color: C.primaryLight, width: 0.5 },
+      rectRadius: 0.06
+    });
+    s.addText(c.meta, {
+      x: x + 0.2, y: 2.7, w: 2.6, h: 0.3,
+      fontSize: 9, fontFace: F.sans, color: C.primaryDark, bold: true,
+      valign: 'middle', margin: 0
     });
     s.addText(c.points.map((p, idx) => ({
       text: p,
@@ -936,8 +1131,29 @@ function addPageBackground(slide) {
     fontSize: 12, fontFace: F.sans, margin: 0
   });
 
-  s.addText('TODO:这一页插入真实演示页面截图(替换左右两个占位卡)', {
-    x: 0.4, y: 4.95, w: 9.2, h: 0.25,
+  // 紫色"窗口"边框装饰(浏览器风)
+  s.addShape(pres.shapes.RECTANGLE, {
+    x: 0.4, y: 1.55, w: 0.05, h: 3.5,
+    fill: { color: C.primary }, line: { type: 'none' }
+  });
+  s.addShape(pres.shapes.RECTANGLE, {
+    x: 9.65, y: 1.55, w: 0.05, h: 3.5,
+    fill: { color: C.primary }, line: { type: 'none' }
+  });
+
+  // 得理 API 角标(右上)
+  s.addShape(pres.shapes.ROUNDED_RECTANGLE, {
+    x: 8.0, y: 1.65, w: 1.6, h: 0.32,
+    fill: { color: C.primary }, line: { type: 'none' }, rectRadius: 0.06
+  });
+  s.addText('✦ 得理 API 接入', {
+    x: 8.0, y: 1.65, w: 1.6, h: 0.32,
+    fontSize: 10, fontFace: F.sans, bold: true, color: 'FFFFFF',
+    align: 'center', valign: 'middle', margin: 0
+  });
+
+  s.addText('TODO:此处替换为 GIF 录屏(用户输入 → 节点亮起 → 报告卡浮现,8-10 秒)', {
+    x: 0.4, y: 5.05, w: 9.2, h: 0.25,
     fontSize: 9, fontFace: F.sans, italic: true, color: C.textLight, align: 'center', margin: 0
   });
 }
@@ -952,56 +1168,70 @@ function addPageBackground(slide) {
   const qa = [
     {
       q: '"得理 API 空声明"',
-      a: '架构图(P5)展示节点位置;工作流(P6)可见两路并行检索;法条卡片右上有"得理"徽标。',
-      icon: '🔍'
+      a: '架构图(P5)展示节点;工作流(P6)可见两路并行检索;法条卡片"得理"徽标可见。',
     },
     {
       q: '"技术深度不足"',
       a: '要件式判定 + 代码节点确定性映射 + 100 条锚定测试集 + 95% 置信区间。',
-      icon: '🛡️'
+    },
+    {
+      q: '"为什么不直接用 ChatGPT?"',
+      a: '① 得理真实判例锚定(GPT 编案号) ② 代码节点确定性映射(GPT 黑盒) ③ 危机干预/三档话术等场景定制 GPT 没有。',
     },
     {
       q: '"测试集准确性凭什么?"',
       a: '17 条直接挂真实判例(含案号),公开在仓库 eval/test_set.json,评委可逐条核查。',
-      icon: '📑'
     },
     {
       q: '"AI 误判怎么办?"',
       a: '召回优先门控 + 用户一键强制深度分析,即使算法犯错,用户仍有发言权。',
-      icon: '🔄'
     },
   ];
   qa.forEach((it, i) => {
-    const y = 1.55 + i * 0.85;
+    const y = 1.55 + i * 0.66;
+    // 卡片
     s.addShape(pres.shapes.RECTANGLE, {
-      x: 0.4, y, w: 9.2, h: 0.75,
+      x: 0.4, y, w: 9.2, h: 0.58,
       fill: { color: C.bgWhite }, line: { color: 'EAE3F5', width: 0.5 }
     });
     s.addShape(pres.shapes.RECTANGLE, {
-      x: 0.4, y, w: 0.05, h: 0.75,
+      x: 0.4, y, w: 0.05, h: 0.58,
       fill: { color: C.primary }, line: { type: 'none' }
     });
-    s.addText(it.icon, {
-      x: 0.55, y, w: 0.6, h: 0.75,
-      fontSize: 24, valign: 'middle', align: 'center', margin: 0
+    // 紫色问号圆(双栏左)
+    s.addShape(pres.shapes.OVAL, {
+      x: 0.55, y: y + 0.13, w: 0.32, h: 0.32,
+      fill: { color: C.primary }, line: { type: 'none' }
     });
-    s.addText(it.q, {
-      x: 1.2, y: y + 0.06, w: 2.8, h: 0.6,
-      fontSize: 13, fontFace: F.serif, bold: true, color: C.primaryDark, valign: 'middle', margin: 0
-    });
-    s.addText('→', {
-      x: 4.0, y, w: 0.3, h: 0.75,
-      fontSize: 18, fontFace: F.sans, bold: true, color: C.primaryLight,
+    s.addText('?', {
+      x: 0.55, y: y + 0.10, w: 0.32, h: 0.38,
+      fontSize: 18, fontFace: F.sans, bold: true, color: 'FFFFFF',
       align: 'center', valign: 'middle', margin: 0
     });
+    // Q 文本
+    s.addText(it.q, {
+      x: 0.95, y: y + 0.04, w: 2.95, h: 0.5,
+      fontSize: 12, fontFace: F.serif, bold: true, color: C.primaryDark, valign: 'middle', margin: 0
+    });
+    // 紫色对勾圆(双栏右起)
+    s.addShape(pres.shapes.OVAL, {
+      x: 3.95, y: y + 0.13, w: 0.32, h: 0.32,
+      fill: { color: C.primaryHover }, line: { type: 'none' }
+    });
+    s.addText('✓', {
+      x: 3.95, y: y + 0.10, w: 0.32, h: 0.38,
+      fontSize: 14, fontFace: F.sans, bold: true, color: 'FFFFFF',
+      align: 'center', valign: 'middle', margin: 0
+    });
+    // A 文本
     s.addText(it.a, {
-      x: 4.35, y: y + 0.06, w: 5.15, h: 0.6,
-      fontSize: 11, fontFace: F.sans, color: C.text, valign: 'middle', margin: 0
+      x: 4.35, y: y + 0.04, w: 5.15, h: 0.5,
+      fontSize: 10, fontFace: F.sans, color: C.text, valign: 'middle', margin: 0
     });
   });
 
   s.addText('"我们想过了。"', {
-    x: 0.4, y: 4.98, w: 9.2, h: 0.3,
+    x: 0.4, y: 5.0, w: 9.2, h: 0.3,
     fontSize: 13, fontFace: F.serif, italic: true, color: C.primaryDark,
     align: 'center', margin: 0
   });
@@ -1099,20 +1329,46 @@ function addPageBackground(slide) {
     fontSize: 12, fontFace: F.sans, paraSpaceAfter: 5, margin: 0
   });
 
-  // 团队信息
+  // 团队信息 + 仓库 + 二维码
   s.addShape(pres.shapes.RECTANGLE, {
     x: 0.4, y: 4.0, w: 9.2, h: 1.1,
     fill: { color: C.bgSoft }, line: { color: C.primaryLight, width: 0.5 }
   });
-  s.addText('她说了算队', {
-    x: 0.4, y: 4.1, w: 9.2, h: 0.4,
-    fontSize: 18, fontFace: F.serif, bold: true, color: C.primaryDark,
-    align: 'center', margin: 0
+
+  // 左:团队
+  s.addText('🌸 她说了算队', {
+    x: 0.55, y: 4.08, w: 5.5, h: 0.35,
+    fontSize: 16, fontFace: F.serif, bold: true, color: C.primaryDark, margin: 0
   });
-  s.addText('TODO:成员姓名 / 分工 / 联系方式 / 项目仓库地址', {
-    x: 0.4, y: 4.55, w: 9.2, h: 0.4,
-    fontSize: 12, fontFace: F.sans, color: C.textGray, italic: true,
-    align: 'center', margin: 0
+  s.addText('TODO: 成员姓名 1 · 成员 2 · 成员 3(角色/分工)', {
+    x: 0.55, y: 4.45, w: 5.5, h: 0.3,
+    fontSize: 10, fontFace: F.sans, color: C.textGray, italic: true, margin: 0
+  });
+  s.addText('GitHub: github.com/Huangjwwen/her_shield', {
+    x: 0.55, y: 4.75, w: 5.5, h: 0.3,
+    fontSize: 10, fontFace: F.sans, color: C.primary, margin: 0
+  });
+
+  // 右:二维码占位(紫色边框)
+  s.addShape(pres.shapes.RECTANGLE, {
+    x: 8.05, y: 4.1, w: 0.95, h: 0.95,
+    fill: { color: 'FFFFFF' }, line: { color: C.primary, width: 2 }
+  });
+  s.addText('扫码看\n源码', {
+    x: 8.05, y: 4.1, w: 0.95, h: 0.95,
+    fontSize: 9, fontFace: F.sans, color: C.textLight, italic: true,
+    align: 'center', valign: 'middle', margin: 0
+  });
+  // QR 提示
+  s.addText('GitHub 仓库', {
+    x: 7.05, y: 4.45, w: 0.95, h: 0.3,
+    fontSize: 10, fontFace: F.sans, color: C.primaryDark, bold: true,
+    align: 'right', valign: 'middle', margin: 0
+  });
+  s.addText('TODO: 二维码', {
+    x: 7.05, y: 4.7, w: 0.95, h: 0.25,
+    fontSize: 8, fontFace: F.sans, color: C.textLight, italic: true,
+    align: 'right', valign: 'middle', margin: 0
   });
 }
 
@@ -1149,7 +1405,7 @@ function addPageBackground(slide) {
 }
 
 // ==================== 写出 ====================
-const outPath = path.join(__dirname, '她盾_答辩_v0.1.pptx');
+const outPath = path.join(__dirname, '她盾_答辩_v0.2.pptx');
 pres.writeFile({ fileName: outPath }).then(file => {
   console.log('Written:', file);
 }).catch(err => {
