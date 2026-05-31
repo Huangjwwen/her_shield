@@ -51,7 +51,7 @@ function addHeaderFooter(slide, pageNum) {
     fontSize: 9, fontFace: F.sans, color: C.primary, charSpacing: 1, margin: 0
   });
   // 页码 右上
-  slide.addText(`${pageNum} / 15`, {
+  slide.addText(`${pageNum} / 13`, {
     x: 8.9, y: 0.18, w: 0.7, h: 0.3,
     fontSize: 9, fontFace: F.sans, color: C.primaryLight, align: 'right', margin: 0
   });
@@ -584,111 +584,58 @@ function addPageBackground(slide) {
   addHeaderFooter(s, 6);
   addSlideTitle(s, '言行雷达 — 工作流深度', '为什么"同问同答":等级由规则裁定');
 
-  // 5 个节点(第 5 步深紫底白字)
-  const nodes = [
-    { n: '①', title: '门控判断', sub: '召回优先\n沾边即放行' },
-    { n: '②', title: '案情要素抽取', sub: '结构化 JSON\n类型/要件/严重度' },
-    { n: '③', title: '法规 + 类案\n并行检索', sub: '得理 API\n两路并发' },
-    { n: '④', title: '要件式判定', sub: 'LLM 输出\n结构化字段' },
-    { n: '⑤', title: '代码节点\n确定性映射', sub: '规则引擎\n出风险等级' },
-  ];
-  const startX = 0.35;
-  const nodeW = 1.78, nodeH = 1.4;
-  const gap = 0.08;
-  nodes.forEach((nd, i) => {
-    const x = startX + i * (nodeW + gap);
-    const isLast = i === nodes.length - 1;
-    // 第 5 步深紫底白字
-    const bgColor = isLast ? C.primaryDark : C.bgWhite;
-    const textColor = isLast ? 'FFFFFF' : C.primaryDark;
-    const subColor = isLast ? 'EADCFF' : C.textGray;
-    const numColor = isLast ? C.accent : C.primary;
-    s.addShape(pres.shapes.RECTANGLE, {
-      x, y: 1.65, w: nodeW, h: nodeH,
-      fill: { color: bgColor },
-      line: { color: isLast ? C.primaryDark : 'EAE3F5', width: isLast ? 0 : 0.75 }
-    });
-    if (!isLast) {
-      s.addShape(pres.shapes.RECTANGLE, {
-        x, y: 1.65, w: 0.05, h: nodeH,
-        fill: { color: C.primaryLight }, line: { type: 'none' }
-      });
-    }
-    s.addText(nd.n, {
-      x: x + 0.15, y: 1.72, w: 0.5, h: 0.35,
-      fontSize: 20, fontFace: F.serif, bold: true, color: numColor, margin: 0
-    });
-    s.addText(nd.title, {
-      x: x + 0.15, y: 2.08, w: nodeW - 0.3, h: 0.55,
-      fontSize: 11, fontFace: F.serif, bold: true, color: textColor, margin: 0
-    });
-    s.addText(nd.sub, {
-      x: x + 0.15, y: 2.6, w: nodeW - 0.3, h: 0.55,
-      fontSize: 9, fontFace: F.sans, color: subColor, margin: 0
-    });
+  // 真实元器工作流截图(占主区域)
+  // workflow-1.png 2712x1150,长宽比 2.36;放 8.4 x 3.56(占 1.45-5.0)
+  s.addShape(pres.shapes.RECTANGLE, {
+    x: 0.78, y: 1.43, w: 8.44, h: 2.99,
+    fill: { color: 'FFFFFF' }, line: { color: C.primary, width: 1.2 }
+  });
+  s.addImage({
+    path: path.join(__dirname, '..', '..', 'images', 'workflow-1.png'),
+    x: 0.8, y: 1.45, w: 8.4, h: 2.95
+  });
+  // 右上小角标:节点编号说明
+  s.addShape(pres.shapes.ROUNDED_RECTANGLE, {
+    x: 7.5, y: 1.55, w: 1.6, h: 0.32,
+    fill: { color: C.primary, transparency: 15 }, line: { type: 'none' }, rectRadius: 0.06
+  });
+  s.addText('✦ 元器真实编排', {
+    x: 7.5, y: 1.55, w: 1.6, h: 0.32,
+    fontSize: 10, fontFace: F.sans, bold: true, color: 'FFFFFF',
+    align: 'center', valign: 'middle', margin: 0
   });
 
-  // 节点间箭头
-  for (let i = 0; i < nodes.length - 1; i++) {
-    const x = startX + (i + 1) * nodeW + i * gap;
-    s.addText('→', {
-      x: x - 0.02, y: 2.2, w: 0.12, h: 0.4,
-      fontSize: 13, fontFace: F.sans, color: C.primary,
-      align: 'center', valign: 'middle', bold: true, margin: 0
-    });
-  }
-
-  // === 婚育案例串讲(具体输入 → 实际走过流程) ===
+  // 婚育案例串讲(底部紧凑横条)
   s.addText('以"HR 问我打算什么时候生孩子" 为例 →', {
-    x: 0.4, y: 3.2, w: 9.2, h: 0.3,
-    fontSize: 11, fontFace: F.serif, italic: true, bold: true, color: C.primaryDark, margin: 0
+    x: 0.4, y: 4.5, w: 4.0, h: 0.28,
+    fontSize: 10, fontFace: F.serif, italic: true, bold: true, color: C.primaryDark,
+    valign: 'middle', margin: 0
   });
-  // 5 个步骤实际输出
   const trace = [
     { step: '① 涉及', text: '门控放行' },
-    { step: '② 要素', text: '[婚育询问 / 招聘环节]' },
-    { step: '③ 检索', text: '妇权法43条 + 严女士案' },
-    { step: '④ 要件', text: '3要件满足 / 无加重' },
+    { step: '② 要素', text: '[婚育询问]' },
+    { step: '③ 检索', text: '妇权法43条+严女士案' },
+    { step: '④ 要件', text: '3要件满足' },
     { step: '⑤ 映射', text: '🟠 中危' },
   ];
-  const tStartX = 0.4, tY = 3.55, tW = 1.78, tGap = 0.08;
+  const tStartX = 0.4, tY = 4.85, tW = 1.79, tGap = 0.05;
   trace.forEach((t, i) => {
     const x = tStartX + i * (tW + tGap);
     const isLast = i === trace.length - 1;
     s.addShape(pres.shapes.RECTANGLE, {
-      x, y: tY, w: tW, h: 0.55,
+      x, y: tY, w: tW, h: 0.4,
       fill: { color: isLast ? C.midBg : C.bgSoft },
       line: { color: isLast ? C.mid : C.primaryLight, width: 0.5 }
     });
     s.addText(t.step, {
-      x: x + 0.1, y: tY + 0.04, w: tW - 0.2, h: 0.22,
-      fontSize: 9, fontFace: F.sans, bold: true,
+      x: x + 0.08, y: tY + 0.03, w: tW - 0.16, h: 0.18,
+      fontSize: 8, fontFace: F.sans, bold: true,
       color: isLast ? C.mid : C.primary, margin: 0
     });
     s.addText(t.text, {
-      x: x + 0.1, y: tY + 0.27, w: tW - 0.2, h: 0.25,
-      fontSize: 10, fontFace: F.sans,
+      x: x + 0.08, y: tY + 0.20, w: tW - 0.16, h: 0.2,
+      fontSize: 9, fontFace: F.sans,
       bold: isLast, color: isLast ? C.mid : C.text, margin: 0
-    });
-  });
-
-  // 底部 — 元器后台 3 张截图占位
-  s.addText('📷 元器工作流后台截图占位', {
-    x: 0.4, y: 4.3, w: 9.2, h: 0.3,
-    fontSize: 9, fontFace: F.sans, italic: true, color: C.textLight, margin: 0
-  });
-  const shotLabels = ['节点展开图', '代码节点逻辑', '输入/输出示例'];
-  shotLabels.forEach((label, i) => {
-    const x = 0.4 + i * 3.1;
-    s.addShape(pres.shapes.RECTANGLE, {
-      x, y: 4.6, w: 2.9, h: 0.55,
-      fill: { color: C.bgWhite },
-      line: { color: C.primaryLight, width: 0.75, dashType: 'dash' }
-    });
-    s.addText(`TODO: ${label}`, {
-      x, y: 4.6, w: 2.9, h: 0.55,
-      fontSize: 10, fontFace: F.sans, italic: true, color: C.textLight,
-      align: 'center', valign: 'middle', margin: 0
     });
   });
 }
@@ -984,264 +931,88 @@ function addPageBackground(slide) {
   });
 }
 
-// ==================== Slide 10:真实判例锚定 ====================
+// ==================== Slide 10(原 11):现场演示 · 含真实 GIF ====================
 {
   const s = pres.addSlide();
   addPageBackground(s);
   addHeaderFooter(s, 10);
-  addSlideTitle(s, '真实判例锚定', '可以拿案号去裁判文书网核对');
+  addSlideTitle(s, '现场演示 · 言行雷达运行实录', '用户输入 → 节点逐一亮起 → 报告卡同屏呈现');
 
-  const cases = [
-    {
-      tag: '🟠 中危',
-      title: '严女士 vs 某公司平等就业权纠纷案',
-      meta: '上海市浦东新区人民法院 · 2023',
-      points: ['入职孕检 + 怀孕后撤回 offer', '法院:就业歧视,缔约过失责任,赔 3 万余元', '锚定测试集 D_real_1'],
-      color: C.mid
-    },
-    {
-      tag: '🔴 高危',
-      title: '韩坤诉厦门翔鹭化纤股份有限公司',
-      meta: '(2009)厦民终字第 2188 号',
-      points: ['哺乳期内单位违法解除劳动合同', '法院:判赔 39310 元(经济补偿 2 倍)', '锚定测试集 D_real_2'],
-      color: C.high
-    },
-    {
-      tag: '🔴 高危',
-      title: '周某强制猥亵案',
-      meta: '芜湖镜湖区检察院 · 2023',
-      points: ['利用求职职权 + 言语威胁', '检察:强制猥亵罪,有期徒刑 6 个月', '锚定测试集 H_real_1'],
-      color: C.high
-    },
-  ];
-  cases.forEach((c, i) => {
-    const x = 0.4 + i * 3.1;
-    s.addShape(pres.shapes.RECTANGLE, {
-      x, y: 1.6, w: 2.9, h: 3.2,
-      fill: { color: C.bgWhite }, line: { color: 'EAE3F5', width: 0.75 }
-    });
-    s.addShape(pres.shapes.RECTANGLE, {
-      x, y: 1.6, w: 0.05, h: 3.2,
-      fill: { color: c.color }, line: { type: 'none' }
-    });
-    s.addText(c.tag, {
-      x: x + 0.15, y: 1.7, w: 1.5, h: 0.3,
-      fontSize: 11, fontFace: F.sans, bold: true, color: c.color, margin: 0
-    });
-    s.addText(c.title, {
-      x: x + 0.15, y: 2.0, w: 2.7, h: 0.7,
-      fontSize: 12, fontFace: F.serif, bold: true, color: C.primaryDark, margin: 0
-    });
-    // 案号 + 法院做成紫色徽章(可被 grep 到的"可核对"信号)
-    s.addShape(pres.shapes.ROUNDED_RECTANGLE, {
-      x: x + 0.15, y: 2.7, w: 2.7, h: 0.3,
-      fill: { color: C.bgSoft }, line: { color: C.primaryLight, width: 0.5 },
-      rectRadius: 0.06
-    });
-    s.addText(c.meta, {
-      x: x + 0.2, y: 2.7, w: 2.6, h: 0.3,
-      fontSize: 9, fontFace: F.sans, color: C.primaryDark, bold: true,
-      valign: 'middle', margin: 0
-    });
-    s.addText(c.points.map((p, idx) => ({
-      text: p,
-      options: { bullet: true, color: C.text, breakLine: idx < c.points.length - 1 }
-    })), {
-      x: x + 0.15, y: 3.05, w: 2.7, h: 1.7,
-      fontSize: 10, fontFace: F.sans, paraSpaceAfter: 6, margin: 0
-    });
-  });
-
-  s.addText('每条测试用例的 anchor 字段都公开在 eval/test_set.json,欢迎逐条核查。', {
-    x: 0.4, y: 4.9, w: 9.2, h: 0.3,
-    fontSize: 11, fontFace: F.sans, italic: true, color: C.textGray,
-    align: 'center', margin: 0
-  });
-}
-
-// ==================== Slide 11:现场演示截图 ====================
-{
-  const s = pres.addSlide();
-  addPageBackground(s);
-  addHeaderFooter(s, 11);
-  addSlideTitle(s, '现场演示 · 婚育询问案例', '从输入到 5 秒内拿到红橙绿等级报告');
-
-  // 左:输入框 + 右:报告卡(占位)
+  // 顶部输入条
   s.addShape(pres.shapes.RECTANGLE, {
-    x: 0.4, y: 1.55, w: 4.0, h: 3.5,
-    fill: { color: C.bgWhite }, line: { color: 'EAE3F5', width: 0.75 }
+    x: 0.4, y: 1.55, w: 9.2, h: 0.5,
+    fill: { color: C.bgSoft }, line: { color: C.primaryLight, width: 0.75 }
   });
-  s.addText('输入', {
-    x: 0.6, y: 1.65, w: 3.7, h: 0.3,
-    fontSize: 11, fontFace: F.sans, bold: true, color: C.primary, margin: 0
-  });
-  s.addShape(pres.shapes.RECTANGLE, {
-    x: 0.6, y: 2.0, w: 3.6, h: 1.0,
-    fill: { color: C.bgSoft }, line: { color: C.primaryLight, width: 0.5 }
-  });
-  s.addText('"面试时 HR 问我打算什么时候结婚生孩子"', {
-    x: 0.7, y: 2.05, w: 3.4, h: 0.9,
-    fontSize: 12, fontFace: F.sans, color: C.text, italic: true,
+  s.addText('▶ 输入', {
+    x: 0.55, y: 1.55, w: 0.8, h: 0.5,
+    fontSize: 11, fontFace: F.sans, bold: true, color: C.primary,
     valign: 'middle', margin: 0
   });
-  s.addText('↓ 实测 5 秒内返回', {
-    x: 0.6, y: 3.1, w: 3.7, h: 0.3,
-    fontSize: 11, fontFace: F.sans, color: C.textGray, italic: true, align: 'center', margin: 0
+  s.addText('"面试时 HR 问我打算什么时候结婚生孩子"', {
+    x: 1.4, y: 1.55, w: 6.5, h: 0.5,
+    fontSize: 13, fontFace: F.sans, italic: true, color: C.text,
+    valign: 'middle', margin: 0
   });
   s.addShape(pres.shapes.ROUNDED_RECTANGLE, {
-    x: 1.0, y: 3.55, w: 2.8, h: 0.7,
-    fill: { color: C.midBg }, line: { color: C.mid, width: 1 }, rectRadius: 0.1
+    x: 8.0, y: 1.6, w: 1.5, h: 0.4,
+    fill: { color: C.mid }, line: { type: 'none' }, rectRadius: 0.08
   });
-  s.addText('🟠 中危', {
-    x: 1.0, y: 3.55, w: 2.8, h: 0.7,
-    fontSize: 22, fontFace: F.serif, bold: true, color: C.mid,
+  s.addText('⏱ 5 秒返回', {
+    x: 8.0, y: 1.6, w: 1.5, h: 0.4,
+    fontSize: 11, fontFace: F.sans, bold: true, color: 'FFFFFF',
     align: 'center', valign: 'middle', margin: 0
   });
-  s.addText('涉嫌面试环节询问婚育状况的就业歧视', {
-    x: 0.6, y: 4.35, w: 3.7, h: 0.4,
-    fontSize: 10, fontFace: F.sans, color: C.text, align: 'center', margin: 0
+
+  // 左:真实运行 GIF (800x430,放 5.0 x 2.69)
+  s.addShape(pres.shapes.RECTANGLE, {
+    x: 0.4, y: 2.2, w: 5.4, h: 3.0,
+    fill: { color: 'FFFFFF' }, line: { color: C.primary, width: 1.5 }
+  });
+  s.addImage({
+    path: path.join(__dirname, '..', '..', 'images', '言行雷达工作流运行动图.gif'),
+    x: 0.6, y: 2.35, w: 5.0, h: 2.69
+  });
+  s.addText('📹 真实运行录屏(打开 PPT 演示模式自动播放)', {
+    x: 0.4, y: 5.05, w: 5.4, h: 0.3,
+    fontSize: 9, fontFace: F.sans, italic: true, color: C.textLight,
+    align: 'center', margin: 0
   });
 
-  // 右:亮点标注
+  // 右:报告同屏 6 块亮点
   s.addShape(pres.shapes.RECTANGLE, {
-    x: 4.7, y: 1.55, w: 5.0, h: 3.5,
+    x: 6.0, y: 2.2, w: 3.6, h: 3.0,
     fill: { color: C.bgWhite }, line: { color: 'EAE3F5', width: 0.75 }
   });
   s.addShape(pres.shapes.RECTANGLE, {
-    x: 4.7, y: 1.55, w: 0.05, h: 3.5,
+    x: 6.0, y: 2.2, w: 0.05, h: 3.0,
     fill: { color: C.primary }, line: { type: 'none' }
   });
-  s.addText('报告卡同屏呈现 6 块内容', {
-    x: 4.85, y: 1.65, w: 4.8, h: 0.3,
-    fontSize: 12, fontFace: F.sans, bold: true, color: C.primaryDark, margin: 0
+  s.addText('报告同屏呈现', {
+    x: 6.15, y: 2.28, w: 3.4, h: 0.3,
+    fontSize: 12, fontFace: F.serif, bold: true, color: C.primaryDark, margin: 0
   });
   const highlights = [
-    '🎯 风险标(红/橙/黄/绿)+ 一句话总结',
-    '💬 温暖叙事 narrative(共情 + 法律解释)',
-    '📋 三档话术(委婉/坚定/正式)+ 一键复制',
-    '⚖️ 法条引用(妇权法第43条) + 得理徽标',
-    '📁 相似判例卡(法院/案号/裁判要点)',
-    '🔍 可折叠"判定依据"(要件状态)',
+    '🟠 风险标 + 一句话总结',
+    '💬 温暖叙事(法律解释)',
+    '📋 三档话术(委婉/坚定/正式)',
+    '⚖️ 妇权法 43 条 + 得理徽标',
+    '📁 严女士案 + 案号 + 法院',
+    '🔍 折叠"判定依据"',
   ];
   s.addText(highlights.map((h, i) => ({
     text: h,
     options: { color: C.text, breakLine: i < highlights.length - 1, paraSpaceAfter: 6 }
   })), {
-    x: 4.85, y: 2.05, w: 4.85, h: 2.95,
-    fontSize: 12, fontFace: F.sans, margin: 0
-  });
-
-  // 紫色"窗口"边框装饰(浏览器风)
-  s.addShape(pres.shapes.RECTANGLE, {
-    x: 0.4, y: 1.55, w: 0.05, h: 3.5,
-    fill: { color: C.primary }, line: { type: 'none' }
-  });
-  s.addShape(pres.shapes.RECTANGLE, {
-    x: 9.65, y: 1.55, w: 0.05, h: 3.5,
-    fill: { color: C.primary }, line: { type: 'none' }
-  });
-
-  // 得理 API 角标(右上)
-  s.addShape(pres.shapes.ROUNDED_RECTANGLE, {
-    x: 8.0, y: 1.65, w: 1.6, h: 0.32,
-    fill: { color: C.primary }, line: { type: 'none' }, rectRadius: 0.06
-  });
-  s.addText('✦ 得理 API 接入', {
-    x: 8.0, y: 1.65, w: 1.6, h: 0.32,
-    fontSize: 10, fontFace: F.sans, bold: true, color: 'FFFFFF',
-    align: 'center', valign: 'middle', margin: 0
-  });
-
-  s.addText('TODO:此处替换为 GIF 录屏(用户输入 → 节点亮起 → 报告卡浮现,8-10 秒)', {
-    x: 0.4, y: 5.05, w: 9.2, h: 0.25,
-    fontSize: 9, fontFace: F.sans, italic: true, color: C.textLight, align: 'center', margin: 0
+    x: 6.2, y: 2.65, w: 3.35, h: 2.5,
+    fontSize: 11, fontFace: F.sans, margin: 0
   });
 }
 
-// ==================== Slide 12:评委质疑预案 ====================
+// ==================== Slide 11(原 13):社会价值 ====================
 {
   const s = pres.addSlide();
   addPageBackground(s);
-  addHeaderFooter(s, 12);
-  addSlideTitle(s, '评委预期质疑 · 提前回应', '主动把球接住');
-
-  const qa = [
-    {
-      q: '"得理 API 空声明"',
-      a: '架构图(P5)展示节点;工作流(P6)可见两路并行检索;法条卡片"得理"徽标可见。',
-    },
-    {
-      q: '"技术深度不足"',
-      a: '要件式判定 + 代码节点确定性映射 + 100 条锚定测试集 + 95% 置信区间。',
-    },
-    {
-      q: '"为什么不直接用 ChatGPT?"',
-      a: '① 得理真实判例锚定(GPT 编案号) ② 代码节点确定性映射(GPT 黑盒) ③ 危机干预/三档话术等场景定制 GPT 没有。',
-    },
-    {
-      q: '"测试集准确性凭什么?"',
-      a: '17 条直接挂真实判例(含案号),公开在仓库 eval/test_set.json,评委可逐条核查。',
-    },
-    {
-      q: '"AI 误判怎么办?"',
-      a: '召回优先门控 + 用户一键强制深度分析,即使算法犯错,用户仍有发言权。',
-    },
-  ];
-  qa.forEach((it, i) => {
-    const y = 1.55 + i * 0.66;
-    // 卡片
-    s.addShape(pres.shapes.RECTANGLE, {
-      x: 0.4, y, w: 9.2, h: 0.58,
-      fill: { color: C.bgWhite }, line: { color: 'EAE3F5', width: 0.5 }
-    });
-    s.addShape(pres.shapes.RECTANGLE, {
-      x: 0.4, y, w: 0.05, h: 0.58,
-      fill: { color: C.primary }, line: { type: 'none' }
-    });
-    // 紫色问号圆(双栏左)
-    s.addShape(pres.shapes.OVAL, {
-      x: 0.55, y: y + 0.13, w: 0.32, h: 0.32,
-      fill: { color: C.primary }, line: { type: 'none' }
-    });
-    s.addText('?', {
-      x: 0.55, y: y + 0.10, w: 0.32, h: 0.38,
-      fontSize: 18, fontFace: F.sans, bold: true, color: 'FFFFFF',
-      align: 'center', valign: 'middle', margin: 0
-    });
-    // Q 文本
-    s.addText(it.q, {
-      x: 0.95, y: y + 0.04, w: 2.95, h: 0.5,
-      fontSize: 12, fontFace: F.serif, bold: true, color: C.primaryDark, valign: 'middle', margin: 0
-    });
-    // 紫色对勾圆(双栏右起)
-    s.addShape(pres.shapes.OVAL, {
-      x: 3.95, y: y + 0.13, w: 0.32, h: 0.32,
-      fill: { color: C.primaryHover }, line: { type: 'none' }
-    });
-    s.addText('✓', {
-      x: 3.95, y: y + 0.10, w: 0.32, h: 0.38,
-      fontSize: 14, fontFace: F.sans, bold: true, color: 'FFFFFF',
-      align: 'center', valign: 'middle', margin: 0
-    });
-    // A 文本
-    s.addText(it.a, {
-      x: 4.35, y: y + 0.04, w: 5.15, h: 0.5,
-      fontSize: 10, fontFace: F.sans, color: C.text, valign: 'middle', margin: 0
-    });
-  });
-
-  s.addText('"我们想过了。"', {
-    x: 0.4, y: 5.0, w: 9.2, h: 0.3,
-    fontSize: 13, fontFace: F.serif, italic: true, color: C.primaryDark,
-    align: 'center', margin: 0
-  });
-}
-
-// ==================== Slide 13:社会价值 ====================
-{
-  const s = pres.addSlide();
-  addPageBackground(s);
-  addHeaderFooter(s, 13);
+  addHeaderFooter(s, 11);
   addSlideTitle(s, '社会价值 · 降低三道门槛', '让每一个"本该沉默的瞬间",都有回应的能力');
 
   const thresholds = [
@@ -1296,11 +1067,11 @@ function addPageBackground(slide) {
   });
 }
 
-// ==================== Slide 14:致谢 ====================
+// ==================== Slide 12(原 14):致谢 ====================
 {
   const s = pres.addSlide();
   addPageBackground(s);
-  addHeaderFooter(s, 14);
+  addHeaderFooter(s, 12);
   addSlideTitle(s, '致谢', '感谢一路给力的人、平台与判例');
 
   // 工具致谢
@@ -1372,7 +1143,7 @@ function addPageBackground(slide) {
   });
 }
 
-// ==================== Slide 15:Q&A ====================
+// ==================== Slide 13(原 15):Q&A ====================
 {
   const s = pres.addSlide();
   s.background = { color: C.primaryDark };
@@ -1405,7 +1176,7 @@ function addPageBackground(slide) {
 }
 
 // ==================== 写出 ====================
-const outPath = path.join(__dirname, '她盾_答辩_v0.2.pptx');
+const outPath = path.join(__dirname, '她盾_答辩_v0.3.pptx');
 pres.writeFile({ fileName: outPath }).then(file => {
   console.log('Written:', file);
 }).catch(err => {
