@@ -3278,6 +3278,39 @@ body {
     line-height: 1.6;
 }
 
+/* 强制深度分析(门控判"不涉及"时显示，让用户能推翻误判) */
+.radar-force-zone {
+    margin-top: 16px;
+    padding: 12px 14px;
+    background: linear-gradient(135deg, #f5efff 0%, #fef5ff 100%);
+    border: 1px dashed var(--primary-light);
+    border-radius: var(--border-radius-sm);
+}
+.radar-force-tip {
+    color: var(--primary-dark);
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0 0 10px;
+}
+.radar-force-btn {
+    background: var(--primary-color);
+    color: #fff;
+    border: none;
+    border-radius: var(--border-radius-sm);
+    padding: 8px 18px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background .15s ease, transform .15s ease;
+}
+.radar-force-btn:hover { background: var(--primary-hover); }
+.radar-force-btn:active { transform: scale(0.97); }
+.radar-force-btn:disabled {
+    background: var(--primary-light);
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
 /* ==================== 她声·共鸣回响（卡片 + 紧凑提交）==================== */
 
 /* 故事卡片 */

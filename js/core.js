@@ -100,7 +100,9 @@ function toggleLoading(show) {
  * @param {boolean} useStream - 是否使用流式输出（默认false）
  * @returns {Promise<string>} - 智能体回复文本
  */
-async function callYuanqiAPI(agentType, userMessage, useStream = false) {
+async function callYuanqiAPI(agentType, userMessage, useStream = false, extras = {}) {
+    // extras: 额外透传给元器工作流"开始节点"的自定义入参，如 { force: true, has_image: false, image_urls: [], query: '...' }。
+    // 代理云函数会把它们和 agentType/messages 一起转发给元器，工作流"开始节点"按自定义变量名取用。
     // 如果未启用真实API，返回null让调用方使用模拟数据
     if (!YUANQI_CONFIG.USE_REAL_API) {
         return null;
@@ -157,8 +159,9 @@ async function callYuanqiAPI(agentType, userMessage, useStream = false) {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                agentType,
-                messages
+                    agentType,
+                    messages,
+                    ...(extras && typeof extras === 'object' ? extras : {})
                 })
             }
         );
