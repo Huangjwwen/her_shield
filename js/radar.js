@@ -15,6 +15,13 @@ const RADAR_STATUS_CLS = {
     "满足": "st-yes", "存疑": "st-doubt", "不满足": "st-no", "不适用": "st-na"
 };
 
+// 强制分析关键词（自然语言触发的兜底，主交互是按钮）
+const FORCE_KEYWORDS = ["继续分析", "强制分析", "我就要投诉", "重新分析", "深入分析"];
+
+function shouldForceAnalysis(text) {
+    return typeof text === 'string' && FORCE_KEYWORDS.some(kw => text.indexOf(kw) > -1);
+}
+
 // 安全转义
 function radarEscape(text) {
     const div = document.createElement('div');
@@ -155,6 +162,14 @@ function renderRadarReport(data) {
         </details>`;
     }
 
+    // 强制深度分析按钮（工作流"友好提示"分支会带 suggest_force: true）
+    if (data.suggest_force === true) {
+        html += `<div class="radar-force-zone">
+            <p class="radar-force-tip">感觉被误解？如果你认为这件事属于性别歧视或骚扰，可以让 AI 跳过初步判断、深入分析一次。</p>
+            <button class="radar-force-btn" type="button" onclick="forceRadarAnalysis(this)">🔍 强制深度分析</button>
+        </div>`;
+    }
+
     // 免责声明
     if (data.disclaimer) {
         html += `<div class="radar-disclaimer">${radarEscape(data.disclaimer)}</div>`;
@@ -170,6 +185,48 @@ function copyRadarScript(btn) {
     const p = card && card.querySelector('.script-text');
     if (p) {
         navigator.clipboard.writeText(p.innerText).then(() => showToast('话术已复制'));
+    }
+}
+
+// 强制深度分析：从历史记录拿到当时的原始 query，带 force=true 重发
+async function forceRadarAnalysis(btn) {
+    const item = btn.closest('.history-item');
+    if (!item) return;
+    const id = item.dataset.id;
+    const records = (typeof historyStorage !== 'undefined' && historyStorage.radar) || [];
+    const record = records.find(r => String(r.id) === String(id));
+    if (!record || !record.userMessage) {
+        showToast('找不到原始问题');
+        return;
+    }
+
+    btn.disabled = true;
+    const oldText = btn.textContent;
+    btn.textContent = '深度分析中…';
+    toggleLoading(true);
+
+    const content = record.userMessage;
+    try {
+        const response = await callYuanqiAPI('radar', content, false, {
+            query: content,
+            force: true,
+            has_image: false,
+            image_urls: []
+        });
+        const resultStr = (response && tryParseRadar(response))
+            ? response
+            : JSON.stringify(getRadarMock(content));
+        // 新增一条记录，保留原"不涉及"的旧记录，方便用户对比
+        saveHistory('radar', content, resultStr);
+        showToast('深度分析完成');
+    } catch (error) {
+        console.error('强制分析失败，使用本地示例:', error);
+        saveHistory('radar', content, JSON.stringify(getRadarMock(content)));
+        showToast('深度分析完成（本地示例）');
+    } finally {
+        toggleLoading(false);
+        // saveHistory 触发的重渲染会把按钮所在 DOM 重建，这里只是兜底
+        try { btn.disabled = false; btn.textContent = oldText; } catch (e) {}
     }
 }
 
@@ -218,17 +275,25 @@ function initRadar() {
             return;
         }
 
+        // 自然语言触发兜底：用户主动说"继续分析/强制分析…"则带 force=true
+        const force = shouldForceAnalysis(content);
+
         toggleLoading(true);
         try {
-            // 直接把用户描述交给元器（门控/判定/检索/分级都在工作流里）
-            const response = await callYuanqiAPI('radar', content);
+            // 直接把用户描述交给元器；force/query/has_image/image_urls 透传给工作流"开始节点"
+            const response = await callYuanqiAPI('radar', content, false, {
+                query: content,
+                force,
+                has_image: false,
+                image_urls: []
+            });
             const resultStr = (response && tryParseRadar(response))
                 ? response
                 : JSON.stringify(getRadarMock(content)); // 离线/解析失败 -> 本地示例
             saveHistory('radar', content, resultStr);
             radarInput.value = '';
             if (typeof clearAllImages === 'function') clearAllImages('radar');
-            showToast('识别完成');
+            showToast(force ? '已为你强制深度分析' : '识别完成');
         } catch (error) {
             console.error('言行雷达识别失败，使用本地示例:', error);
             saveHistory('radar', content, JSON.stringify(getRadarMock(content)));
