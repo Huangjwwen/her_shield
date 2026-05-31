@@ -175,7 +175,19 @@ async function callYuanqiAPI(agentType, userMessage, useStream = false) {
         }
 
         // 处理非流式响应
-        const data = await response.json();
+        const rawData = await response.json();
+        const data = rawData && rawData.success === true && rawData.data
+            ? rawData.data
+            : rawData;
+
+        if (rawData && rawData.success === false) {
+            throw new Error(rawData.error || 'Proxy request failed');
+        }
+
+        if (data && data.error) {
+            const err = data.error;
+            throw new Error(err.message || err.code || 'Yuanqi workflow failed');
+        }
         console.log('API 完整响应:', JSON.stringify(data, null, 2));
         
         // 解析返回结果 - 腾讯元器API响应格式
