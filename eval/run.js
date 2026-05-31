@@ -23,7 +23,8 @@ const RADAR_APPID = '2037893130997763264';
 function parseArgs(argv) {
     const out = {
         endpoint: null, direct: false, key: process.env.KEY_RADAR || null,
-        concurrency: 3, limit: 0, output: 'eval/results.json'
+        concurrency: 3, limit: 0, output: 'eval/results.json',
+        delay: 0, retry: 0
     };
     for (let i = 2; i < argv.length; i++) {
         const a = argv[i];
@@ -33,13 +34,22 @@ function parseArgs(argv) {
         else if (a === '--concurrency') out.concurrency = parseInt(argv[++i], 10);
         else if (a === '--limit') out.limit = parseInt(argv[++i], 10);
         else if (a === '--output') out.output = argv[++i];
+        else if (a === '--delay') out.delay = parseInt(argv[++i], 10);    // 每条请求前等待 ms，缓解元器限流
+        else if (a === '--retry') out.retry = parseInt(argv[++i], 10);    // 失败重试次数，指数退避
         else if (a === '--help' || a === '-h') {
             console.log(fs.readFileSync(__filename, 'utf-8').split('*/')[0]);
             process.exit(0);
         }
     }
+    // 直连元器默认开启节流(避免被限流)：1.5 秒间隔 + 2 次重试
+    if (out.direct) {
+        if (out.delay === 0) out.delay = 1500;
+        if (out.retry === 0) out.retry = 2;
+    }
     return out;
 }
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 // ---------- JSON 解析(与前端 radar.js 同款，去 ZWSP/BOM/围栏) ----------
 function tryParseRadar(str) {
@@ -201,11 +211,30 @@ async function runEval(opts) {
     const results = new Array(cases.length);
     let processed = 0;
 
+    async function callWithRetry(input) {
+        // 含节流与重试(指数退避):前面 delay → 调用 → 失败则按 1x/2x/4x delay 重试 retry 次
+        let attempt = 0;
+        let lastResult;
+        while (attempt <= opts.retry) {
+            if (opts.delay > 0 && attempt > 0) {
+                await sleep(opts.delay * Math.pow(2, attempt - 1));
+            } else if (opts.delay > 0) {
+                await sleep(opts.delay);
+            }
+            lastResult = await callOne(input, opts).catch(e => ({ error: 'fetch 失败: ' + String(e) }));
+            if (!lastResult.error) return lastResult;
+            // 解析失败/认证错误不重试(只对网络/限流类重试)
+            if (/HTTP 4\d\d|--direct 模式|JSON 解析|响应无 content/.test(lastResult.error)) return lastResult;
+            attempt++;
+        }
+        return lastResult;
+    }
+
     async function worker() {
         while (queue.length > 0) {
             const c = queue.shift();
             const t0 = Date.now();
-            const r = await callOne(c.input, opts);
+            const r = await callWithRetry(c.input);
             const elapsed = Date.now() - t0;
             const got = r.parsed || {};
             const gotLevel = got.risk_level || null;
