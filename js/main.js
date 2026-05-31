@@ -23,26 +23,22 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (document.getElementById('selfcheckInput')) {
         initSelfcheck();
-        initImageUpload('selfcheck');
     }
-    
+
     if (document.getElementById('evidenceInput')) {
         initEvidence();
-        initImageUpload('evidence');
     }
-    
+
     if (document.getElementById('guideInput')) {
         initGuide();
-        initImageUpload('guide');
     }
-    
+
     if (document.getElementById('storyTitle')) {
         initStories();
     }
-    
+
     if (document.getElementById('harborInput')) {
         initHarbor();
-        initImageUpload('harbor');
     }
     
     // 初始化首屏按钮（仅在首页需要）
