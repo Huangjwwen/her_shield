@@ -61,6 +61,25 @@ function tryParseRadar(str) {
 
 // 渲染单条风险报告 -> HTML 字符串
 function renderRadarReport(data) {
+    // ★ 工作流 JSON 解析失败兜底:risk_level === null 或带 parse_error 字段
+    // 不再静默渲染成"无风险",避免把异常伪装成安全
+    if (!data || data.risk_level === null || data.risk_level === '解析失败' || data.parse_error) {
+        const errMsg = (data && (data.parse_error || data.risk_summary)) || '系统未能生成完整分析';
+        return `<div class="radar-report risk-error">
+            <div class="radar-badge">
+                <span class="radar-badge-icon">⚠️</span>
+                <span class="radar-badge-level">分析异常</span>
+                <span class="radar-badge-summary">${radarEscape(errMsg)}</span>
+            </div>
+            <div class="radar-narrative">本次分析未能正常完成。可能原因:模型输出格式偶发异常 / 网络波动。<br>请点击下方"强制深度分析"重试一次,系统会跳过门控直接进入完整判定。</div>
+            <div class="radar-force-zone">
+                <p class="radar-force-tip">这不代表你描述的情景"没问题"——只是 AI 这次没分析成功。</p>
+                <button class="radar-force-btn" type="button" onclick="forceRadarAnalysis(this)">🔍 强制深度分析(重试)</button>
+            </div>
+            <div class="radar-disclaimer">本指导不构成正式法律意见,重大维权请咨询律师或拨打 12338 / 12348。</div>
+        </div>`;
+    }
+
     const meta = RADAR_RISK_META[data.risk_level] || RADAR_RISK_META["无风险"];
     const lowConf = data.confidence === "低";
 

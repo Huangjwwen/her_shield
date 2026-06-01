@@ -3064,10 +3064,12 @@ body {
 }
 
 /* 四级配色（左边框 + 风险标） */
-.radar-report.risk-high { border-left-color: #e5484d; }
-.radar-report.risk-mid  { border-left-color: #f76808; }
-.radar-report.risk-low  { border-left-color: #f5a623; }
-.radar-report.risk-none { border-left-color: #30a46c; }
+.radar-report.risk-high  { border-left-color: #e5484d; }
+.radar-report.risk-mid   { border-left-color: #f76808; }
+.radar-report.risk-low   { border-left-color: #f5a623; }
+.radar-report.risk-none  { border-left-color: #30a46c; }
+.radar-report.risk-error { border-left-color: #9370db; background: #faf8ff; }
+.risk-error .radar-badge { background: #f3eefd; color: #6b4fb8; }
 
 /* 风险标 */
 .radar-badge {
