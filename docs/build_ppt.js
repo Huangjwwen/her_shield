@@ -827,89 +827,105 @@ function addPageBackground(slide) {
   });
 }
 
-// ==================== Slide 9:准确率 + 混淆矩阵 ====================
+// ==================== Slide 9:准确率 + 混淆矩阵(v1.3+annotated 经要件级标注校验)====================
 {
   const s = pres.addSlide();
   addPageBackground(s);
   addHeaderFooter(s, 9);
-  addSlideTitle(s, '准确率数据', '在 100 条锚定测试集上的实测表现');
+  addSlideTitle(s, '准确率数据', '在 100 条要件级标注 + 代码机械映射的测试集上实测');
 
-  // 左:圆环仪表盘(donut)
+  // ── 左上:圆环仪表盘(donut)──
   s.addText('整体准确率', {
-    x: 0.4, y: 1.65, w: 4.5, h: 0.3,
-    fontSize: 14, fontFace: F.sans, color: C.textGray, align: 'center', margin: 0
+    x: 0.4, y: 1.55, w: 4.5, h: 0.28,
+    fontSize: 13, fontFace: F.sans, color: C.textGray, align: 'center', margin: 0
   });
-  // donut chart(占位:XX 待评测完成填数字)
   s.addChart(pres.charts.DOUGHNUT, [{
     name: 'accuracy',
-    labels: ['正确', '错误'],
-    values: [85, 15]   // 占位,真实数据出后改
+    labels: ['判对(79)', '判错(21)'],
+    values: [79, 21]
   }], {
-    x: 0.7, y: 2.0, w: 3.9, h: 2.5,
+    x: 0.8, y: 1.85, w: 3.7, h: 2.2,
     chartColors: [C.primary, 'EAE3F5'],
     showLegend: false,
     showTitle: false,
-    holeSize: 70,
+    holeSize: 72,
     chartArea: { fill: { color: C.bg }, border: { color: C.bg, pt: 0 } }
   });
-  // 中心叠加大字 "XX%"
-  s.addText('XX%', {
-    x: 0.7, y: 2.65, w: 3.9, h: 1.2,
-    fontSize: 56, fontFace: F.serif, bold: true, color: C.primaryDark,
+  s.addText('79%', {
+    x: 0.8, y: 2.4, w: 3.7, h: 1.0,
+    fontSize: 54, fontFace: F.serif, bold: true, color: C.primaryDark,
     align: 'center', valign: 'middle', margin: 0
   });
-  s.addText('95% CI ±7%', {
-    x: 0.7, y: 3.65, w: 3.9, h: 0.3,
-    fontSize: 11, fontFace: F.sans, italic: true, color: C.textGray,
+  s.addText('严格匹配 · n=100', {
+    x: 0.8, y: 3.25, w: 3.7, h: 0.25,
+    fontSize: 10, fontFace: F.sans, italic: true, color: C.textGray,
+    align: 'center', margin: 0
+  });
+  s.addText('95% CI: 71.0% – 87.0%', {
+    x: 0.8, y: 3.5, w: 3.7, h: 0.25,
+    fontSize: 10, fontFace: F.sans, italic: true, color: C.textGray,
     align: 'center', margin: 0
   });
 
-  // 各等级召回
+  // ── 左下:各等级召回率(真实数字)──
   const recalls = [
-    ['🔴 高危', 'XX%', C.high],
-    ['🟠 中危', 'XX%', C.mid],
-    ['🟡 低危', 'XX%', C.low],
-    ['🟢 无风险', 'XX%', C.none],
+    ['🔴 高危召回', '90.0%', '45/50', C.high],
+    ['🟠 中危召回', '47.4%', '9/19',  C.mid],
+    ['🟡 低危召回', '60.0%', '9/15',  C.low],
+    ['🟢 无风险',  '100.0%', '16/16', C.none],
   ];
+  s.addText('各等级召回率', {
+    x: 0.4, y: 3.85, w: 4.5, h: 0.25,
+    fontSize: 11, fontFace: F.sans, bold: true, color: C.primary, margin: 0
+  });
   recalls.forEach((r, i) => {
-    const y = 3.85 + i * 0.27;
+    const y = 4.12 + i * 0.24;
     s.addText(r[0], {
-      x: 0.4, y, w: 1.8, h: 0.27,
-      fontSize: 11, fontFace: F.sans, color: C.text, valign: 'middle', margin: 0
+      x: 0.4, y, w: 2.0, h: 0.24,
+      fontSize: 10.5, fontFace: F.sans, color: C.text, valign: 'middle', margin: 0
     });
     s.addText(r[1], {
-      x: 2.2, y, w: 1.5, h: 0.27,
-      fontSize: 12, fontFace: F.sans, bold: true, color: r[2],
+      x: 2.4, y, w: 1.1, h: 0.24,
+      fontSize: 11.5, fontFace: F.sans, bold: true, color: r[3],
       align: 'right', valign: 'middle', margin: 0
+    });
+    s.addText('(' + r[2] + ')', {
+      x: 3.55, y, w: 1.0, h: 0.24,
+      fontSize: 9.5, fontFace: F.sans, color: C.textLight,
+      align: 'left', valign: 'middle', margin: 0
     });
   });
 
-  // 右:混淆矩阵
+  // ── 右上:混淆矩阵(真实数字)──
   s.addText('混淆矩阵 (行=期望 / 列=实际)', {
-    x: 5.0, y: 1.55, w: 4.6, h: 0.3,
-    fontSize: 12, fontFace: F.sans, bold: true, color: C.primary, margin: 0
+    x: 5.0, y: 1.55, w: 4.6, h: 0.28,
+    fontSize: 11.5, fontFace: F.sans, bold: true, color: C.primary, margin: 0
   });
   const matrix = [
-    ['', '高危', '中危', '低危', '无风险'],
-    ['高危', 'XX', '·', '·', '·'],
-    ['中危', '·', 'XX', '·', '·'],
-    ['低危', '·', '·', 'XX', '·'],
-    ['无风险', '·', '·', '·', 'XX'],
+    ['',     '高危', '中危', '低危', '无风险'],
+    ['高危',  '45',  '1',   '4',   '·'],
+    ['中危',  '1',   '9',   '9',   '·'],
+    ['低危',  '·',   '6',   '9',   '·'],
+    ['无风险', '·',  '·',   '·',   '16'],
   ];
-  const cellW = 0.88, cellH = 0.5;
-  const mx = 5.0, my = 1.95;
+  const cellW = 0.82, cellH = 0.42;
+  const mx = 5.05, my = 1.88;
   matrix.forEach((row, ri) => {
     row.forEach((cell, ci) => {
       const x = mx + ci * cellW;
       const y = my + ri * cellH;
       const isHeader = ri === 0 || ci === 0;
-      const isDiag = ri > 0 && ri === ci; // 对角线
+      const isDiag = ri > 0 && ri === ci;
       let fill = isHeader ? C.bgSoft : C.bgWhite;
       let txtColor = C.text, bold = false;
       if (isDiag) {
         fill = ri === 1 ? C.highBg : ri === 2 ? C.midBg : ri === 3 ? C.lowBg : C.noneBg;
         txtColor = ri === 1 ? C.high : ri === 2 ? C.mid : ri === 3 ? C.low : C.none;
         bold = true;
+      } else if (!isHeader && cell !== '·') {
+        // 非对角且非零 = 误判,标淡橙底色
+        fill = 'FFF7ED';
+        txtColor = C.mid;
       }
       s.addShape(pres.shapes.RECTANGLE, {
         x, y, w: cellW, h: cellH,
@@ -917,7 +933,7 @@ function addPageBackground(slide) {
       });
       s.addText(cell, {
         x, y, w: cellW, h: cellH,
-        fontSize: isHeader ? 10 : 13,
+        fontSize: isHeader ? 10 : 12.5,
         fontFace: F.sans, bold: isHeader || bold,
         color: isHeader ? C.primaryDark : txtColor,
         align: 'center', valign: 'middle', margin: 0
@@ -925,9 +941,40 @@ function addPageBackground(slide) {
     });
   });
 
-  s.addText('XX = 数据将在评测完成后填入', {
-    x: 5.0, y: my + 5 * cellH + 0.05, w: 4.6, h: 0.25,
-    fontSize: 9, fontFace: F.sans, italic: true, color: C.textLight, margin: 0
+  // ── 右下:误差严重度(横条形分布)──
+  const ySev = my + 5 * cellH + 0.18;
+  s.addText('误差严重度分布', {
+    x: 5.0, y: ySev, w: 4.6, h: 0.25,
+    fontSize: 11, fontFace: F.sans, bold: true, color: C.primary, margin: 0
+  });
+  // 横向 100 格,按比例渲染色块
+  const sevX = 5.0, sevY = ySev + 0.3, sevW = 4.6, sevH = 0.32;
+  const segments = [
+    { n: 4,  color: C.high, label: '-2' },   // 严重漏判
+    { n: 10, color: C.mid,  label: '-1' },   // 轻度漏判
+    { n: 79, color: C.none, label: '0' },    // 完全对
+    { n: 7,  color: C.low,  label: '+1' },   // 轻度过判
+  ];
+  let xCur = sevX;
+  segments.forEach(seg => {
+    const segW = sevW * seg.n / 100;
+    s.addShape(pres.shapes.RECTANGLE, {
+      x: xCur, y: sevY, w: segW, h: sevH,
+      fill: { color: seg.color }, line: { type: 'none' }
+    });
+    if (segW > 0.4) {
+      s.addText(`${seg.label} (${seg.n})`, {
+        x: xCur, y: sevY, w: segW, h: sevH,
+        fontSize: 9, fontFace: F.sans, bold: true, color: 'FFFFFF',
+        align: 'center', valign: 'middle', margin: 0
+      });
+    }
+    xCur += segW;
+  });
+  s.addText('±1 级容忍准确率: 96.0%(严重漏判 4 条 · 0 条完全相反 · 标准答案与产品走同一份代码)', {
+    x: sevX, y: sevY + sevH + 0.05, w: sevW, h: 0.25,
+    fontSize: 9, fontFace: F.sans, italic: true, color: C.textGray,
+    align: 'center', margin: 0
   });
 }
 
@@ -1176,7 +1223,7 @@ function addPageBackground(slide) {
 }
 
 // ==================== 写出 ====================
-const outPath = path.join(__dirname, '她盾_答辩_v0.3.pptx');
+const outPath = path.join(__dirname, '她盾_答辩_v0.5.pptx');
 pres.writeFile({ fileName: outPath }).then(file => {
   console.log('Written:', file);
 }).catch(err => {
