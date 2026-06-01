@@ -140,3 +140,6 @@ vite.config.ts.timestamp-*
 
 # Claude Code 本地预览配置
 .claude/
+
+# 评测运行结果(每次执行覆盖)
+eval/results*.json
