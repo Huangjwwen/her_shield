@@ -1,0 +1,8 @@
+✅ radar
+✅ consultation
+⚠️  selfcheck (元器工作流故障): {"success":true,"data":{"id":"a8a85052fee90701bfff26ec7f7d7fb7","error":{"message":"工作流运行异常","type":"runtime_error","param":null,"code":"10003"}}}
+⚠️  evidence (元器工作流故障): {"success":true,"data":{"id":"6642f0fb7539e372ff9bf5bbe9c1d26e","error":{"message":"工作流运行异常","type":"runtime_error","param":null,"code":"10003"}}}
+⚠️  guide (元器工作流故障): {"success":true,"data":{"id":"412a7173e5ce126e8a454925476f552b","error":{"message":"工作流运行异常","type":"runtime_error","param":null,"code":"10003"}}}
+⚠️  harbor (元器工作流故障): {"success":true,"data":{"id":"37e0140087456bc99941f6b5a60493ad","error":{"message":"当前应用模型余额不足","type":"runtime_error","param":null,"code":"10008"}}}
+
+❌ 有 agentType 异常,请按上面提示修复

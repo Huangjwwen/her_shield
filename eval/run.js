@@ -101,6 +101,11 @@ async function callOne(input, opts) {
     let data;
     try { data = JSON.parse(txt); } catch (e) { return { error: 'response 非 JSON', raw: txt.slice(0, 200) }; }
     if (data && data.success === false) return { error: '代理返回失败: ' + (data.error || 'unknown') };
+    if (data && data.success === true && data.data) data = data.data;
+    if (data && data.error) {
+        const err = data.error;
+        return { error: err.message || err.code || 'Yuanqi workflow failed', raw: txt.slice(0, 200) };
+    }
 
     // 取 choices[0].message.content
     let content = null;
@@ -223,8 +228,11 @@ async function runEval(opts) {
             }
             lastResult = await callOne(input, opts).catch(e => ({ error: 'fetch 失败: ' + String(e) }));
             if (!lastResult.error) return lastResult;
-            // 解析失败/认证错误不重试(只对网络/限流类重试)
-            if (/HTTP 4\d\d|--direct 模式|JSON 解析|响应无 content/.test(lastResult.error)) return lastResult;
+            // 不重试的:其他 4xx(400/403/404)、配置错误、解析失败
+            // 重试的:401(IP级临时封禁)、429(显式限流)、5xx(元器侧服务问题)、fetch 失败
+            const errMsg = lastResult.error;
+            const isRetriable = /HTTP 401|HTTP 429|HTTP 5\d\d|fetch 失败|配额|工作流运行异常|runtime_error|10003|Yuanqi workflow failed/.test(errMsg);
+            if (!isRetriable && /--direct 模式|JSON 解析|响应无 content|HTTP 4\d\d/.test(errMsg)) return lastResult;
             attempt++;
         }
         return lastResult;
