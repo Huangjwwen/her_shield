@@ -166,19 +166,42 @@ async function callYuanqiAPI(agentType, userMessage, useStream = false, extras =
             }
         );
 
-        if (!response.ok) {
-            const errorText = await response.text();
-            console.error('腾讯元器 API 错误:', errorText);
-            throw new Error(`API 请求失败: ${response.status}`);
-        }
-
-        // 处理流式响应
+        // 处理流式响应(独立分支,后面非流式才 text→JSON)
         if (useStream) {
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error('腾讯元器 API 错误:', errorText);
+                throw new Error(`API 请求失败: ${response.status}`);
+            }
             return await handleStreamResponse(response);
         }
 
-        // 处理非流式响应
-        const rawData = await response.json();
+        // 处理非流式响应:先取 text,JSON.parse 失败时把前 500 字打 console 便于定位
+        // (代理 / CloudBase 网关 / CDN 出错时常常返回 HTML 错误页,直接 response.json() 报
+        //  "Unexpected token <" 无法看到实际内容)
+        const respText = await response.text();
+        let rawData;
+        try {
+            rawData = JSON.parse(respText);
+        } catch (parseErr) {
+            console.error(
+                `API 响应非 JSON (HTTP ${response.status}):`,
+                respText.slice(0, 500)
+            );
+            throw new Error(
+                `API 响应非 JSON (HTTP ${response.status}): ` +
+                respText.slice(0, 120).replace(/\s+/g, ' ')
+            );
+        }
+
+        if (!response.ok) {
+            console.error('腾讯元器 API 错误:', rawData);
+            throw new Error(
+                `API 请求失败: ${response.status} - ` +
+                (rawData.error || rawData.message || JSON.stringify(rawData).slice(0, 120))
+            );
+        }
+
         const data = rawData && rawData.success === true && rawData.data
             ? rawData.data
             : rawData;
