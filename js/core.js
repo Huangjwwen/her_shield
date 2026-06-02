@@ -224,21 +224,35 @@ async function callYuanqiAPI(agentType, userMessage, useStream = false, extras =
         if (data.choices && data.choices.length > 0) {
             const choice = data.choices[0];
             console.log('Choice数据:', choice);
-            
+
+            // 元器底层 LLM 内容审查触发 → 输出会被强行截断
+            // 此时 choice.finish_reason === "content_filter",content 可能是半句话
+            // 让上游能识别并提示用户"换种问法",避免静默吞掉
+            if (choice.finish_reason === 'content_filter') {
+                console.warn('⚠️ LLM 触发内容审查,回复被截断:', choice);
+            }
+
             const message = choice.message || choice.delta;
             if (message) {
                 const content = message.content;
                 console.log('Content类型:', typeof content, content);
-                
+
+                let text = null;
                 if (typeof content === 'string') {
-                    return content;
+                    text = content;
                 } else if (Array.isArray(content)) {
-                    // 处理 content 数组格式
-                    const text = content.map(c => {
+                    text = content.map(c => {
                         if (typeof c === 'string') return c;
                         if (c.type === 'text') return c.text || '';
                         return c.text || '';
                     }).join('');
+                }
+
+                if (text != null) {
+                    // 触发内容审查时尾部追加提示,让用户知道这是被截断的不完整回复
+                    if (choice.finish_reason === 'content_filter' && text.length > 0) {
+                        text += '\n\n⚠️ 模型回复因内容审查被中断。建议换一种问法,比如把具体身体状况/职场后果改成更中性的表述。';
+                    }
                     return text;
                 }
             }

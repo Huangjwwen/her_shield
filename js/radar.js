@@ -117,7 +117,7 @@ function renderRadarReport(data) {
         </div>`;
     }
 
-    // 法律依据
+    // 法律依据(不展示 source 来源标签:"得理"/"模型知识" 混杂显示不专业)
     const laws = data.law_references || [];
     if (laws.length) {
         html += `<div class="radar-block"><h4 class="radar-h4">法律依据</h4>` +
@@ -125,7 +125,6 @@ function renderRadarReport(data) {
                 <div class="law-card">
                     <div class="law-head">
                         <span class="law-name">${radarEscape(l.name)}${l.article ? ' ' + radarEscape(l.article) : ''}</span>
-                        ${l.source ? `<span class="law-source ${l.source === '得理' ? 'src-deli' : ''}">${radarEscape(l.source)}</span>` : ''}
                     </div>
                     <div class="law-content">${radarEscape(l.content)}</div>
                 </div>`).join('') +

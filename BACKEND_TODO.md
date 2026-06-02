@@ -1,6 +1,74 @@
 # 后端(第1组)待办清单
 
 > **2026-06-01 更新**: P0 已修复 ✅(proxy 6 个 agentType 路由打通);新出现 🔴 P0-bis 元器 radar 工作流自身 10003 故障,详见底部"当前阻塞"小节。
+>
+> **2026-06-02 新阻塞 🔴**: selfcheck(她权·权益指南) 工作流走代理永远返回 10003,**但后台调试正常** —— 详见下方"selfcheck 错配"小节。
+
+---
+
+## 🔴 P0 新阻塞 —— selfcheck 工作流后台正常 / 前端代理 10003
+
+### 现象
+
+2026-06-02 实测:用户在网页"她权·权益指南"输入"在职怀孕女性受到哪些法律保护",前端永远显示本地兜底数据(`【您的合法权利】孕期、产期、哺乳期女职工受法律特殊保护...`),不是元器工作流真实输出。
+
+经 curl 实测,代理对 `agentType=selfcheck` 始终返回:
+
+```json
+{"success":true,"data":{"id":"...","error":{"message":"工作流运行异常","type":"runtime_error","param":null,"code":"10003"}}}
+```
+
+而后端组反馈"工作流在元器编辑器后台调试正常"。
+
+### 关键差异
+
+| 入口 | 鉴权 | 工作流版本 | 结果 |
+|---|---|---|---|
+| 元器编辑器"试运行" | 后台 admin | **草稿版本** | ✅ 正常 |
+| 前端 → CloudBase 代理 → 元器 API | `KEY_SELFCHECK` env var → 关联的 **已发布版本** | ⚠️ 10003 |
+
+### 3 步排查建议
+
+#### 1. 看版本号
+在元器工作流编辑器顶部,看现在编辑的"草稿版本号" vs "已发布版本号":
+- 如果你最近改过工作流但没点"发布并更新到 appkey",前端拿到的是旧版本
+
+#### 2. curl 绕过 CloudBase 直连元器
+用同一个 `KEY_SELFCHECK` 直接打元器 API:
+
+```bash
+curl -X POST 'https://yuanqi.tencent.com/openapi/v1/agent/chat/completions' \
+  -H "Authorization: Bearer $KEY_SELFCHECK" \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "assistant_id": "2041405236168255296",
+    "user_id": "test-001",
+    "stream": false,
+    "messages": [{"role":"user","content":[{"type":"text","text":"产假多少天"}]}]
+  }'
+```
+
+- 直连也 10003 → 工作流**已发布版**本身有问题(可能跟最近改了草稿没发布有关)
+- 直连 OK 而代理 10003 → CloudBase 上 `KEY_SELFCHECK` 配错了或过期
+
+#### 3. 元器后台运行日志
+工作流编辑器 → 运行日志 → 过滤最近的 selfcheck 10003,看是哪个节点 throw。**很大概率跟 radar 之前一样,某个 LLM 节点或代码节点空输入抛错**。
+
+### 影响
+
+- **答辩 demo 期间用户进"她权·权益指南"演示会看到假数据**(已加显眼 ⚠️ Toast 警告"智能体未连通,显示离线示例")
+- 评测脚本不评 selfcheck,无直接影响
+
+### 其他 4 个 agent 现状
+
+| Agent | 工作流状态 |
+|---|---|
+| radar(言行雷达) | ✅ 完全可用,深度分析 38-58s |
+| consultation(智能咨询) | ✅ |
+| **selfcheck(她权·权益指南)** | 🔴 **10003 仍存在** |
+| guide(行动导航) | ✅ |
+| evidence(她证) | ⚠️ 待后端组核对(之前 10003) |
+| harbor(她心) | ⚠️ 10008 模型余额不足 |
 
 ---
 
