@@ -3071,6 +3071,25 @@ body {
 .radar-report.risk-error { border-left-color: #9370db; background: #faf8ff; }
 .risk-error .radar-badge { background: #f3eefd; color: #6b4fb8; }
 
+/* —— 权益指南法律引用高亮 —— */
+.selfcheck-bot {
+    line-height: 1.75;
+}
+.selfcheck-bot .law-name {
+    color: #1f6feb;
+    font-weight: 600;
+}
+.selfcheck-bot .law-article {
+    color: #1f6feb;
+    font-weight: 600;
+}
+.selfcheck-bot .law-text {
+    color: #1955b8;
+    background: #eff6ff;
+    padding: 0 4px;
+    border-radius: 3px;
+}
+
 /* 风险标 */
 .radar-badge {
     display: flex;
