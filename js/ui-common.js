@@ -436,3 +436,53 @@ function initDragDrop(moduleName) {
     });
 }
 
+// ==================== 输入区可折叠 ====================
+// 给每个 .chat-input-area 加一个折叠/展开切换按钮,状态持久化到 localStorage
+function initCollapsibleInputs() {
+    const areas = document.querySelectorAll('.chat-input-area');
+    areas.forEach((area, idx) => {
+        // 避免重复初始化(热重载时)
+        if (area.querySelector('.input-collapse-toggle')) return;
+
+        // 用所属 chat-content panel 的 id 做存储键,稳定且可读
+        const panel = area.closest('.chat-content');
+        const panelId = panel && panel.id ? panel.id : `inputArea${idx}`;
+        const storageKey = `inputCollapsed:${panelId}`;
+
+        // 创建切换按钮
+        const toggle = document.createElement('button');
+        toggle.type = 'button';
+        toggle.className = 'input-collapse-toggle';
+        toggle.setAttribute('aria-label', '折叠或展开输入框');
+
+        const render = (isCollapsed) => {
+            toggle.innerHTML = isCollapsed
+                ? '<span>展开输入</span><span class="chevron">▲</span>'
+                : '<span>收起输入</span><span class="chevron">▼</span>';
+            toggle.title = isCollapsed ? '点击展开输入框' : '点击收起输入框(腾出空间看历史回复)';
+        };
+
+        // 初始状态:从 localStorage 读取,默认展开
+        let collapsed = false;
+        try { collapsed = localStorage.getItem(storageKey) === '1'; } catch (e) {}
+        if (collapsed) area.classList.add('collapsed');
+        render(collapsed);
+
+        toggle.addEventListener('click', () => {
+            const willCollapse = !area.classList.contains('collapsed');
+            area.classList.toggle('collapsed', willCollapse);
+            render(willCollapse);
+            try { localStorage.setItem(storageKey, willCollapse ? '1' : '0'); } catch (e) {}
+        });
+
+        // 插入到 area 的第一个位置(z-index 高于其他元素)
+        area.insertBefore(toggle, area.firstChild);
+    });
+}
+
+// 页面 DOMContentLoaded 之后自动启用;若 features.html 已加载完则立即跑一次
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCollapsibleInputs);
+} else {
+    initCollapsibleInputs();
+}
