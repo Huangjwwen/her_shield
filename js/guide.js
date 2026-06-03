@@ -269,8 +269,8 @@ function parseGuideSteps(rawText) {
 
     // 中文/阿拉伯数字步骤号
     const CN_NUMS = ['一','二','三','四','五','六','七','八','九','十'];
-    // 匹配 "第X步" 模式
-    const stepRe = /(?:^|\n)\s*第([一二三四五六七八九十]|\d{1,2})步[：:、.]?\s*/g;
+    // 匹配 "第X步" 模式 —— 允许行首前缀 ·/•/* 等列表符号
+    const stepRe = /(?:^|\n)\s*[·•・▪◆●▸\-*]?\s*第([一二三四五六七八九十]|\d{1,2})步[：:、.]?\s*/g;
 
     const matches = [];
     let m;
@@ -287,7 +287,7 @@ function parseGuideSteps(rawText) {
     const lastEnd = matches[matches.length - 1].textIdx;
     let tailStart = text.length;
     // 试找"时效提醒""关键节点"等结尾段标识
-    const tailRe = /(?:^|\n)\s*(?:时效提醒|关键节点|关键时效|重要提醒|温馨提示|时效与关键节点)[：:、.\s]*/;
+    const tailRe = /(?:^|\n)\s*[·•・▪◆●▸\-*]?\s*(?:时效提醒|关键节点|关键时效|关键时效提醒|重要提醒|温馨提示|时效与关键节点|寻求专业帮助)[：:、.\s]*/;
     const tailMatch = text.slice(lastEnd).match(tailRe);
     if (tailMatch) tailStart = lastEnd + tailMatch.index;
 
@@ -357,6 +357,35 @@ function renderGuideRecord(rec) {
     </div>`;
 }
 
+// 重试:跳过代理缓存,重新规划维权路径
+async function retryGuideQuery(btn) {
+    const item = btn.closest('.history-item');
+    if (!item) return;
+    const id = item.dataset.id;
+    const records = (typeof historyStorage !== 'undefined' && historyStorage.guide) || [];
+    const record = records.find(r => String(r.id) === String(id));
+    if (!record || !record.userMessage) { showToast('找不到原始问题'); return; }
+    btn.disabled = true;
+    const oldText = btn.textContent;
+    btn.textContent = '重试中…';
+    toggleLoading(true);
+    try {
+        const response = await callYuanqiAPI('guide', record.userMessage, false, { nocache: true });
+        if (response) {
+            saveHistory('guide', record.userMessage, response);
+            showToast('重试完成');
+        } else {
+            showToast('⚠️ 智能体未连通');
+        }
+    } catch (error) {
+        console.error('guide 重试失败:', error);
+        showToast('重试失败:' + (error && error.message || error));
+    } finally {
+        toggleLoading(false);
+        try { btn.disabled = false; btn.textContent = oldText; } catch (e) {}
+    }
+}
+
 // 自定义历史渲染器
 function renderGuideHistory(container, records) {
     if (!records || records.length === 0) {
@@ -369,6 +398,7 @@ function renderGuideHistory(container, records) {
             <div class="history-user">${guideEscape(r.userMessage)}</div>
             ${renderGuideRecord(r)}
             <div class="history-item-actions">
+                <button class="btn-small btn-retry" onclick="retryGuideQuery(this)" title="不用缓存,重新规划">🔄 重试</button>
                 <button class="btn-small" onclick="deleteHistoryItem('guide', '${r.id}')">删除</button>
             </div>
         </div>`;

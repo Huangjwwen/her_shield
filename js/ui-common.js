@@ -457,8 +457,8 @@ function initCollapsibleInputs() {
 
         const render = (isCollapsed) => {
             toggle.innerHTML = isCollapsed
-                ? '<span>展开输入</span><span class="chevron">▲</span>'
-                : '<span>收起输入</span><span class="chevron">▼</span>';
+                ? '<span>展开</span><span class="chevron">▲</span>'
+                : '<span>收起</span><span class="chevron">▼</span>';
             toggle.title = isCollapsed ? '点击展开输入框' : '点击收起输入框(腾出空间看历史回复)';
         };
 

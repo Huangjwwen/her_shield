@@ -214,6 +214,35 @@ function renderSelfcheckRecord(rec) {
     </div>`;
 }
 
+// 重试:跳过代理缓存,真打元器
+async function retrySelfcheckQuery(btn) {
+    const item = btn.closest('.history-item');
+    if (!item) return;
+    const id = item.dataset.id;
+    const records = (typeof historyStorage !== 'undefined' && historyStorage.selfcheck) || [];
+    const record = records.find(r => String(r.id) === String(id));
+    if (!record || !record.userMessage) { showToast('找不到原始问题'); return; }
+    btn.disabled = true;
+    const oldText = btn.textContent;
+    btn.textContent = '重试中…';
+    toggleLoading(true);
+    try {
+        const response = await callYuanqiAPI('selfcheck', record.userMessage, false, { nocache: true });
+        if (response) {
+            saveHistory('selfcheck', record.userMessage, response);
+            showToast('重试完成');
+        } else {
+            showToast('⚠️ 智能体仍未连通');
+        }
+    } catch (error) {
+        console.error('selfcheck 重试失败:', error);
+        showToast('重试失败:' + (error && error.message || error));
+    } finally {
+        toggleLoading(false);
+        try { btn.disabled = false; btn.textContent = oldText; } catch (e) {}
+    }
+}
+
 // 自定义历史渲染器:权利清单可视化卡片网格 + 场景头部 + 法律引用蓝色高亮
 function renderSelfcheckHistory(container, records) {
     if (!records || records.length === 0) {
@@ -226,6 +255,7 @@ function renderSelfcheckHistory(container, records) {
             <div class="history-user">${selfcheckEscape(r.userMessage)}</div>
             ${renderSelfcheckRecord(r)}
             <div class="history-item-actions">
+                <button class="btn-small btn-retry" onclick="retrySelfcheckQuery(this)" title="不用缓存,重新查询">🔄 重试</button>
                 <button class="btn-small" onclick="deleteHistoryItem('selfcheck', '${r.id}')">删除</button>
             </div>
         </div>`;

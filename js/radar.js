@@ -248,6 +248,45 @@ async function forceRadarAnalysis(btn) {
     }
 }
 
+// 重试:从历史拿到原始 query,带 nocache=true 重发(不开 force,保留原工作流路径)
+async function retryRadarAnalysis(btn) {
+    const item = btn.closest('.history-item');
+    if (!item) return;
+    const id = item.dataset.id;
+    const records = (typeof historyStorage !== 'undefined' && historyStorage.radar) || [];
+    const record = records.find(r => String(r.id) === String(id));
+    if (!record || !record.userMessage) {
+        showToast('找不到原始问题');
+        return;
+    }
+    btn.disabled = true;
+    const oldText = btn.textContent;
+    btn.textContent = '重试中…';
+    toggleLoading(true);
+    const content = record.userMessage;
+    try {
+        const response = await callYuanqiAPI('radar', content, false, {
+            query: content,
+            force: false,
+            has_image: false,
+            image_urls: [],
+            nocache: true   // ★ 跳过代理缓存,真打元器
+        });
+        const resultStr = (response && tryParseRadar(response))
+            ? response
+            : JSON.stringify(getRadarMock(content));
+        saveHistory('radar', content, resultStr);
+        showToast('重试完成');
+    } catch (error) {
+        console.error('重试失败，使用本地示例:', error);
+        saveHistory('radar', content, JSON.stringify(getRadarMock(content)));
+        showToast('重试完成（本地示例）');
+    } finally {
+        toggleLoading(false);
+        try { btn.disabled = false; btn.textContent = oldText; } catch (e) {}
+    }
+}
+
 // 自定义历史渲染器：每条记录渲染成风险报告，旧的/非 JSON 记录退回纯文本
 function renderRadarHistory(container, records) {
     if (!records || records.length === 0) {
@@ -264,6 +303,7 @@ function renderRadarHistory(container, records) {
             <div class="history-user">${radarEscape(r.userMessage)}</div>
             ${body}
             <div class="history-item-actions">
+                <button class="btn-small btn-retry" onclick="retryRadarAnalysis(this)" title="不用缓存,重新分析">🔄 重试</button>
                 <button class="btn-small" onclick="deleteHistoryItem('radar', '${r.id}')">删除</button>
             </div>
         </div>`;

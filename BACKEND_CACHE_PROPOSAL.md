@@ -134,7 +134,7 @@ async function callYuanqiAPI(agentType, userMessage, useStream = false, extras =
 |---|---|
 | 普通输入 → 立即识别 | ❌(默认走缓存提升体验) |
 | 言行雷达「🔄 强制深度分析」按钮 | ✅(自动) |
-| 独立「🔄 重试」按钮(可选) | ✅(显式) |
+| 独立「🔄 重试」按钮 | ✅(显式) |
 | 答辩演示连续同输入 | ✅(防止 fromCache 暴露 demo) |
 
 ### 2.3 TTL 30 分钟 + LRU 1000 上限
@@ -241,18 +241,6 @@ function computeCacheKey(agentType, messages, extras) {
 
 ---
 
-## 五、前后端分工
-
-| 事项 | 前端(她说了算队) | 后端(第 1 组) |
-|---|---|---|
-| `shouldCache()` 白名单 |  | ✅ |
-| 代理函数读取 `nocache=true` 入参 |  | ✅ |
-| `TTLCache` 类(30 分钟 + 1000 LRU) |  | ✅ |
-| 缓存键 hash 重设计 |  | ✅ |
-| 前端 `force=true` 时自动带 `nocache=true` | ✅(已上线 commit `244fa1f`) |  |
-| 可选:独立「🔄 重试」按钮 | ⏳ 可加,~10 行 |  |
-
----
 
 ## 六、验收清单(6 项黑盒测试)
 
@@ -311,15 +299,4 @@ grep -n "maxSize\|1000\|LRU\|eviction" cloudbase-functions/proxy/index.js
 
 ---
 
-## 八、估时
 
-| 任务 | 估时 |
-|---|---|
-| `shouldCache()` 实现 + 测试 | 0.5h |
-| `nocache` 参数实现 + 测试 | 0.5h |
-| `TTLCache` 类实现 + 单测 | 1h |
-| 缓存键 hash 重设计 | 0.5h |
-| 黑盒验收(6 项) | 0.5h |
-| **合计** | **~3h(单人)** |
-
-完成后请通知言行雷达组,我们会立即重测一遍 100 条评测(确认缓存不影响数据),然后**部署到 main 分支**让 GitHub Pages 拉新代码。
