@@ -3444,3 +3444,68 @@ body {
     min-width: 100px;
     white-space: nowrap;
 }
+
+/* ==================== 输入区可折叠 ==================== */
+.chat-input-area {
+    /* 已有 padding/border-top 等,这里只补 transition + overflow */
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    overflow: hidden;
+}
+
+.chat-input-area.collapsed {
+    max-height: 44px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+/* 折叠时子元素淡出且不可交互(防止误触不可见的 textarea/button) */
+.chat-input-area.collapsed > *:not(.input-collapse-toggle) {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* 折叠/展开切换按钮 */
+.input-collapse-toggle {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+    z-index: 10;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #7b5dc4;
+    background: rgba(245, 240, 255, 0.92);
+    border: 1px solid #d8c8f0;
+    border-radius: 14px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.input-collapse-toggle:hover {
+    background: #efe6ff;
+    border-color: #9370db;
+    color: #6b4fb8;
+    transform: translateY(-1px);
+}
+
+.input-collapse-toggle .chevron {
+    display: inline-block;
+    transition: transform 0.3s ease;
+    font-size: 10px;
+}
+
+.chat-input-area.collapsed .input-collapse-toggle .chevron {
+    transform: rotate(180deg);
+}
+
+/* 折叠按钮固定在视口顶端,方便点击;collapsed 时仍可见 */
+.chat-input-area.collapsed .input-collapse-toggle {
+    opacity: 1;
+    pointer-events: auto;
+}
