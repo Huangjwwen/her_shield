@@ -1,7 +1,7 @@
 async function callSmartAgent_guide(scene) {
     // 获取场景文本
     const sceneText = SCENE_MAP[scene] || scene;
-    
+
     // 构建提示消息
     const promptMessage = `请针对以下维权场景，提供详细的分步维权路径：
 
@@ -217,10 +217,171 @@ function parseGuideResponse(response) {
     return steps;
 }
 
-// ==================== 行动指南模块 ====================
+// ==================== 行动指南模块 (guide / 她行·维权导航) ====================
+
+// 安全转义
+function guideEscape(text) {
+    const div = document.createElement('div');
+    div.textContent = (text == null ? '' : String(text));
+    return div.innerHTML;
+}
+
+// 维权热线 -> tel: 链接 + 图标
+const GUIDE_HOTLINES = {
+    '12333': '劳动监察',
+    '12338': '妇联',
+    '12348': '法律援助',
+    '12388': '纪检监察',
+    '400-161-9995': '心理援助'
+};
+
+// 把文本里的电话号码包装成可点击的胶囊
+function wrapHotlines(escapedText) {
+    let s = escapedText;
+    Object.keys(GUIDE_HOTLINES).forEach(num => {
+        const label = GUIDE_HOTLINES[num];
+        const re = new RegExp(num.replace(/-/g, '-?'), 'g');
+        s = s.replace(re, `<a class="guide-hotline" href="tel:${num}" title="${label}">📞 ${num}</a>`);
+    });
+    return s;
+}
+
+// 时效字眼涂红橙
+function highlightTimeLimit(escapedText) {
+    return escapedText.replace(
+        /(\d+\s*(?:年|个月|月|日|天)|一年|半年|三年|十五日|十五天)/g,
+        '<span class="guide-timelimit">⏰ $1</span>'
+    );
+}
+
+// 解析 LLM 输出为维权步骤数组
+// 期望格式(prompt 约束):
+//   ① 共情段(开头 1-2 句)
+//   ② 第一步：现场反应与证据意识：...
+//   ③ 第二步：内部渠道投诉：...
+//   ④ 第三步：行政投诉举报：...(可能内嵌 12333/12338/12388)
+//   ⑤ ... 第六步
+//   ⑥ 时效提醒
+//   ⑦ 结尾鼓励 + 引导其他模块
+function parseGuideSteps(rawText) {
+    if (!rawText || typeof rawText !== 'string') return null;
+    const text = rawText.replace(/\r\n/g, '\n').trim();
+
+    // 中文/阿拉伯数字步骤号
+    const CN_NUMS = ['一','二','三','四','五','六','七','八','九','十'];
+    // 匹配 "第X步" 模式
+    const stepRe = /(?:^|\n)\s*第([一二三四五六七八九十]|\d{1,2})步[：:、.]?\s*/g;
+
+    const matches = [];
+    let m;
+    while ((m = stepRe.exec(text)) !== null) {
+        matches.push({ start: m.index + m[0].search(/第/), full: m[0], numChar: m[1], textIdx: m.index + m[0].length });
+    }
+
+    if (matches.length < 2) return null;  // 至少 2 步才有时间轴感
+
+    // 共情段:第一个 "第X步" 之前
+    const introText = text.slice(0, matches[0].start).trim();
+
+    // 时效尾段:最后一步之后到末尾,识别"时效""提醒"等
+    const lastEnd = matches[matches.length - 1].textIdx;
+    let tailStart = text.length;
+    // 试找"时效提醒""关键节点"等结尾段标识
+    const tailRe = /(?:^|\n)\s*(?:时效提醒|关键节点|关键时效|重要提醒|温馨提示|时效与关键节点)[：:、.\s]*/;
+    const tailMatch = text.slice(lastEnd).match(tailRe);
+    if (tailMatch) tailStart = lastEnd + tailMatch.index;
+
+    // 切出每一步的 body
+    const steps = matches.map((mm, i) => {
+        const bodyStart = mm.textIdx;
+        const bodyEnd = i < matches.length - 1 ? matches[i + 1].start : tailStart;
+        const raw = text.slice(bodyStart, bodyEnd).trim();
+        // 第一行通常是 "标题：详细说明" 或 "标题。详细说明"
+        const titleMatch = raw.match(/^([^：:。\n]{2,30})[：:。]?\s*([\s\S]*)$/);
+        const title = titleMatch ? titleMatch[1].trim() : `第${mm.numChar}步`;
+        const body  = titleMatch ? titleMatch[2].trim() : raw;
+        return {
+            stepNo: mm.numChar,
+            stepIdx: i + 1,
+            title,
+            body
+        };
+    });
+
+    const tailText = tailStart < text.length ? text.slice(tailStart).trim() : '';
+
+    return { intro: introText, steps, tail: tailText };
+}
+
+// 渲染单条 guide 记录:竖直时间轴
+function renderGuideRecord(rec) {
+    const parsed = parseGuideSteps(rec.botMessage);
+
+    // 兜底:解析失败就纯文本(带电话/时效高亮)
+    if (!parsed) {
+        const escaped = guideEscape(rec.botMessage);
+        const html = highlightTimeLimit(wrapHotlines(escaped)).replace(/\n/g, '<br>');
+        return `<div class="history-bot guide-bot">
+            <div class="guide-fallback">${html}</div>
+        </div>`;
+    }
+
+    const introHtml = parsed.intro
+        ? `<div class="guide-intro">${highlightTimeLimit(wrapHotlines(guideEscape(parsed.intro))).replace(/\n/g, '<br>')}</div>`
+        : '';
+
+    const stepsHtml = parsed.steps.map((s, i) => {
+        const isLast = i === parsed.steps.length - 1;
+        const titleHtml = guideEscape(s.title);
+        const bodyHtmlRaw = highlightTimeLimit(wrapHotlines(guideEscape(s.body))).replace(/\n/g, '<br>');
+        return `<div class="guide-step${isLast ? ' guide-step-last' : ''}">
+            <div class="guide-step-dot">${s.stepIdx}</div>
+            <div class="guide-step-content">
+                <div class="guide-step-title">${titleHtml}</div>
+                <div class="guide-step-body">${bodyHtmlRaw}</div>
+            </div>
+        </div>`;
+    }).join('');
+
+    const tailHtml = parsed.tail
+        ? `<div class="guide-tail">
+            <div class="guide-tail-title">⏰ 时效提醒与关键节点</div>
+            <div class="guide-tail-body">${highlightTimeLimit(wrapHotlines(guideEscape(parsed.tail))).replace(/\n/g, '<br>')}</div>
+           </div>`
+        : '';
+
+    return `<div class="history-bot guide-bot">
+        ${introHtml}
+        <div class="guide-timeline">${stepsHtml}</div>
+        ${tailHtml}
+    </div>`;
+}
+
+// 自定义历史渲染器
+function renderGuideHistory(container, records) {
+    if (!records || records.length === 0) {
+        container.innerHTML = '<p class="history-empty">暂无对话记录，开始查询吧～</p>';
+        return;
+    }
+    container.innerHTML = records.map(r => {
+        return `<div class="history-item" data-id="${r.id}">
+            <div class="history-time">${guideEscape(r.time)}</div>
+            <div class="history-user">${guideEscape(r.userMessage)}</div>
+            ${renderGuideRecord(r)}
+            <div class="history-item-actions">
+                <button class="btn-small" onclick="deleteHistoryItem('guide', '${r.id}')">删除</button>
+            </div>
+        </div>`;
+    }).join('');
+}
 
 // 初始化行动指南
 function initGuide() {
+    // 注册时间轴渲染器
+    if (typeof customHistoryRenderers !== 'undefined') {
+        customHistoryRenderers.guide = renderGuideHistory;
+    }
+
     const guideInput = document.getElementById('guideInput');
     const clearInput = document.getElementById('clearGuideInput');
     const guideBtn = document.getElementById('guideBtn');
