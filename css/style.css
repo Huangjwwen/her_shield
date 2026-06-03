@@ -3396,6 +3396,25 @@ body {
     line-height: 1.75;
 }
 
+/* ==================== 重试按钮(history-item-actions 里) ==================== */
+.btn-retry {
+    color: #7b5dc4;
+    border-color: #d8c8f0;
+    background: #f5f0ff;
+    transition: all 0.15s ease;
+}
+.btn-retry:hover {
+    background: #efe6ff;
+    border-color: #9370db;
+    color: #6b4fb8;
+    transform: translateY(-1px);
+}
+.btn-retry:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
 /* 风险标 */
 .radar-badge {
     display: flex;
@@ -3770,11 +3789,11 @@ body {
     pointer-events: none;
 }
 
-/* 折叠/展开切换按钮 —— 放左上角,避免跟右侧"立即识别"等主按钮重叠 */
+/* 折叠/展开切换按钮 —— 右上角小药丸,精简文字避免跟主按钮抢空间 */
 .input-collapse-toggle {
     position: absolute;
-    top: 8px;
-    left: 16px;
+    top: 6px;
+    right: 8px;
     z-index: 10;
     display: inline-flex;
     align-items: center;

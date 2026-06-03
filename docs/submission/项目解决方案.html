@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>项目解决方案.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="%E5%A5%B9%E7%9B%BE%E9%A1%B9%E7%9B%AE%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88">「她盾」项目解决方案</h1>
+<blockquote>
+<p>团队:她说了算队
+作品链接:https://huangjwwen.github.io/her_shield/
+代码仓库:https://github.com/Huangjwwen/her_shield</p>
+</blockquote>
+<hr>
+<h2 id="21-%E9%A1%B9%E7%9B%AE%E6%8A%80%E6%9C%AF%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%A1%88">2.1 项目技术实现方案</h2>
+<h3 id="211-%E6%95%B4%E4%BD%93%E6%9E%B6%E6%9E%84">2.1.1 整体架构</h3>
+<p>「她盾」采用<strong>五层全栈架构</strong>,从前端交互到 AI 智能体编排,每一层都为「弱势情境下的决策辅助」这一目标服务:</p>
+<pre><code class="language-mermaid"><div class="mermaid">flowchart TB
+    subgraph "交互层 — Vanilla JS Modules"
+        UI["features.html<br/>(6 模块界面)"]
+        UI --> Modules["10 个独立 JS 模块<br/>radar / consultation / selfcheck /<br/>evidence / guide / harbor /<br/>stories / history / ui-common / main"]
+    end
+
+    subgraph "后端代理层 — Tencent CloudBase"
+        Proxy["云函数 proxy<br/>密钥下沉 + 缓存 + CORS"]
+        DB[("云数据库<br/>她声故事")]
+    end
+
+    subgraph "智能层 — 腾讯元器"
+        Y1["她眼·言行雷达<br/>(三节点工作流)"]
+        Y2["她权·权益指南<br/>(单节点)"]
+        Y3["她证·证据保全<br/>(单节点)"]
+        Y4["她行·维权导航<br/>(单节点)"]
+        Y5["她心·情绪树洞<br/>(prompt 直驱)"]
+    end
+
+    subgraph "知识层"
+        Deli["得理开放平台<br/>类案 + 法规检索"]
+        BeiDa["北大法宝<br/>法律法规库"]
+        Static["静态法条注入<br/>System Prompt"]
+    end
+
+    subgraph "评测体系"
+        Eval["eval/run.js<br/>100 条标注测试集"]
+        Anno["要件级标注 +<br/>compute_risk_level<br/>机械映射"]
+    end
+
+    Modules -->|HTTPS POST<br/>fetch with Origin| Proxy
+    Proxy -->|appkey Bearer<br/>转发| Y1
+    Proxy -->|appkey Bearer| Y2
+    Proxy -->|appkey Bearer| Y3
+    Proxy -->|appkey Bearer| Y4
+    Proxy -->|appkey Bearer| Y5
+    Modules <-->|stories CRUD| DB
+
+    Y1 -->|RAG| Deli
+    Y1 -->|RAG| BeiDa
+    Y2 -->|RAG| Deli
+    Y2 -->|RAG| BeiDa
+    Y3 -.->|无外部检索| Static
+    Y4 -.->|无外部检索| Static
+    Y5 -.->|无外部检索| Static
+
+    Eval -.->|定期回归| Y1
+    Anno -.->|对齐校验| Eval
+</div></code></pre>
+<h3 id="212-%E5%90%84%E5%B1%82%E8%81%8C%E8%B4%A3">2.1.2 各层职责</h3>
+<table>
+<thead>
+<tr>
+<th>层</th>
+<th>技术组件</th>
+<th>核心职责</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>交互层</strong></td>
+<td>Vanilla JS ES Modules + HTML5 + CSS3 + Web Crypto API</td>
+<td>6 模块用户界面;<strong>首屏 87 KB / TTI &lt; 0.8 秒</strong>;浏览器端 SHA-256 证据指纹</td>
+</tr>
+<tr>
+<td><strong>后端代理层</strong></td>
+<td>腾讯 CloudBase 云函数 + 云数据库 + HTTP 触发器</td>
+<td>API 代理转发;<strong>5 个 appkey 下沉到环境变量</strong>;同问缓存治理&quot;同问不同答&quot;;CORS 头处理</td>
+</tr>
+<tr>
+<td><strong>智能层</strong></td>
+<td>腾讯元器 5 大智能体(可视化工作流编排)</td>
+<td>意图识别、要件抽取、要件式评估、法条引用、类案匹配、温暖叙事、三级话术</td>
+</tr>
+<tr>
+<td><strong>知识层</strong></td>
+<td>得理开放平台 API + 北大法宝 + 静态法条注入</td>
+<td>法规检索(RAG)、类案检索(RAG)、System Prompt 内置法条</td>
+</tr>
+<tr>
+<td><strong>评测体系</strong></td>
+<td>Node.js 评测脚本 + 100 条标注测试集</td>
+<td>准确率回归;要件级标注 + 代码机械映射;混淆矩阵分析</td>
+</tr>
+</tbody>
+</table>
+<h3 id="213-%E5%90%8E%E7%AB%AF%E6%9E%B6%E6%9E%84%E8%AF%A6%E8%A7%A3">2.1.3 后端架构详解</h3>
+<pre><code class="language-mermaid"><div class="mermaid">sequenceDiagram
+    autonumber
+    participant 浏览器 as 浏览器<br/>(features.html)
+    participant 代理 as CloudBase 云函数<br/>(proxy)
+    participant 元器 as 腾讯元器<br/>(5 智能体)
+
+    Note over 浏览器,元器: 旧链路:前端硬编码 KEY(已废弃)
+    Note over 浏览器,元器: 新链路:KEY 下沉到云函数环境变量
+
+    浏览器->>+代理: POST /proxy<br/>{agentType, messages, force?}
+    代理->>代理: 1. CORS 预检通过(204)
+    代理->>代理: 2. 读取环境变量<br/>KEY_RADAR / KEY_SELFCHECK / ...
+    代理->>代理: 3. 缓存查询<br/>(同问命中直接返回)
+
+    alt 缓存命中
+        代理-->>浏览器: 200 OK + fromCache:true
+    else 缓存未命中
+        代理->>+元器: POST /openapi/v1/agent/chat/completions<br/>Authorization: Bearer {KEY}
+        元器->>元器: 工作流执行<br/>(意图识别 → 要件抽取 → 法规检索 → 评估)
+        元器-->>-代理: choices[0].message.content (JSON)
+        代理->>代理: 4. 写入缓存
+        代理-->>-浏览器: 200 OK + JSON 响应
+    end
+
+    浏览器->>浏览器: tryParseRadar() 解析<br/>+ renderRadarReport()
+</div></code></pre>
+<p><strong>核心改进:</strong></p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>改造前</th>
+<th>改造后</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>密钥安全</strong></td>
+<td>5 个 appkey 硬编码在 <code>js/core.js</code>,F12 可见</td>
+<td><strong>全部下沉到 CloudBase 环境变量</strong>,前端代码不含任何 KEY</td>
+</tr>
+<tr>
+<td><strong>同问不同答</strong></td>
+<td>用户同一问题反复问得到不同答案</td>
+<td><strong>CloudBase 内存缓存层</strong>:同 hash 输入命中后直接返回 <code>fromCache: true</code>,稳定性 ↑</td>
+</tr>
+<tr>
+<td><strong>网络延迟</strong></td>
+<td>浏览器 → 公网 → 元器,延迟 ~200ms</td>
+<td>浏览器 → CloudBase(腾讯生态)→ 元器,<strong>同域低延迟降低 30-50ms</strong></td>
+</tr>
+<tr>
+<td><strong>CORS</strong></td>
+<td>浏览器跨域报错</td>
+<td>代理函数返回 <code>Access-Control-Allow-Origin: *</code> 与 <code>OPTIONS</code> 预检</td>
+</tr>
+<tr>
+<td><strong>超时控制</strong></td>
+<td>浏览器默认 60s</td>
+<td>CloudBase 函数 120s 充足覆盖元器深度分析(实测 38-58s)</td>
+</tr>
+<tr>
+<td><strong>错误兜底</strong></td>
+<td>元器 10003 直接抛错给用户</td>
+<td>工作流 JSON 解析失败 → 返回 <code>risk_level: null</code> + <code>parse_error</code>,前端识别后渲染&quot;分析异常&quot;卡片而非伪装&quot;无风险&quot;</td>
+</tr>
+</tbody>
+</table>
+<h4 id="%E5%90%8E%E7%AB%AF%E6%A8%A1%E5%9D%97%E9%AA%8C%E6%94%B6%E6%B8%85%E5%8D%95">后端模块验收清单</h4>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>模块</th>
+<th>验收状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>①</td>
+<td>CloudBase 环境搭建(云函数 + 云数据库 + HTTP 触发器)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>②</td>
+<td>proxy 云函数(转发元器 OpenAPI,5 个 agentType 路由)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>③</td>
+<td>5 个 appkey 下沉到环境变量(<code>KEY_RADAR</code> / <code>KEY_SELFCHECK</code> / <code>KEY_EVIDENCE</code> / <code>KEY_GUIDE</code> / <code>KEY_HARBOR</code>)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>④</td>
+<td>前端 <code>callYuanqiAPI</code> 改为请求代理(不再直连元器、不再持有 appkey)</td>
+<td>✅</td>
+</tr>
+<tr>
+<td>⑤</td>
+<td>她声 CloudBase 云数据库存储 + 帖子列表 + 标签筛选 + <strong>手机号/身份证/邮箱自动脱敏</strong></td>
+<td>✅</td>
+</tr>
+<tr>
+<td>⑥</td>
+<td>内存缓存(同输入第二次命中 <code>fromCache: true</code>)</td>
+<td>⚠️ 已上线,<strong>缓存策略需迭代</strong>(见下)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="%E7%BC%93%E5%AD%98%E7%AD%96%E7%95%A5%E5%BE%85%E6%94%B9%E8%BF%9B%E9%A1%B9">缓存策略待改进项</h4>
+<p><strong>已知问题:</strong> 当前内存缓存按 hash(agentType + messages) 直接覆盖式写入,<strong>不区分响应类型</strong>。当元器首次返回<strong>异常响应</strong>(如工作流 10003、<code>finish_reason: &quot;content_filter&quot;</code> 截断、<code>risk_level: null</code> 解析兜底、空 choices)时,该异常响应仍被缓存,<strong>导致用户重试得到完全相同的异常结果,体验上等同于&quot;重试无效&quot;</strong>。</p>
+<p><strong>建议方案(已反馈第一组):</strong></p>
+<pre class="hljs"><code><div><span class="hljs-comment">// 缓存写入前白名单校验,只缓存"真正成功"的响应</span>
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">shouldCache</span>(<span class="hljs-params">rawResponse</span>) </span>{
+  <span class="hljs-comment">// 1. proxy 层失败不缓存</span>
+  <span class="hljs-keyword">if</span> (rawResponse.success === <span class="hljs-literal">false</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  <span class="hljs-keyword">const</span> data = rawResponse.data || rawResponse;
+  <span class="hljs-comment">// 2. 元器内层 error 不缓存(10003/10008 等)</span>
+  <span class="hljs-keyword">if</span> (data.error) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  <span class="hljs-comment">// 3. 必须有 choices</span>
+  <span class="hljs-keyword">const</span> choice = data.choices?.[<span class="hljs-number">0</span>];
+  <span class="hljs-keyword">if</span> (!choice) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  <span class="hljs-comment">// 4. finish_reason 必须是 stop(content_filter / length 不缓存)</span>
+  <span class="hljs-keyword">if</span> (choice.finish_reason !== <span class="hljs-string">'stop'</span>) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  <span class="hljs-comment">// 5. content 必须非空</span>
+  <span class="hljs-keyword">if</span> (!choice.message?.content) <span class="hljs-keyword">return</span> <span class="hljs-literal">false</span>;
+  <span class="hljs-keyword">return</span> <span class="hljs-literal">true</span>;
+}
+</div></code></pre>
+<p>此外建议增加 <strong>可选 <code>nocache=true</code> 入参</strong> 让前端在用户点&quot;重试&quot;时显式跳过缓存,以及<strong>缓存项 TTL ≤ 30 分钟</strong>避免长期占用内存。本改造完成后,&quot;异常响应被缓存导致重试无效&quot;问题可彻底解决。</p>
+<h3 id="214-%E8%AF%84%E6%B5%8B%E4%BD%93%E7%B3%BB%E6%9E%B6%E6%9E%84">2.1.4 评测体系架构</h3>
+<p>我们建立了<strong>双层评测方法学</strong>——这是法律 AI 项目里少有的工程化质量保障:</p>
+<pre><code class="language-mermaid"><div class="mermaid">flowchart LR
+    subgraph "测试集"
+        TS[100 条 = 50 精标 + 50 变体]
+        TS --> Anchor[anchor 字段<br/>17 判例 / 6 法条 / 27 推导]
+        TS --> Variant[variant_type<br/>同义 15 / 扰动 12 / 干扰 10 /<br/>边界 8 / 长文 5]
+    end
+
+    subgraph "事实层标注(人工)"
+        E1[h1: 行为与性有关]
+        E2[h2: 违背意愿]
+        E3[h3: 职场情境]
+        E4[e1: 区别对待]
+        E5[e2: 就业环节]
+        E6[institutional / concrete_harm]
+        E7[加重情节 5 类]
+    end
+
+    subgraph "等级映射(代码)"
+        Code[compute_risk_level<br/>30 行 Python if/else]
+    end
+
+    subgraph "AI 输出"
+        AI[元器 radar 工作流]
+        AI --> AIE[输出 elements_check + agg + severity]
+    end
+
+    TS --> 人[标注者读案例]
+    人 --> 事实[只标事实]
+    事实 --> E1 & E2 & E3 & E4 & E5 & E6 & E7
+    E1 & E2 & E3 & E4 & E5 & E6 & E7 --> Code
+    Code --> 期望[期望 risk_level]
+    AIE --> Code
+    Code --> 实际[实际 risk_level]
+    期望 --> 对比
+    实际 --> 对比
+    对比 --> 准确率[准确率 / 混淆矩阵 / 召回]
+</div></code></pre>
+<p><strong>关键创新:</strong> 标准答案的 <code>risk_level</code> 不再由标注者心算,而是由产品里<strong>同一份 <code>compute_risk_level</code> 代码</strong>根据标注者标注的事实自动映射 —— 这样<strong>任何差异都只可能来自 AI 对事实的判断</strong>,不来自标注者主观。</p>
+<p><strong>评测数据:</strong></p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>v1.3 (旧标注)</th>
+<th><strong>v1.3+annotated (新方法学)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>整体准确率</td>
+<td>69% (95% CI 59.9-78.1%)</td>
+<td><strong>79.0%</strong> (95% CI 71.0-87.0%)</td>
+</tr>
+<tr>
+<td>高危召回</td>
+<td>90.0% (36/40)</td>
+<td><strong>90.0%</strong> (45/50)</td>
+</tr>
+<tr>
+<td>中危召回</td>
+<td>31.0%</td>
+<td><strong>47.4%</strong></td>
+</tr>
+<tr>
+<td>无风险准确率</td>
+<td>100% (15/15)</td>
+<td><strong>100%</strong> (16/16)</td>
+</tr>
+<tr>
+<td>±1 级容忍准确率</td>
+<td>97.0%</td>
+<td><strong>96.0%</strong></td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="22-ai-%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E">2.2 AI 工具使用说明</h2>
+<p>本作品基于<strong>腾讯元器平台</strong>构建 5 个独立专用智能体,结合 <strong>CodeBuddy + Claude Code</strong> 辅助开发,已实现真实 API 调用。</p>
+<h3 id="221-%E6%99%BA%E8%83%BD%E4%BD%93%E6%80%BB%E8%A7%88">2.2.1 智能体总览</h3>
+<table>
+<thead>
+<tr>
+<th>智能体</th>
+<th>工作流模式</th>
+<th>Prompt 核心策略</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>她眼·言行雷达</td>
+<td><strong>三节点工作流</strong>:门控 → 要件抽取 → 要件式评估;<strong>反误判:一键深度分析跳过门控</strong></td>
+<td>宽松门控(召回优先)→ 结构化要素抽取 → 要件式法律评估 + 法条引用 + 类案匹配 + 三级话术 + 温情叙事</td>
+</tr>
+<tr>
+<td>她权·权益指南</td>
+<td><strong>单节点工作流</strong>:意图识别 → 法规检索 → 生成输出</td>
+<td>懂法专家角色;法定权利 + 法条号 + 白话</td>
+</tr>
+<tr>
+<td>她证·证据保全</td>
+<td><strong>单节点工作流</strong></td>
+<td>证据留存助手角色;共情 → 操作级取证 → 安全保存规范 → 时效提醒 → 温情鼓励</td>
+</tr>
+<tr>
+<td>她行·维权导航</td>
+<td><strong>单节点工作流</strong></td>
+<td>路径规划者角色;六步阶梯;时效关键节点;配合/不配合分支</td>
+</tr>
+<tr>
+<td>她心·情绪树洞</td>
+<td><strong>prompt 直驱</strong>(无工作流)</td>
+<td>陪伴者角色;三步结构(承认 → 正常化 → 陪伴)+ CBT 轻度支持(prompt 升级)+ 高危关键词强制弹窗(模态层不可覆盖)+ 浏览器 SpeechSynthesis 语音引导</td>
+</tr>
+</tbody>
+</table>
+<h3 id="222-%E6%A0%B8%E5%BF%83%E5%B7%A5%E4%BD%9C%E6%B5%81%E5%8F%AF%E8%A7%86%E5%8C%96">2.2.2 核心工作流可视化</h3>
+<h4 id="a-%E5%A5%B9%E7%9C%BC%E8%A8%80%E8%A1%8C%E9%9B%B7%E8%BE%BE%E5%B7%A5%E4%BD%9C%E6%B5%81">A. 她眼·言行雷达工作流</h4>
+<p><img src="../../../images/言行雷达工作流.png" alt="言行雷达工作流"></p>
+<p><strong>节点拓扑:</strong></p>
+<pre class="hljs"><code><div>[开始]
+   ↓
+[门控:涉及/不涉及] ←→ [友好提示](不涉及分支)
+   ↓ 涉及
+[提取案情要素](结构化 JSON)
+   ↓
+[得理类案检索] + [得理法规检索](并行)
+   ↓
+[要件式评估和回应内容](核心 LLM 节点)
+   ↓
+[风险等级代码映射](compute_risk_level)
+   ↓
+[结构化 JSON 输出]
+</div></code></pre>
+<p><strong>反误判设计:</strong> 用户点击「强制深度分析」按钮 → 前端 <code>force=true</code> 透传给工作流开始节点 → <strong>跳过门控直接进入要件抽取</strong>,确保即使 AI 误判用户也能拿到完整分析。</p>
+<h4 id="b-%E5%A5%B9%E6%9D%83%E6%9D%83%E7%9B%8A%E6%8C%87%E5%8D%97%E5%B7%A5%E4%BD%9C%E6%B5%81">B. 她权·权益指南工作流</h4>
+<p><img src="../../../images/权益指南工作流.png" alt="权益指南工作流"></p>
+<h4 id="c-%E5%A5%B9%E8%AF%81%E8%AF%81%E6%8D%AE%E4%BF%9D%E5%85%A8%E5%B7%A5%E4%BD%9C%E6%B5%81">C. 她证·证据保全工作流</h4>
+<p><img src="../../../images/证据保全工作流.png" alt="证据保全工作流"></p>
+<h4 id="d-%E5%A5%B9%E8%A1%8C%E7%BB%B4%E6%9D%83%E5%AF%BC%E8%88%AA%E5%B7%A5%E4%BD%9C%E6%B5%81">D. 她行·维权导航工作流</h4>
+<p><img src="../../../images/维权导航工作流.png" alt="维权导航工作流"></p>
+<h3 id="223-%E6%A0%B8%E5%BF%83-prompt-%E8%AE%BE%E8%AE%A1">2.2.3 核心 Prompt 设计</h3>
+<blockquote>
+<p>本节展示 5 智能体共 7 段核心 Prompt 全文(参见 <code>附录:工作流与 prompt 说明.md</code>)。
+此处仅列出<strong>最具创新点</strong>的 3 段:言行雷达三节点。</p>
+</blockquote>
+<h4 id="2231-%E8%A8%80%E8%A1%8C%E9%9B%B7%E8%BE%BE%E9%97%A8%E6%8E%A7%E8%8A%82%E7%82%B9-prompt">2.2.3.1 言行雷达「门控」节点 Prompt</h4>
+<p><strong>🎯 设计意图:</strong> 宽松门控,召回优先 —— 拿不准就判&quot;涉及&quot;,绝不漏判。</p>
+<p><strong>📝 原文:</strong></p>
+<pre class="hljs"><code><div>你是一个宽松的识别门控。你的唯一任务是:判断用户输入是否可能涉及**职场中的性别歧视或性骚扰**。
+
+【明确涉及的情况包括但不限于】
+- 询问婚育、恋爱、家庭计划、年龄、生育意愿等个人隐私
+- 以性别为由拒绝录用、调岗、降薪、晋升或分配任务
+- 对女性/男性员工差别化对待、性别侮辱、刻板印象评价
+- 性暗示言语、黄色笑话、色情图片、不当肢体接触
+- 利用职权(上级、HR、面试官)提出性要求或&quot;以性换利益&quot;的条件
+
+【核心原则——召回优先】
+- 只要内容与&quot;职场 + 性别/权力关系&quot;**沾一点边**,或者你**拿不准、不确定**,一律判为&quot;涉及&quot;
+- 只有内容**完全无关**(例如:纯天气、购物、技术故障、日常闲聊、不涉及任何职场或性别话题)才判&quot;不涉及&quot;
+
+【输出格式】
+只输出一个词:&quot;涉及&quot; 或 &quot;不涉及&quot;。不要输出任何其他内容。
+</div></code></pre>
+<p><strong>优势:</strong></p>
+<ul>
+<li>✅ 宽松门控、召回优先 — 100 条评测中<strong>无风险样本召回 100%</strong>(15/15 全准)</li>
+<li>✅ 覆盖面广 — 明确列举 5 大类典型涉及场景</li>
+<li>✅ 反误判兜底 — 配套「强制深度分析」按钮跳过门控,即使算法犯错用户也有发言权</li>
+</ul>
+<h4 id="2232-%E8%A8%80%E8%A1%8C%E9%9B%B7%E8%BE%BE%E6%8F%90%E5%8F%96%E6%A1%88%E6%83%85%E8%A6%81%E7%B4%A0%E8%8A%82%E7%82%B9-prompt">2.2.3.2 言行雷达「提取案情要素」节点 Prompt</h4>
+<p><strong>🎯 设计意图:</strong> 把 LLM 当<strong>结构化抽取器</strong>,只标事实,不下结论,输出可被下游代码节点直接消费的 JSON。</p>
+<p><strong>📝 输出字段(11 个):</strong></p>
+<ul>
+<li>通用:<code>issue_type</code> / <code>summary</code></li>
+<li>性骚扰:<code>behavior_type</code> / <code>sexual_nature</code> / <code>against_will</code> / <code>power_relation</code> / <code>scene</code></li>
+<li>性别歧视:<code>differential_treatment</code> / <code>employment_stage</code> / <code>job_justification</code></li>
+<li>加重信号:<code>severity_signals[]</code></li>
+</ul>
+<p><strong>保守原则:</strong> 描述里看不清的填 <code>存疑</code> / <code>不明</code>,<strong>不要猜成 <code>否</code></strong> —— 拿不准要往&quot;可能涉及&quot;的方向留。</p>
+<h4 id="2233-%E8%A8%80%E8%A1%8C%E9%9B%B7%E8%BE%BE%E8%A6%81%E4%BB%B6%E5%BC%8F%E8%AF%84%E4%BC%B0%E5%92%8C%E5%9B%9E%E5%BA%94%E5%86%85%E5%AE%B9%E8%8A%82%E7%82%B9-prompt%E6%A0%B8%E5%BF%83">2.2.3.3 言行雷达「要件式评估和回应内容」节点 Prompt(核心)</h4>
+<p><strong>🎯 设计意图:</strong> 用 LLM 完成<strong>要件级法律评估</strong>,但<strong>不输出风险等级</strong> —— 等级由后续代码节点严格 if/else 映射,<strong>告别&quot;同问不同答&quot;</strong>。</p>
+<p><strong>输出 JSON 字段(8 项):</strong></p>
+<ul>
+<li><code>risk_summary</code> — 一句话描述(不写等级)</li>
+<li><code>type[]</code> — 性骚扰 / 性别歧视 / 暂不明确</li>
+<li><code>confidence</code> — 高 / 中 / 低</li>
+<li><code>elements_check[]</code> — 6 个要件逐条 <code>满足</code>/<code>存疑</code>/<code>不满足</code>/<code>不适用</code></li>
+<li><code>aggravating_factors[]</code> — 加重情节</li>
+<li><code>discrimination_severity{institutional, concrete_harm}</code> — 歧视严重度</li>
+<li><code>law_references[]</code> — 法条引用(含 source: &quot;得理&quot;/&quot;模型知识&quot;)</li>
+<li><code>case_references[]</code> — 类案(必填 facts/judgment/key_point;可选 court/case_number/date)</li>
+<li><code>response_scripts{gentle, firm, formal}</code> — 三级话术</li>
+<li><code>narrative</code> — 温暖叙事</li>
+</ul>
+<p><strong>风险等级映射(代码节点 Python):</strong></p>
+<pre class="hljs"><code><div><span class="hljs-function"><span class="hljs-keyword">def</span> <span class="hljs-title">compute_risk_level</span><span class="hljs-params">(data)</span>:</span>
+    <span class="hljs-comment"># 性骚扰分支</span>
+    <span class="hljs-keyword">if</span> s(h1) <span class="hljs-keyword">and</span> s(h2) <span class="hljs-keyword">and</span> s(h3) <span class="hljs-keyword">and</span> has_any_agg:
+        levels.append(<span class="hljs-number">3</span>)  <span class="hljs-comment"># 高危</span>
+    <span class="hljs-keyword">elif</span> s(h1) <span class="hljs-keyword">and</span> (s(h2) <span class="hljs-keyword">or</span> s(h3) <span class="hljs-keyword">or</span> d(h2) <span class="hljs-keyword">or</span> d(h3)):
+        levels.append(<span class="hljs-number">2</span>)  <span class="hljs-comment"># 中危</span>
+    <span class="hljs-keyword">elif</span> s(h1):
+        levels.append(<span class="hljs-number">1</span>)  <span class="hljs-comment"># 低危</span>
+    <span class="hljs-comment"># 性别歧视分支:类似逻辑</span>
+    <span class="hljs-comment"># 严重度判定</span>
+    <span class="hljs-keyword">if</span> s(e1) <span class="hljs-keyword">and</span> s(e2) <span class="hljs-keyword">and</span> discrim_severe:
+        levels.append(<span class="hljs-number">3</span>)  <span class="hljs-comment"># 高危</span>
+    <span class="hljs-comment"># ...</span>
+    <span class="hljs-keyword">return</span> RISK_TEXT[max(levels)]
+</div></code></pre>
+<p><strong>优势:</strong></p>
+<ul>
+<li>✅ 要件式评估、可解释 — 逐条标注&quot;满足/存疑/不满足/不适用&quot;,逻辑透明</li>
+<li>✅ <strong>告别&quot;同问不同答&quot;</strong> — LLM 只判事实,代码做映射,同样事实永远同样等级</li>
+<li>✅ 法条引用可追溯 — 区分&quot;得理&quot;和&quot;模型知识&quot;来源,<strong>严禁编造条号或伪造原文</strong></li>
+<li>✅ 类案匹配 — 从得理检索结果挑选 1-2 案例,必填 facts/judgment/key_point,<strong>严禁编造案号/法院/日期</strong></li>
+<li>✅ 三级话术(委婉/坚定/正式)按场景定制</li>
+<li>✅ 温暖叙事 先接情绪再点法律,用大白话解释法条</li>
+</ul>
+<h4 id="2234--2237-%E5%85%B6%E4%BB%96-4-%E6%99%BA%E8%83%BD%E4%BD%93-prompt">2.2.3.4 ~ 2.2.3.7 其他 4 智能体 Prompt</h4>
+<p>完整 prompt 见 <code>附录:工作流与 prompt 说明.md</code>,包括:</p>
+<ul>
+<li>她权·权益指南「生成输出内容」节点 — 法定权利清单 + 白话解释 + 温馨提示</li>
+<li>她证·证据保全「生成证据保全指南」节点 — 6 大典型场景 + 操作级指导 + 合法边界</li>
+<li>她行·维权导航「生成维权行动指南」节点 — 六步阶梯 + 时效关键节点</li>
+<li>她心·情绪树洞「生成情感支持内容」节点 — 三步结构 + CBT 轻度支持 + 危机干预</li>
+</ul>
+<h3 id="224-%E8%BE%93%E5%87%BA%E7%A4%BA%E4%BE%8B%E5%A5%B9%E7%9C%BC%E8%A8%80%E8%A1%8C%E9%9B%B7%E8%BE%BE-%E5%AE%9E%E6%B5%8B">2.2.4 输出示例(她眼·言行雷达 实测)</h3>
+<p><strong>用户输入:</strong> &quot;怀孕被降薪&quot;</p>
+<p><strong>AI 输出 JSON(节选):</strong></p>
+<pre class="hljs"><code><div>{
+  <span class="hljs-attr">"risk_summary"</span>: <span class="hljs-string">"怀孕期间被降薪涉嫌性别歧视"</span>,
+  <span class="hljs-attr">"type"</span>: [<span class="hljs-string">"性别歧视"</span>],
+  <span class="hljs-attr">"confidence"</span>: <span class="hljs-string">"高"</span>,
+  <span class="hljs-attr">"elements_check"</span>: [
+    {<span class="hljs-attr">"name"</span>: <span class="hljs-string">"行为与性有关"</span>, <span class="hljs-attr">"status"</span>: <span class="hljs-string">"不适用"</span>},
+    {<span class="hljs-attr">"name"</span>: <span class="hljs-string">"违背对方意愿"</span>, <span class="hljs-attr">"status"</span>: <span class="hljs-string">"不适用"</span>},
+    {<span class="hljs-attr">"name"</span>: <span class="hljs-string">"职场情境"</span>, <span class="hljs-attr">"status"</span>: <span class="hljs-string">"不适用"</span>},
+    {<span class="hljs-attr">"name"</span>: <span class="hljs-string">"基于性别或婚育状况的区别对待"</span>, <span class="hljs-attr">"status"</span>: <span class="hljs-string">"满足"</span>},
+    {<span class="hljs-attr">"name"</span>: <span class="hljs-string">"发生在就业环节"</span>, <span class="hljs-attr">"status"</span>: <span class="hljs-string">"满足"</span>},
+    {<span class="hljs-attr">"name"</span>: <span class="hljs-string">"无合理职业资格依据"</span>, <span class="hljs-attr">"status"</span>: <span class="hljs-string">"满足"</span>}
+  ],
+  <span class="hljs-attr">"aggravating_factors"</span>: [],
+  <span class="hljs-attr">"discrimination_severity"</span>: {<span class="hljs-attr">"institutional"</span>: <span class="hljs-string">"否"</span>, <span class="hljs-attr">"concrete_harm"</span>: <span class="hljs-string">"是"</span>},
+  <span class="hljs-attr">"law_references"</span>: [
+    {<span class="hljs-attr">"name"</span>: <span class="hljs-string">"《女职工劳动保护特别规定》"</span>, <span class="hljs-attr">"article"</span>: <span class="hljs-string">"第五条"</span>, <span class="hljs-attr">"content"</span>: <span class="hljs-string">"用人单位不得因女职工怀孕、生育、哺乳降低其工资、予以辞退、与其解除劳动或者聘用合同。"</span>},
+    {<span class="hljs-attr">"name"</span>: <span class="hljs-string">"《中华人民共和国妇女权益保障法》"</span>, <span class="hljs-attr">"article"</span>: <span class="hljs-string">"第四十八条"</span>, <span class="hljs-attr">"content"</span>: <span class="hljs-string">"用人单位在录(聘)用女职工时,应当依法与其签订劳动(聘用)合同或者服务协议,劳动(聘用)合同或者服务协议中应当具备女职工特殊保护条款,并不得规定限制女职工结婚、生育等内容。"</span>}
+  ],
+  <span class="hljs-attr">"case_references"</span>: [{
+    <span class="hljs-attr">"title"</span>: <span class="hljs-string">"上海港行信息咨询有限公司与朱艳丽劳动合同纠纷二审民事判决书"</span>,
+    <span class="hljs-attr">"court"</span>: <span class="hljs-string">"上海市第二中级人民法院"</span>,
+    <span class="hljs-attr">"case_number"</span>: <span class="hljs-string">"(2020)沪02民终6339号"</span>,
+    <span class="hljs-attr">"date"</span>: <span class="hljs-string">"2020-08-04"</span>,
+    <span class="hljs-attr">"facts"</span>: <span class="hljs-string">"公司以员工入职时隐瞒怀孕为由主张解除劳动关系"</span>,
+    <span class="hljs-attr">"judgment"</span>: <span class="hljs-string">"判决驳回上诉,维持原判,双方恢复劳动关系,公司支付工资"</span>,
+    <span class="hljs-attr">"key_point"</span>: <span class="hljs-string">"法院认为,劳动者的婚育状况属于个人隐私,不属于必须向用人单位说明的劳动合同基本情况。用人单位不得因此解除劳动合同,也不得将限制生育作为录用条件。本案中,公司未能证明员工隐瞒怀孕,其解除行为缺乏依据。"</span>
+  }],
+  <span class="hljs-attr">"response_scripts"</span>: {
+    <span class="hljs-attr">"gentle"</span>: <span class="hljs-string">"领导,关于我怀孕后工资调整的事情,我想和您沟通一下。我理解公司可能有经营上的考虑,但根据国家规定,女职工在孕期是受到特殊保护的,工资待遇不应该因为怀孕而降低..."</span>,
+    <span class="hljs-attr">"firm"</span>: <span class="hljs-string">"我需要明确指出,因为我怀孕而降低我的薪资,这是违反《女职工劳动保护特别规定》的。我要求公司立即纠正这一决定,恢复我原有的薪酬标准。"</span>,
+    <span class="hljs-attr">"formal"</span>: <span class="hljs-string">"本人就怀孕期间被单方降薪一事,正式提出异议。根据《女职工劳动保护特别规定》第五条,用人单位不得因女职工怀孕降低其工资。现要求贵司在[具体日期]前书面回复,说明降薪依据并恢复本人原薪资待遇,否则本人将保留通过法律途径维护自身合法权益的权利。"</span>
+  },
+  <span class="hljs-attr">"narrative"</span>: <span class="hljs-string">"听到你在怀孕期间被降薪,我感到非常气愤和不平。这不仅仅是钱的问题,更是对你作为一位准妈妈和劳动者基本尊严的侵犯...\n\n从你描述的情况来看,这件事在法律上很可能构成了基于婚育状况的性别歧视...\n\n法律是站在你这边的。《女职工劳动保护特别规定》里写得清清楚楚..."</span>,
+  <span class="hljs-attr">"suggested_modules"</span>: [<span class="hljs-string">"她行"</span>, <span class="hljs-string">"她权"</span>, <span class="hljs-string">"她证"</span>],
+  <span class="hljs-attr">"disclaimer"</span>: <span class="hljs-string">"本指导不构成正式法律意见,重大维权请咨询律师或拨打 12338 / 12348。"</span>
+}
+</div></code></pre>
+<p><strong>代码节点映射:</strong> <code>e1=满足</code> + <code>e2=满足</code> + <code>concrete_harm=是</code> → <strong>高危</strong></p>
+<hr>
+<h2 id="23-%E9%A1%B9%E7%9B%AE%E5%88%9B%E4%BD%9C%E6%89%80%E7%94%A8%E7%B4%A0%E6%9D%90%E6%8E%A5%E5%8F%A3%E5%B7%A5%E5%85%B7">2.3 项目创作所用素材、接口、工具</h2>
+<h3 id="231-ai-%E5%B9%B3%E5%8F%B0%E4%B8%8E%E6%A8%A1%E5%9E%8B">2.3.1 AI 平台与模型</h3>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>名称</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>AI 智能体平台</strong></td>
+<td><strong>腾讯元器</strong>(Tencent Yuanqi)</td>
+<td>5 大智能体工作流编排 + LLM 调用</td>
+</tr>
+<tr>
+<td><strong>底层模型</strong></td>
+<td>腾讯混元 / DeepSeek(元器平台可切换)</td>
+<td>意图识别、要件抽取、文本生成</td>
+</tr>
+<tr>
+<td><strong>开发助手</strong></td>
+<td>CodeBuddy / Claude Code</td>
+<td>代码生成、prompt 工程、答辩材料</td>
+</tr>
+</tbody>
+</table>
+<h3 id="232-%E6%B3%95%E5%BE%8B%E7%9F%A5%E8%AF%86%E6%8E%A5%E5%8F%A3rag-%E6%9D%A5%E6%BA%90">2.3.2 法律知识接口(RAG 来源)</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>用途</th>
+<th>接入位置</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>得理开放平台 API</strong>(deli.com.cn)</td>
+<td>类案检索 + 法规检索</td>
+<td>她眼·言行雷达工作流上游 / 她权·权益指南工作流上游</td>
+</tr>
+<tr>
+<td><strong>北大法宝</strong>(pkulaw.com)</td>
+<td>法律法规库辅助校验</td>
+<td>静态法条注入(System Prompt 内置)</td>
+</tr>
+<tr>
+<td><strong>腾讯混元/DeepSeek 内置知识</strong></td>
+<td>模型自带法律常识</td>
+<td>兜底引用(<code>source: &quot;模型知识&quot;</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="233-%E5%90%8E%E7%AB%AF%E4%BA%91%E6%9C%8D%E5%8A%A1">2.3.3 后端云服务</h3>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>腾讯 CloudBase</strong>(云开发)</td>
+<td>云函数 proxy(密钥下沉 + 缓存 + CORS)/ 云数据库(她声故事)/ 静态托管</td>
+</tr>
+<tr>
+<td><strong>腾讯云域名</strong></td>
+<td><code>tcloudbase.com</code> 子域名作为 API endpoint</td>
+</tr>
+</tbody>
+</table>
+<h3 id="234-%E5%89%8D%E7%AB%AF%E6%8A%80%E6%9C%AF">2.3.4 前端技术</h3>
+<table>
+<thead>
+<tr>
+<th>类别</th>
+<th>技术</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>标记 / 样式</td>
+<td>HTML5 / CSS3 / 暖紫主题(<code>#9370DB</code>)</td>
+<td>UI 布局</td>
+</tr>
+<tr>
+<td>脚本</td>
+<td>Vanilla JavaScript(ES Modules)</td>
+<td>10 个独立模块</td>
+</tr>
+<tr>
+<td>加密</td>
+<td><strong>Web Crypto API</strong>(SHA-256)</td>
+<td>浏览器端证据指纹固化</td>
+</tr>
+<tr>
+<td>存储</td>
+<td>LocalStorage</td>
+<td>用户对话历史本地保存</td>
+</tr>
+<tr>
+<td>部署</td>
+<td>GitHub Pages(<code>huangjwwen.github.io</code>)</td>
+<td>静态网站托管,零依赖</td>
+</tr>
+</tbody>
+</table>
+<h3 id="235-%E8%AF%84%E6%B5%8B%E4%B8%8E%E8%B4%A8%E9%87%8F%E4%BF%9D%E9%9A%9C%E5%B7%A5%E5%85%B7">2.3.5 评测与质量保障工具</h3>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>eval/run.js</code></td>
+<td>Node.js 评测脚本,支持代理 / 直连两种模式</td>
+</tr>
+<tr>
+<td><code>eval/test_set.json</code></td>
+<td><strong>100 条</strong>标注测试集(50 精标 + 50 变体)</td>
+</tr>
+<tr>
+<td><code>eval/validate-annotation.js</code></td>
+<td>要件级标注校验脚本(<code>compute_risk_level</code> JS 端口)</td>
+</tr>
+<tr>
+<td><code>eval/analyze-manual-100-v2.js</code></td>
+<td>100 条手测结果汇总 + 混淆矩阵 + 偏差分布</td>
+</tr>
+</tbody>
+</table>
+<h3 id="236-%E7%AD%94%E8%BE%A9%E6%9D%90%E6%96%99%E5%88%B6%E4%BD%9C%E5%B7%A5%E5%85%B7">2.3.6 答辩材料制作工具</h3>
+<table>
+<thead>
+<tr>
+<th>工具</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>pptxgenjs</strong>(Node.js)</td>
+<td>答辩 PPT 自动生成(13 页)</td>
+</tr>
+<tr>
+<td><strong>Mermaid</strong></td>
+<td>架构图 / 流程图渲染</td>
+</tr>
+<tr>
+<td>中国裁判文书网 / 最高法典型案例库</td>
+<td>100 条测试集<strong>真实判例</strong>锚定来源</td>
+</tr>
+</tbody>
+</table>
+<h3 id="237-%E7%9C%9F%E5%AE%9E%E5%88%A4%E4%BE%8B%E9%94%9A%E7%82%B9%E9%83%A8%E5%88%86">2.3.7 真实判例锚点(部分)</h3>
+<p>测试集所用<strong>真实司法判例</strong>(<code>anchor</code> 字段):</p>
+<table>
+<thead>
+<tr>
+<th>案例 ID</th>
+<th>案号</th>
+<th>法院</th>
+<th>裁判要点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>D_real_1</code></td>
+<td>严女士 vs 某公司平等就业权纠纷</td>
+<td>上海浦东法院(2023)</td>
+<td>HCG 检测作入职体检 → 缔约过失责任,赔偿 3 万余元</td>
+</tr>
+<tr>
+<td><code>D_real_2</code></td>
+<td>韩坤诉厦门翔鹭化纤</td>
+<td>(2009) 厦民终字第 2188 号</td>
+<td>判赔 39310 元(经济补偿标准 2 倍)</td>
+</tr>
+<tr>
+<td><code>H_real_1</code></td>
+<td>周某强制猥亵案</td>
+<td>芜湖镜湖区检察院 (2023)</td>
+<td>以名誉/行业封杀威胁,使被害人不敢反抗</td>
+</tr>
+<tr>
+<td><code>H_real_2</code></td>
+<td>陈某 vs 杨某等人格权纠纷</td>
+<td>—</td>
+<td>公安行政拘留 14 天 + 公司开除 + 法院判赔 19759 元</td>
+</tr>
+<tr>
+<td><code>D8</code> 锚点</td>
+<td>Google 同工不同酬集体诉讼</td>
+<td>美国加州(2021-2022)</td>
+<td>4 名前女员工代表 15500 名 → 谷歌和解支付 1.18 亿美元</td>
+</tr>
+<tr>
+<td><code>D2</code> 锚点</td>
+<td>赵某孕期降薪案</td>
+<td>最高法第四批劳动争议典型案例(2025)</td>
+<td>月薪 17000 降至 3000 → 仲裁裁决按 17000 补齐差额</td>
+</tr>
+</tbody>
+</table>
+<p>完整 17 条司法判例锚点列表见 <code>eval/test_set.json</code>。</p>
+<h3 id="238-%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%BF%90%E7%BB%B4">2.3.8 部署与运维</h3>
+<table>
+<thead>
+<tr>
+<th>内容</th>
+<th>来源</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>静态站托管</td>
+<td><strong>GitHub Pages</strong>(自动 CI 部署)</td>
+</tr>
+<tr>
+<td>API 代理</td>
+<td>腾讯 CloudBase(serverless 弹性)</td>
+</tr>
+<tr>
+<td>域名 / SSL</td>
+<td>GitHub Pages 提供</td>
+</tr>
+<tr>
+<td>版本管理</td>
+<td>Git + GitHub(完整开源:<code>Huangjwwen/her_shield</code>)</td>
+</tr>
+</tbody>
+</table>
+
+</body>
+</html>

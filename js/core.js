@@ -151,6 +151,15 @@ async function callYuanqiAPI(agentType, userMessage, useStream = false, extras =
 
         console.log('调用腾讯元器 API:', agentType, requestBody);
 
+        // ─── 缓存策略入参 ───
+        // 1. extras.force === true(用户点强制深度分析按钮)→ 一定绕开缓存
+        // 2. extras.nocache === true(用户点重试按钮)→ 一定绕开缓存
+        // 3. 普通输入默认走缓存提升体验
+        const safeExtras = (extras && typeof extras === 'object') ? { ...extras } : {};
+        if (safeExtras.force === true || safeExtras.nocache === true) {
+            safeExtras.nocache = true;
+        }
+
         const response = await fetch(
             'https://her-shield-d7gyrtfxm65f3e782-1410225134.ap-shanghai.app.tcloudbase.com/proxy',
             {
@@ -161,7 +170,7 @@ async function callYuanqiAPI(agentType, userMessage, useStream = false, extras =
                 body: JSON.stringify({
                     agentType,
                     messages,
-                    ...(extras && typeof extras === 'object' ? extras : {})
+                    ...safeExtras
                 })
             }
         );
