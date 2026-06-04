@@ -456,10 +456,14 @@ function initCollapsibleInputs() {
         toggle.setAttribute('aria-label', '折叠或展开输入框');
 
         const render = (isCollapsed) => {
+            // 展开状态显示 ▲(向上,点击可收起);折叠状态显示 ▼(向下,点击可展开)
+            // 实际上 UX 上习惯反过来:收起的箭头朝下指示"展开后内容会向下出现",展开的箭头朝上指示"点击收起向上"
+            // 这里按用户要求:展开按钮的三角符号朝上 = collapsed 时显示 ▲
             toggle.innerHTML = isCollapsed
-                ? '<span>展开</span><span class="chevron">▲</span>'
-                : '<span>收起</span><span class="chevron">▼</span>';
-            toggle.title = isCollapsed ? '点击展开输入框' : '点击收起输入框(腾出空间看历史回复)';
+                ? '<span class="chevron">▲</span>'
+                : '<span class="chevron">▼</span>';
+            toggle.title = isCollapsed ? '点击展开输入框' : '点击收起输入框';
+            toggle.setAttribute('aria-label', isCollapsed ? '展开输入框' : '收起输入框');
         };
 
         // 初始状态:从 localStorage 读取,默认展开
