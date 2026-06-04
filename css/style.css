@@ -1244,7 +1244,7 @@ body {
     color: var(--primary-color);
 }
 
-.guide-step {
+.guide-step-old {
     display: flex;
     gap: 15px;
     margin-bottom: 20px;
@@ -3135,8 +3135,8 @@ body {
 /* —— 权益指南:权利卡片网格 —— */
 .rights-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
     margin-bottom: 16px;
 }
 .right-card {
@@ -3144,7 +3144,7 @@ body {
     border: 1px solid rgba(147, 112, 219, 0.18);
     border-left: 4px solid #9370db;
     border-radius: 10px;
-    padding: 14px 16px;
+    padding: 10px 12px;
     box-shadow: 0 1px 3px rgba(123, 93, 196, 0.05);
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
@@ -3155,51 +3155,51 @@ body {
 .right-card-head {
     display: flex;
     align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
+    gap: 8px;
+    margin-bottom: 6px;
 }
 .right-card-no {
     flex-shrink: 0;
-    width: 24px;
-    height: 24px;
-    line-height: 24px;
+    width: 22px;
+    height: 22px;
+    line-height: 22px;
     text-align: center;
     background: #9370db;
     color: #fff;
     border-radius: 50%;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 700;
 }
 .right-card-name {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 600;
     color: #2a2a2a;
-    line-height: 1.4;
+    line-height: 1.35;
 }
 .right-card-law-cite {
     display: inline-block;
-    margin-bottom: 6px;
-    padding: 3px 8px;
+    margin-bottom: 4px;
+    padding: 2px 6px;
     background: #eff6ff;
     border-radius: 4px;
-    font-size: 13px;
+    font-size: 12px;
 }
 .right-card-law-text {
     color: #555;
-    font-size: 13px;
-    line-height: 1.65;
-    margin-bottom: 8px;
-    padding: 6px 10px;
+    font-size: 12px;
+    line-height: 1.55;
+    margin-bottom: 4px;
+    padding: 4px 8px;
     background: #fafafa;
     border-left: 2px solid #e0e0e0;
     border-radius: 0 4px 4px 0;
 }
 .right-card-plain {
     display: flex;
-    gap: 6px;
+    gap: 4px;
     color: #6b4fb8;
-    font-size: 13px;
-    line-height: 1.6;
+    font-size: 12px;
+    line-height: 1.5;
     padding-top: 4px;
     border-top: 1px dashed #eee;
 }
@@ -3265,16 +3265,17 @@ body {
 /* 每一步 */
 .guide-step {
     position: relative;
-    padding-left: 50px;
-    padding-bottom: 22px;
+    display: block;
+    padding-left: 44px;
+    padding-bottom: 14px;
 }
 
 /* 竖线(轴):用 ::before 在圆点正下方画一条 */
 .guide-step::before {
     content: '';
     position: absolute;
-    left: 17px;
-    top: 36px;
+    left: 15px;
+    top: 32px;
     bottom: 0;
     width: 2px;
     background: linear-gradient(180deg, #b8a9e0 0%, #d8c8f0 100%);
@@ -3294,21 +3295,21 @@ body {
     position: absolute;
     left: 0;
     top: 0;
-    width: 36px;
-    height: 36px;
-    line-height: 36px;
+    width: 32px;
+    height: 32px;
+    line-height: 32px;
     text-align: center;
     font-weight: 700;
-    font-size: 14px;
+    font-size: 13px;
     color: #fff;
     background: linear-gradient(135deg, #9370db 0%, #7b5dc4 100%);
     border-radius: 50%;
-    box-shadow: 0 2px 6px rgba(123, 93, 196, 0.25), 0 0 0 4px #fff;
+    box-shadow: 0 2px 6px rgba(123, 93, 196, 0.25), 0 0 0 3px #fff;
     z-index: 1;
 }
 
 .guide-step-content {
-    padding: 8px 14px 12px;
+    padding: 6px 10px 8px;
     background: #fff;
     border: 1px solid rgba(147, 112, 219, 0.18);
     border-radius: 8px;
@@ -3322,18 +3323,18 @@ body {
 }
 
 .guide-step-title {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     color: #2a2a2a;
-    margin-bottom: 6px;
-    padding-bottom: 6px;
+    margin-bottom: 4px;
+    padding-bottom: 4px;
     border-bottom: 1px dashed #eee;
 }
 
 .guide-step-body {
     color: #444;
-    font-size: 13.5px;
-    line-height: 1.7;
+    font-size: 13px;
+    line-height: 1.6;
 }
 
 /* 内嵌维权热线 */

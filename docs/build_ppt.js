@@ -51,7 +51,7 @@ function addHeaderFooter(slide, pageNum) {
     fontSize: 9, fontFace: F.sans, color: C.primary, charSpacing: 1, margin: 0
   });
   // 页码 右上
-  slide.addText(`${pageNum} / 13`, {
+  slide.addText(`${pageNum} / 18`, {
     x: 8.9, y: 0.18, w: 0.7, h: 0.3,
     fontSize: 9, fontFace: F.sans, color: C.primaryLight, align: 'right', margin: 0
   });
@@ -133,16 +133,17 @@ function addPageBackground(slide) {
     line: { color: C.primary, width: 0.6, transparency: 70 }
   });
 
-  // === 左侧 logo ===
+  // === 左侧 logo (圆形裁切) ===
   // logo 底光圈(让 logo 浮起来)
   s.addShape(pres.shapes.OVAL, {
     x: 0.5, y: 0.95, w: 3.85, h: 3.85,
     fill: { color: 'FFFFFF', transparency: 30 }, line: { type: 'none' }
   });
-  // logo 图片本体
+  // logo 图片本体 —— rounding:true 让正方形图片被裁成圆形
   s.addImage({
     path: path.join(__dirname, '..', 'logo.png'),
-    x: 0.65, y: 1.1, w: 3.55, h: 3.55
+    x: 0.65, y: 1.1, w: 3.55, h: 3.55,
+    rounding: true  // ★ 圆形裁切(square w==h 时为正圆)
   });
 
   // === 右侧文字区 ===
@@ -591,7 +592,7 @@ function addPageBackground(slide) {
     fill: { color: 'FFFFFF' }, line: { color: C.primary, width: 1.2 }
   });
   s.addImage({
-    path: path.join(__dirname, '..', '..', 'images', 'workflow-1.png'),
+    path: path.join(__dirname, '..', '..', 'images', '言行雷达工作流.png'),
     x: 0.8, y: 1.45, w: 8.4, h: 2.95
   });
   // 右上小角标:节点编号说明
@@ -737,7 +738,7 @@ function addPageBackground(slide) {
   const s = pres.addSlide();
   addPageBackground(s);
   addHeaderFooter(s, 8);
-  addSlideTitle(s, '100 条测试集 · 方法学', '50 精标 + 50 变体 · 17 条挂真实判例');
+  addSlideTitle(s, '标准化双层评测体系', '事实层标注 + 代码机械映射 · 50 精标 + 50 变体 · 17 条挂真实判例');
 
   // 左:精标分布
   s.addText('50 条精标分类', {
@@ -832,7 +833,7 @@ function addPageBackground(slide) {
   const s = pres.addSlide();
   addPageBackground(s);
   addHeaderFooter(s, 9);
-  addSlideTitle(s, '准确率数据', '在 100 条要件级标注 + 代码机械映射的测试集上实测');
+  addSlideTitle(s, '准确率仪表盘', '79% 整体 · 90% 高危召回 · 100% 无风险 · 96% ±1 级容忍');
 
   // ── 左上:圆环仪表盘(donut)──
   s.addText('整体准确率', {
@@ -978,12 +979,12 @@ function addPageBackground(slide) {
   });
 }
 
-// ==================== Slide 10(原 11):现场演示 · 含真实 GIF ====================
+// ==================== Slide 10:现场演示 · 言行雷达(网页端真实运行视频)====================
 {
   const s = pres.addSlide();
   addPageBackground(s);
   addHeaderFooter(s, 10);
-  addSlideTitle(s, '现场演示 · 言行雷达运行实录', '用户输入 → 节点逐一亮起 → 报告卡同屏呈现');
+  addSlideTitle(s, '现场演示 · 言行雷达运行实录', '用户输入 → 工作流逐节点跑 → 红橙绿报告卡同屏呈现');
 
   // 顶部输入条
   s.addShape(pres.shapes.RECTANGLE, {
@@ -1004,22 +1005,23 @@ function addPageBackground(slide) {
     x: 8.0, y: 1.6, w: 1.5, h: 0.4,
     fill: { color: C.mid }, line: { type: 'none' }, rectRadius: 0.08
   });
-  s.addText('⏱ 5 秒返回', {
+  s.addText('⏱ ~50s 深度', {
     x: 8.0, y: 1.6, w: 1.5, h: 0.4,
     fontSize: 11, fontFace: F.sans, bold: true, color: 'FFFFFF',
     align: 'center', valign: 'middle', margin: 0
   });
 
-  // 左:真实运行 GIF (800x430,放 5.0 x 2.69)
+  // 左:网页端真实运行视频
   s.addShape(pres.shapes.RECTANGLE, {
     x: 0.4, y: 2.2, w: 5.4, h: 3.0,
     fill: { color: 'FFFFFF' }, line: { color: C.primary, width: 1.5 }
   });
-  s.addImage({
-    path: path.join(__dirname, '..', '..', 'images', '言行雷达工作流运行动图.gif'),
-    x: 0.6, y: 2.35, w: 5.0, h: 2.69
+  s.addMedia({
+    type: 'video',
+    path: path.join(__dirname, '..', '..', 'images', 'demo-videos', 'radar-web-demo.mp4'),
+    x: 0.55, y: 2.3, w: 5.1, h: 2.8
   });
-  s.addText('📹 真实运行录屏(打开 PPT 演示模式自动播放)', {
+  s.addText('📹 网页端真实运行录屏(演示模式可播放)', {
     x: 0.4, y: 5.05, w: 5.4, h: 0.3,
     fontSize: 9, fontFace: F.sans, italic: true, color: C.textLight,
     align: 'center', margin: 0
@@ -1055,11 +1057,199 @@ function addPageBackground(slide) {
   });
 }
 
-// ==================== Slide 11(原 13):社会价值 ====================
+// ==================== Slide 11-15:其他 5 个模块逐页演示 ====================
+// 通用模板:左侧视频占位区(无视频时显示模块图标 + "演示视频待录制" 字样),右侧亮点列表
+function addModuleShowcasePage(pageNum, opts) {
+  const s = pres.addSlide();
+  addPageBackground(s);
+  addHeaderFooter(s, pageNum);
+  addSlideTitle(s, opts.title, opts.subtitle);
+
+  // 顶部输入条
+  s.addShape(pres.shapes.RECTANGLE, {
+    x: 0.4, y: 1.55, w: 9.2, h: 0.5,
+    fill: { color: C.bgSoft }, line: { color: C.primaryLight, width: 0.75 }
+  });
+  s.addText('▶ 用户输入示例', {
+    x: 0.55, y: 1.55, w: 1.7, h: 0.5,
+    fontSize: 11, fontFace: F.sans, bold: true, color: C.primary,
+    valign: 'middle', margin: 0
+  });
+  s.addText(opts.userExample, {
+    x: 2.3, y: 1.55, w: 7.2, h: 0.5,
+    fontSize: 12, fontFace: F.sans, italic: true, color: C.text,
+    valign: 'middle', margin: 0
+  });
+
+  // 左:视频占位区(future 用 s.addMedia 替换)
+  s.addShape(pres.shapes.RECTANGLE, {
+    x: 0.4, y: 2.2, w: 5.4, h: 3.0,
+    fill: { color: C.bgWhite }, line: { color: C.primary, width: 1.5 }
+  });
+  if (opts.videoPath) {
+    s.addMedia({
+      type: 'video',
+      path: opts.videoPath,
+      x: 0.55, y: 2.3, w: 5.1, h: 2.8
+    });
+  } else {
+    // 占位:大图标 + 文字
+    s.addText(opts.icon || '📹', {
+      x: 0.4, y: 2.7, w: 5.4, h: 1.0,
+      fontSize: 56, fontFace: F.sans, align: 'center', valign: 'middle', color: C.primaryLight, margin: 0
+    });
+    s.addText('演示视频待录制', {
+      x: 0.4, y: 3.85, w: 5.4, h: 0.4,
+      fontSize: 14, fontFace: F.sans, color: C.textLight, align: 'center', margin: 0
+    });
+    s.addText(opts.placeholderTip || '(网页端真实操作录屏)', {
+      x: 0.4, y: 4.25, w: 5.4, h: 0.3,
+      fontSize: 10, fontFace: F.sans, italic: true, color: C.textLight, align: 'center', margin: 0
+    });
+  }
+  s.addText(opts.videoCaption || '📹 网页端真实操作录屏', {
+    x: 0.4, y: 5.05, w: 5.4, h: 0.3,
+    fontSize: 9, fontFace: F.sans, italic: true, color: C.textLight,
+    align: 'center', margin: 0
+  });
+
+  // 右:亮点卡片
+  s.addShape(pres.shapes.RECTANGLE, {
+    x: 6.0, y: 2.2, w: 3.6, h: 3.0,
+    fill: { color: C.bgWhite }, line: { color: 'EAE3F5', width: 0.75 }
+  });
+  s.addShape(pres.shapes.RECTANGLE, {
+    x: 6.0, y: 2.2, w: 0.05, h: 3.0,
+    fill: { color: C.primary }, line: { type: 'none' }
+  });
+  s.addText(opts.rightTitle, {
+    x: 6.15, y: 2.28, w: 3.4, h: 0.3,
+    fontSize: 12, fontFace: F.serif, bold: true, color: C.primaryDark, margin: 0
+  });
+  s.addText(opts.highlights.map((h, i) => ({
+    text: h,
+    options: { color: C.text, breakLine: i < opts.highlights.length - 1, paraSpaceAfter: 6 }
+  })), {
+    x: 6.2, y: 2.65, w: 3.35, h: 2.5,
+    fontSize: 11, fontFace: F.sans, margin: 0
+  });
+
+  // 底部:核心标签
+  if (opts.tags && opts.tags.length) {
+    s.addShape(pres.shapes.RECTANGLE, {
+      x: 0.4, y: 5.4, w: 9.2, h: 0.45,
+      fill: { color: C.bgSoft }, line: { color: C.primaryLight, width: 0.5 }
+    });
+    const tagLine = opts.tags.map(t => `\`${t}\``).join('  ·  ');
+    s.addText([
+      { text: '🏷️  核心标签:  ', options: { bold: true, color: C.primaryDark } },
+      { text: opts.tags.join('  ·  '), options: { color: C.primaryDark } }
+    ], {
+      x: 0.55, y: 5.42, w: 9.0, h: 0.4,
+      fontSize: 10, fontFace: F.sans, valign: 'middle', margin: 0
+    });
+  }
+}
+
+// —— P11:她权·权益指南 ——
+addModuleShowcasePage(11, {
+  title: '她权·权益指南',
+  subtitle: '场景化权利清单 · 卡片网格 · 法条蓝色高亮',
+  userExample: '"在职怀孕女性受到哪些法律保护"',
+  icon: '⚖️',
+  rightTitle: '权益指南输出亮点',
+  videoPath: null,  // TODO: 录制后填路径
+  highlights: [
+    '🎯 8 类场景标签自动识别',
+    '🃏 权利卡片网格(序号+权利名+引用)',
+    '💎 法律名 + 条款号 + 原文 三级蓝高亮',
+    '🌸 暖黄温馨提示独立卡片',
+    '🔄 重试按钮(跳过缓存,治"同问同答")',
+  ],
+  tags: ['场景识别', '卡片网格', '法条高亮', '重试机制']
+});
+
+// —— P12:她证·证据保全 ——
+addModuleShowcasePage(12, {
+  title: '她证·证据保全',
+  subtitle: '浏览器端 SHA-256 指纹 · 存证凭证 · 取证 Checklist',
+  userExample: '"怀孕被调岗,如何留证据?"',
+  icon: '🔐',
+  rightTitle: '证据保全输出亮点',
+  videoPath: null,
+  highlights: [
+    '🔐 Web Crypto SHA-256 浏览器端计算',
+    '📄 自动生成《存证凭证》可下载',
+    '🛡️ 原文件不上传,只存哈希',
+    '☑️ 取证 Checklist + 完成度进度条',
+    '📚 6 大典型场景规则库(AI 自动分类)',
+    '🧪 防篡改演示:同文件验证哈希一致',
+  ],
+  tags: ['SHA-256', '存证凭证', '防篡改', '6 大场景', 'Checklist']
+});
+
+// —— P13:她行·维权导航 ——
+addModuleShowcasePage(13, {
+  title: '她行·维权导航',
+  subtitle: '竖直时间轴 · 6 步阶梯路径 · 热线一键拨号 · 时效胶囊',
+  userExample: '"怀孕被降薪,我该怎么维权?"',
+  icon: '🧭',
+  rightTitle: '维权导航输出亮点',
+  videoPath: null,
+  highlights: [
+    '📏 竖直时间轴 6 步(紫色数字徽标 + 渐变竖线)',
+    '📞 热线胶囊:12333/12338/12348/12388',
+    '⏰ 时效字眼橙色高亮:1 年 / 15 日 / 3 年',
+    '📦 时效尾段独立暖橙卡',
+    '🔁 配合/不配合两种分支建议',
+    '🔄 重试按钮跳过缓存重新规划',
+  ],
+  tags: ['竖直时间轴', '热线胶囊', '时效高亮', '6 步路径']
+});
+
+// —— P14:她心·情绪树洞 ——
+addModuleShowcasePage(14, {
+  title: '她心·情绪树洞',
+  subtitle: '危机干预强制弹窗 · CBT 轻度支持 · 浏览器语音引导',
+  userExample: '"我感觉是我太敏感了 / 我活不下去了"',
+  icon: '💖',
+  rightTitle: '情绪树洞输出亮点',
+  videoPath: null,
+  highlights: [
+    '🚨 危机干预模态弹窗(不可被覆盖)',
+    '☎️ 自动弹出 400-161-9995 心理援助热线',
+    '🧠 CBT 轻度支持:认知偏差温和重塑',
+    '🔊 SpeechSynthesis 浏览器原生语音引导',
+    '🚫 禁止"正能量化",允许低落存在',
+    '🫂 三步结构:承认 → 正常化 → 陪伴',
+  ],
+  tags: ['危机干预', 'CBT', '语音引导', '不评判']
+});
+
+// —— P15:她声·共鸣回响 ——
+addModuleShowcasePage(15, {
+  title: '她声·共鸣回响',
+  subtitle: '匿名故事社区 · 三类敏感信息自动脱敏 · CloudBase 持久化',
+  userExample: '浏览或投稿:"我也曾遭遇..."',
+  icon: '🌸',
+  rightTitle: '共鸣回响输出亮点',
+  videoPath: null,
+  highlights: [
+    '🎭 匿名化保护,无注册无登录',
+    '🔒 三类敏感信息自动脱敏:手机号 / 身份证 / 邮箱',
+    '🏷️ 主题标签筛选(性别歧视 / 性骚扰 / 孕产 ...)',
+    '📁 CloudBase 云数据库千万级文档容量',
+    '💾 localStorage 本地浏览缓存',
+    '📚 内容均改编自真实判例 + 新闻(脱敏)',
+  ],
+  tags: ['匿名社区', '三类脱敏', '标签筛选', '真实判例改编']
+});
+
+// ==================== Slide 16:社会价值 ====================
 {
   const s = pres.addSlide();
   addPageBackground(s);
-  addHeaderFooter(s, 11);
+  addHeaderFooter(s, 16);
   addSlideTitle(s, '社会价值 · 降低三道门槛', '让每一个"本该沉默的瞬间",都有回应的能力');
 
   const thresholds = [
@@ -1114,11 +1304,11 @@ function addPageBackground(slide) {
   });
 }
 
-// ==================== Slide 12(原 14):致谢 ====================
+// ==================== Slide 17:致谢 ====================
 {
   const s = pres.addSlide();
   addPageBackground(s);
-  addHeaderFooter(s, 12);
+  addHeaderFooter(s, 17);
   addSlideTitle(s, '致谢', '感谢一路给力的人、平台与判例');
 
   // 工具致谢
@@ -1190,7 +1380,7 @@ function addPageBackground(slide) {
   });
 }
 
-// ==================== Slide 13(原 15):Q&A ====================
+// ==================== Slide 18:Q&A ====================
 {
   const s = pres.addSlide();
   s.background = { color: C.primaryDark };
@@ -1223,7 +1413,7 @@ function addPageBackground(slide) {
 }
 
 // ==================== 写出 ====================
-const outPath = path.join(__dirname, '她盾_答辩_v0.5.pptx');
+const outPath = path.join(__dirname, '她盾_答辩_v0.6.pptx');
 pres.writeFile({ fileName: outPath }).then(file => {
   console.log('Written:', file);
 }).catch(err => {
