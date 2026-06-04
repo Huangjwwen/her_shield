@@ -3133,21 +3133,17 @@ body {
 }
 
 /* —— 权益指南:权利卡片网格 —— */
-/* ★ 用 CSS columns 实现瀑布流,卡片按内容高度自然堆叠,无留白 */
+/* ★ 卡片网格:同行对齐(用户偏好整齐版面),flex 内容自上而下排列防止短卡内大留白 */
 .rights-grid {
-    columns: 2 220px;   /* 2 列,每列最少 220px;窄屏自动单列 */
-    column-gap: 10px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
     margin-bottom: 16px;
+    align-items: stretch;   /* 同行卡片高度对齐,视觉整齐 */
 }
 .right-card {
-    /* columns 里防止卡片被列断 */
-    break-inside: avoid;
-    -webkit-column-break-inside: avoid;
-    page-break-inside: avoid;
-    display: inline-block;
-    width: 100%;
-    margin-bottom: 10px;  /* columns 不支持 row-gap,用 margin */
-
+    display: flex;
+    flex-direction: column;
     background: #fff;
     border: 1px solid rgba(147, 112, 219, 0.18);
     border-left: 4px solid #9370db;
@@ -3155,7 +3151,13 @@ body {
     padding: 10px 12px;
     box-shadow: 0 1px 3px rgba(123, 93, 196, 0.05);
     transition: transform 0.15s ease, box-shadow 0.15s ease;
+    gap: 4px;  /* 内部条目间距统一,空条目不留白 */
 }
+/* 短卡内容自然贴顶,空白只在底部(被同行最高卡撑出来的高度),不在内容中间 */
+.right-card-head { margin-bottom: 0; }
+.right-card-law-cite,
+.right-card-law-text,
+.right-card-plain { margin-bottom: 0; }
 .right-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(123, 93, 196, 0.12);
@@ -3317,13 +3319,23 @@ body {
 }
 
 .guide-step-content {
-    padding: 6px 10px 8px;
+    /* 卡片紧贴内容,无多余留白 */
+    padding: 8px 12px;
     background: #fff;
     border: 1px solid rgba(147, 112, 219, 0.18);
     border-radius: 8px;
     box-shadow: 0 1px 3px rgba(123, 93, 196, 0.05);
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
+.guide-step-title {
+    margin: 0 0 4px;   /* 重置默认外边距 */
+    padding: 0;
+    border-bottom: none;  /* 去掉装饰线消除视觉占位 */
+}
+.guide-step-body {
+    margin: 0;   /* 重置默认外边距 */
+}
+.guide-step-body:empty { display: none; }
 
 .guide-step-content:hover {
     transform: translateX(2px);
@@ -3403,6 +3415,17 @@ body {
 .guide-fallback {
     padding: 4px 0;
     line-height: 1.75;
+}
+
+/* ==================== Markdown 加粗/斜体渲染样式 ==================== */
+/* 让 **粗体** 和 *斜体* 显示成视觉强调,不出现光秃秃的 * 字符 */
+.guide-bold, .sc-bold {
+    font-weight: 700;
+    color: #6b4fb8;
+}
+.guide-italic, .sc-italic {
+    font-style: italic;
+    color: #555;
 }
 
 /* ==================== 重试按钮(history-item-actions 里) ==================== */

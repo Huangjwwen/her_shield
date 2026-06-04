@@ -226,6 +226,16 @@ function guideEscape(text) {
     return div.innerHTML;
 }
 
+// 把 markdown **粗体** 和 *斜体* 转成 HTML(必须在 guideEscape 之后调用,因为转义后 ** 变成 **)
+// 防止用户看到光秃秃的 * 字符
+function renderMarkdownEmphasis(escapedText) {
+    let s = escapedText;
+    // ★ 顺序:先 ** (双星) 再 * (单星),避免 **xxx** 被吃成 <em>*xxx*</em>
+    s = s.replace(/\*\*([^*\n]{1,80})\*\*/g, '<strong class="guide-bold">$1</strong>');
+    s = s.replace(/(?<![*\w])\*([^*\n]{1,80})\*(?![*\w])/g, '<em class="guide-italic">$1</em>');
+    return s;
+}
+
 // 维权热线 -> tel: 链接 + 图标
 const GUIDE_HOTLINES = {
     '12333': '劳动监察',
@@ -335,8 +345,10 @@ function parseGuideSteps(rawText) {
 
     if (matches.length < 2) return null;  // 至少 2 步才有时间轴感
 
-    // 共情段:第一个 "第X步" 之前
-    const introText = text.slice(0, matches[0].start).trim();
+    // 共情段:第一个 "第X步" 之前;末尾常残留下一步的 ·/**/列表符号,统统剥掉
+    const introText = text.slice(0, matches[0].start).trim()
+        .replace(/[·•・▪◆●▸\-*\s]+$/, '')
+        .trim();
 
     // 时效尾段:最后一步之后到末尾,识别"时效""提醒"等
     const lastEnd = matches[matches.length - 1].textIdx;
@@ -353,8 +365,11 @@ function parseGuideSteps(rawText) {
         const raw = text.slice(bodyStart, bodyEnd).trim();
         // 第一行通常是 "标题：详细说明" 或 "标题。详细说明"
         const titleMatch = raw.match(/^([^：:。\n]{2,30})[：:。]?\s*([\s\S]*)$/);
-        const title = titleMatch ? titleMatch[1].trim() : `第${mm.numChar}步`;
-        const body  = titleMatch ? titleMatch[2].trim() : raw;
+        let title = titleMatch ? titleMatch[1].trim() : `第${mm.numChar}步`;
+        let body  = titleMatch ? titleMatch[2].trim() : raw;
+        // 去掉 markdown 残留的 ** / * 前后缀,避免标题渲染成 "保持冷静**"
+        title = title.replace(/^\**\s*/, '').replace(/\s*\**$/, '').trim();
+        body  = body.replace(/^\**\s*/, '').replace(/\s*\**$/, '').trim();
         return {
             stepNo: mm.numChar,
             stepIdx: i + 1,
@@ -363,7 +378,11 @@ function parseGuideSteps(rawText) {
         };
     });
 
-    const tailText = tailStart < text.length ? text.slice(tailStart).trim() : '';
+    const tailText = tailStart < text.length
+        ? text.slice(tailStart).trim()
+            .replace(/^[·•・▪◆●▸\-*\s]+/, '')
+            .trim()
+        : '';
 
     return { intro: introText, steps, tail: tailText };
 }
@@ -372,28 +391,37 @@ function parseGuideSteps(rawText) {
 function renderGuideRecord(rec) {
     const parsed = parseGuideSteps(rec.botMessage);
 
-    // 兜底:解析失败就纯文本(带电话/时效高亮)
+    // 渲染管线工具:转义 → 包装热线 → 高亮时效 → 渲染 markdown 加粗/斜体 → 换行
+    // 末尾 trim 把 body 前后多余的 <br> 干掉(防止 LLM 残留 \n 造成大留白)
+    const pipe = (raw) => highlightTimeLimit(wrapHotlines(guideEscape(raw)));
+    const finalize = (s) => renderMarkdownEmphasis(s)
+        .replace(/\n/g, '<br>')
+        .replace(/^(?:\s*<br>\s*)+/, '')      // 去掉开头的 <br>
+        .replace(/(?:\s*<br>\s*)+$/, '');     // 去掉结尾的 <br>
+
+    // 兜底:解析失败就纯文本(带电话/时效高亮 + 加粗)
     if (!parsed) {
-        const escaped = guideEscape(rec.botMessage);
-        const html = highlightTimeLimit(wrapHotlines(escaped)).replace(/\n/g, '<br>');
         return `<div class="history-bot guide-bot">
-            <div class="guide-fallback">${html}</div>
+            <div class="guide-fallback">${finalize(pipe(rec.botMessage))}</div>
         </div>`;
     }
 
     const introHtml = parsed.intro
-        ? `<div class="guide-intro">${highlightTimeLimit(wrapHotlines(guideEscape(parsed.intro))).replace(/\n/g, '<br>')}</div>`
+        ? `<div class="guide-intro">${finalize(pipe(parsed.intro))}</div>`
         : '';
 
     const stepsHtml = parsed.steps.map((s, i) => {
         const isLast = i === parsed.steps.length - 1;
-        const titleHtml = guideEscape(s.title);
-        const bodyHtmlRaw = highlightTimeLimit(wrapHotlines(guideEscape(s.body))).replace(/\n/g, '<br>');
+        // ★ 标题也跑 markdown 渲染,这样 **保持冷静** 这种格式不会显示成光秃秃的 *
+        const titleHtml = renderMarkdownEmphasis(guideEscape(s.title));
+        const bodyHtmlRaw = finalize(pipe(s.body));
+        // body 为空就别渲染那个 div,避免视觉留白
+        const bodyDiv = bodyHtmlRaw ? `<div class="guide-step-body">${bodyHtmlRaw}</div>` : '';
         return `<div class="guide-step${isLast ? ' guide-step-last' : ''}">
             <div class="guide-step-dot">${s.stepIdx}</div>
             <div class="guide-step-content">
                 <div class="guide-step-title">${titleHtml}</div>
-                <div class="guide-step-body">${bodyHtmlRaw}</div>
+                ${bodyDiv}
             </div>
         </div>`;
     }).join('');
@@ -401,7 +429,7 @@ function renderGuideRecord(rec) {
     const tailHtml = parsed.tail
         ? `<div class="guide-tail">
             <div class="guide-tail-title">⏰ 时效提醒与关键节点</div>
-            <div class="guide-tail-body">${highlightTimeLimit(wrapHotlines(guideEscape(parsed.tail))).replace(/\n/g, '<br>')}</div>
+            <div class="guide-tail-body">${finalize(pipe(parsed.tail))}</div>
            </div>`
         : '';
 
