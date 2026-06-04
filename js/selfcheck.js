@@ -10,6 +10,14 @@ function selfcheckEscape(text) {
     return div.innerHTML;
 }
 
+// 把 markdown **粗体** 和 *斜体* 转成 HTML —— 避免界面出现光秃秃的 * 字符
+function renderSelfcheckEmphasis(escapedText) {
+    let s = escapedText;
+    s = s.replace(/\*\*([^*\n]{1,80})\*\*/g, '<strong class="sc-bold">$1</strong>');
+    s = s.replace(/(?<![*\w])\*([^*\n]{1,80})\*(?![*\w])/g, '<em class="sc-italic">$1</em>');
+    return s;
+}
+
 // 将"《XXX》第X条"等法律引用涂蓝高亮,同时尝试把后续法律原文段也高亮
 // 顺序很重要:必须先涂"《...》+ 条款号"组合(包含原文段),再涂单独的"《...》"或"第X条",
 // 否则后面两个正则会先匹配,把组合切碎。
@@ -165,30 +173,30 @@ function renderSelfcheckRecord(rec) {
         ${sceneTags.map(t => `<span class="selfcheck-scene-tag">${selfcheckEscape(t)}</span>`).join('')}
     </div>`;
 
+    // 管线工具:转义 → 法律引用蓝色 → markdown 加粗/斜体
+    const enrich = (raw) => renderSelfcheckEmphasis(highlightLawCitations(selfcheckEscape(raw)));
+
     if (!parsed) {
-        // 兜底:仍用原蓝色高亮文本
-        const escaped = selfcheckEscape(rec.botMessage);
-        const highlighted = highlightLawCitations(escaped);
         return `<div class="history-bot selfcheck-bot">
             ${sceneHead}
-            <div class="selfcheck-fallback">${highlighted.replace(/\n/g, '<br>')}</div>
+            <div class="selfcheck-fallback">${enrich(rec.botMessage).replace(/\n/g, '<br>')}</div>
         </div>`;
     }
 
     const introHtml = parsed.intro
-        ? `<div class="selfcheck-intro">${highlightLawCitations(selfcheckEscape(parsed.intro)).replace(/\n/g, '<br>')}</div>`
+        ? `<div class="selfcheck-intro">${enrich(parsed.intro).replace(/\n/g, '<br>')}</div>`
         : '';
 
     const cardsHtml = parsed.items.map((it, i) => {
-        const nameHtml = selfcheckEscape(it.name || `权利 ${i + 1}`);
+        const nameHtml = renderSelfcheckEmphasis(selfcheckEscape(it.name || `权利 ${i + 1}`));
         const lawCiteHtml = it.lawCite
-            ? `<div class="right-card-law-cite">${highlightLawCitations(selfcheckEscape(it.lawCite))}</div>`
+            ? `<div class="right-card-law-cite">${enrich(it.lawCite)}</div>`
             : '';
         const lawTextHtml = it.lawText
-            ? `<div class="right-card-law-text">${highlightLawCitations(selfcheckEscape(it.lawText))}</div>`
+            ? `<div class="right-card-law-text">${enrich(it.lawText)}</div>`
             : '';
         const plainHtml = it.plain
-            ? `<div class="right-card-plain"><span class="plain-icon">💡</span>${selfcheckEscape(it.plain)}</div>`
+            ? `<div class="right-card-plain"><span class="plain-icon">💡</span>${renderSelfcheckEmphasis(selfcheckEscape(it.plain))}</div>`
             : '';
         return `<div class="right-card">
             <div class="right-card-head">
@@ -202,7 +210,7 @@ function renderSelfcheckRecord(rec) {
     const tipHtml = parsed.tip
         ? `<div class="selfcheck-tip">
             <div class="selfcheck-tip-title">🌸 温馨提示</div>
-            <div class="selfcheck-tip-body">${highlightLawCitations(selfcheckEscape(parsed.tip)).replace(/\n/g, '<br>')}</div>
+            <div class="selfcheck-tip-body">${enrich(parsed.tip).replace(/\n/g, '<br>')}</div>
            </div>`
         : '';
 
