@@ -269,13 +269,43 @@ function parseGuideSteps(rawText) {
 
     // 中文/阿拉伯数字步骤号
     const CN_NUMS = ['一','二','三','四','五','六','七','八','九','十'];
-    // 匹配 "第X步" 模式 —— 允许行首前缀 ·/•/* 等列表符号
-    const stepRe = /(?:^|\n)\s*[·•・▪◆●▸\-*]?\s*第([一二三四五六七八九十]|\d{1,2})步[：:、.]?\s*/g;
+    const CN_MAP = {'一':1,'二':2,'三':3,'四':4,'五':5,'六':6,'七':7,'八':8,'九':9,'十':10};
+
+    // 模式1: "第X步" —— 允许行首前缀 ·/•/* 等列表符号
+    const stepRe1 = /(?:^|\n)\s*[·•・▪◆●▸\-*]?\s*第([一二三四五六七八九十]|\d{1,2})步[：:、.]?\s*/g;
+    // 模式2: "步骤X" 或 "步骤X：" —— 常见 LLM 输出格式
+    const stepRe2 = /(?:^|\n)\s*[·•・▪◆●▸\-*]?\s*步骤\s*(\d{1,2})[：:、.]?\s*/g;
+    // 模式3: 纯数字编号 "1." / "2、" / "1）" 等（需紧跟非数字内容，且不在代码块内）
+    const stepRe3 = /(?:^|\n)\s*[·•・▪◆●▸\-*]?\s*(\d{1,2})[\.、）)]\s*(?=[^\d])/g;
 
     const matches = [];
     let m;
-    while ((m = stepRe.exec(text)) !== null) {
-        matches.push({ start: m.index + m[0].search(/第/), full: m[0], numChar: m[1], textIdx: m.index + m[0].length });
+
+    // 尝试模式1
+    while ((m = stepRe1.exec(text)) !== null) {
+        const numChar = m[1];
+        const num = CN_MAP[numChar] || parseInt(numChar) || 0;
+        matches.push({ start: m.index + m[0].search(/第|步骤|\d/), full: m[0], numChar, num, textIdx: m.index + m[0].length });
+    }
+
+    // 模式1不够，尝试模式2
+    if (matches.length < 2) {
+        matches.length = 0;
+        while ((m = stepRe2.exec(text)) !== null) {
+            const num = parseInt(m[1]) || 0;
+            matches.push({ start: m.index + m[0].search(/步骤|\d/), full: m[0], numChar: m[1], num, textIdx: m.index + m[0].length });
+        }
+    }
+
+    // 模式2也不够，尝试模式3
+    if (matches.length < 2) {
+        matches.length = 0;
+        while ((m = stepRe3.exec(text)) !== null) {
+            const num = parseInt(m[1]) || 0;
+            if (num >= 1 && num <= 10) {
+                matches.push({ start: m.index + m[0].search(/\d/), full: m[0], numChar: m[1], num, textIdx: m.index + m[0].length });
+            }
+        }
     }
 
     if (matches.length < 2) return null;  // 至少 2 步才有时间轴感
