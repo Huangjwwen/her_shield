@@ -1,0 +1,7 @@
+{
+  "name": "proxy",
+  "version": "1.0.0",
+  "description": "HerShield proxy cloud function - TTS and API forwarding",
+  "main": "index.js",
+  "dependencies": {}
+}
