@@ -3133,13 +3133,21 @@ body {
 }
 
 /* —— 权益指南:权利卡片网格 —— */
+/* ★ 用 CSS columns 实现瀑布流,卡片按内容高度自然堆叠,无留白 */
 .rights-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 10px;
+    columns: 2 220px;   /* 2 列,每列最少 220px;窄屏自动单列 */
+    column-gap: 10px;
     margin-bottom: 16px;
 }
 .right-card {
+    /* columns 里防止卡片被列断 */
+    break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    page-break-inside: avoid;
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 10px;  /* columns 不支持 row-gap,用 margin */
+
     background: #fff;
     border: 1px solid rgba(147, 112, 219, 0.18);
     border-left: 4px solid #9370db;
@@ -3790,7 +3798,7 @@ body {
     pointer-events: none;
 }
 
-/* 折叠/展开切换按钮 —— 右上角小药丸,精简文字避免跟主按钮抢空间 */
+/* 折叠/展开切换按钮 —— 右上角纯三角图标,极简不抢空间 */
 .input-collapse-toggle {
     position: absolute;
     top: 6px;
@@ -3798,14 +3806,14 @@ body {
     z-index: 10;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 4px 12px;
-    font-size: 12px;
-    font-weight: 500;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    padding: 0;
     color: #7b5dc4;
     background: rgba(245, 240, 255, 0.92);
     border: 1px solid #d8c8f0;
-    border-radius: 14px;
+    border-radius: 50%;
     cursor: pointer;
     user-select: none;
     transition: all 0.2s ease;
@@ -3822,12 +3830,8 @@ body {
 
 .input-collapse-toggle .chevron {
     display: inline-block;
-    transition: transform 0.3s ease;
-    font-size: 10px;
-}
-
-.chat-input-area.collapsed .input-collapse-toggle .chevron {
-    transform: rotate(180deg);
+    font-size: 11px;
+    line-height: 1;
 }
 
 /* 折叠按钮固定在视口顶端,方便点击;collapsed 时仍可见 */

@@ -271,12 +271,17 @@ function parseGuideSteps(rawText) {
     const CN_NUMS = ['一','二','三','四','五','六','七','八','九','十'];
     const CN_MAP = {'一':1,'二':2,'三':3,'四':4,'五':5,'六':6,'七':7,'八':8,'九':9,'十':10};
 
-    // 模式1: "第X步" —— 允许行首前缀 ·/•/* 等列表符号
-    const stepRe1 = /(?:^|\n)\s*[·•・▪◆●▸\-*]?\s*第([一二三四五六七八九十]|\d{1,2})步[：:、.]?\s*/g;
+    // 模式1: "第X步" —— 允许行首前缀 ·/•/* 等列表符号,允许 markdown 加粗 **第X步**
+    const stepRe1 = /(?:^|\n)\s*[·•・▪◆●▸\-*]?\s*(?:\*\*\s*)?第([一二三四五六七八九十]|\d{1,2})步(?:\s*\*\*)?[：:、.]?\s*/g;
     // 模式2: "步骤X" 或 "步骤X：" —— 常见 LLM 输出格式
-    const stepRe2 = /(?:^|\n)\s*[·•・▪◆●▸\-*]?\s*步骤\s*(\d{1,2})[：:、.]?\s*/g;
-    // 模式3: 纯数字编号 "1." / "2、" / "1）" 等（需紧跟非数字内容，且不在代码块内）
-    const stepRe3 = /(?:^|\n)\s*[·•・▪◆●▸\-*]?\s*(\d{1,2})[\.、）)]\s*(?=[^\d])/g;
+    const stepRe2 = /(?:^|\n)\s*[·•・▪◆●▸\-*]?\s*(?:\*\*\s*)?步骤\s*(\d{1,2})(?:\s*\*\*)?[：:、.]?\s*/g;
+    // 模式3: 纯数字编号 "1." / "2、" / "1）" 等(需紧跟非数字内容,不在代码块内)
+    const stepRe3 = /(?:^|\n)\s*[·•・▪◆●▸\-*]?\s*(?:\*\*\s*)?(\d{1,2})[\.、）)](?:\s*\*\*)?\s*(?=[^\d])/g;
+    // 模式4: 圆圈数字 ①②③④⑤⑥⑦⑧⑨⑩
+    const CIRCLE_MAP = {'①':1,'②':2,'③':3,'④':4,'⑤':5,'⑥':6,'⑦':7,'⑧':8,'⑨':9,'⑩':10};
+    const stepRe4 = /(?:^|\n)\s*[·•・▪◆●▸\-*]?\s*([①②③④⑤⑥⑦⑧⑨⑩])[：:、.]?\s*/g;
+    // 模式5: 中文括号编号 "（一）" / "(1)" / "（1）"
+    const stepRe5 = /(?:^|\n)\s*[·•・▪◆●▸\-*]?\s*[（(]\s*([一二三四五六七八九十]|\d{1,2})\s*[)）][：:、.]?\s*/g;
 
     const matches = [];
     let m;
@@ -288,7 +293,7 @@ function parseGuideSteps(rawText) {
         matches.push({ start: m.index + m[0].search(/第|步骤|\d/), full: m[0], numChar, num, textIdx: m.index + m[0].length });
     }
 
-    // 模式1不够，尝试模式2
+    // 模式1不够,尝试模式2
     if (matches.length < 2) {
         matches.length = 0;
         while ((m = stepRe2.exec(text)) !== null) {
@@ -297,7 +302,27 @@ function parseGuideSteps(rawText) {
         }
     }
 
-    // 模式2也不够，尝试模式3
+    // 模式2不够,尝试模式4(圆圈数字)
+    if (matches.length < 2) {
+        matches.length = 0;
+        while ((m = stepRe4.exec(text)) !== null) {
+            const numChar = m[1];
+            const num = CIRCLE_MAP[numChar] || 0;
+            matches.push({ start: m.index + m[0].search(/[①②③④⑤⑥⑦⑧⑨⑩]/), full: m[0], numChar, num, textIdx: m.index + m[0].length });
+        }
+    }
+
+    // 模式4不够,尝试模式5(括号编号)
+    if (matches.length < 2) {
+        matches.length = 0;
+        while ((m = stepRe5.exec(text)) !== null) {
+            const numChar = m[1];
+            const num = CN_MAP[numChar] || parseInt(numChar) || 0;
+            matches.push({ start: m.index + m[0].search(/[（(]/), full: m[0], numChar, num, textIdx: m.index + m[0].length });
+        }
+    }
+
+    // 模式5不够,尝试模式3(纯数字编号,作为最后兜底,误判风险最高放最后)
     if (matches.length < 2) {
         matches.length = 0;
         while ((m = stepRe3.exec(text)) !== null) {
