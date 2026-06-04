@@ -647,7 +647,7 @@ function renderEvidenceChecklist(record) {
                 <input type="checkbox" class="todo-checkbox" id="${itemId}"${checkedAttr}
                     onchange="updateEvidenceProgress('${checklistId}', ${totalItems})">
                 <label for="${itemId}" class="todo-label">
-                    <span class="todo-text">${escapeHtml(method)}</span>
+                    <span class="todo-text">${renderMarkdown(method)}</span>
                 </label>
             </div>`;
         }
@@ -668,13 +668,18 @@ function renderEvidenceChecklist(record) {
     // 添加其他信息（兼容多种格式）
     const coreMatch = message.match(/【?核心证据类型[】:]?\s*?\n?([\s\S]*?)(?=\n?\s*【?(?:取证方法|取证注意事项|证据保存)|$)/);
     if (coreMatch) {
-        checklistHTML += `<div class="evidence-tip-row"><strong>核心证据：</strong> ${escapeHtml(coreMatch[1].trim())}</div>`;
+        checklistHTML += `<div class="evidence-tip-row"><strong>核心证据：</strong> ${renderMarkdown(coreMatch[1].trim())}</div>`;
     }
     
     const notesMatch = message.match(/【?取证注意事项[】:]?\s*?\n?([\s\S]*?)(?=\n?\s*【?(?:证据保存|$))/);
     if (notesMatch) {
-        const notesText = notesMatch[1].trim();
-        checklistHTML += `<div class="evidence-tip-row"><strong>注意事项：</strong><br>${escapeHtml(notesText)}</div>`;
+        let notesText = notesMatch[1].trim();
+        // 去除 AI 回复原文中可能包含的"合法边界提醒"段落，避免与底部静态提示重复
+        notesText = notesText.replace(/\n?\*\*合法边界提醒\*\*[\s\S]*$/, '').trim();
+        notesText = notesText.replace(/\n?合法边界提醒[：:][\s\S]*$/, '').trim();
+        if (notesText.length > 0) {
+            checklistHTML += `<div class="evidence-tip-row"><strong>注意事项：</strong><br>${renderMarkdown(notesText)}</div>`;
+        }
     }
     
     // 合法边界提醒（固定文案，使用 renderMarkdown 渲染加粗效果）
@@ -683,6 +688,31 @@ function renderEvidenceChecklist(record) {
                 <div class="evidence-tip-row evidence-tip-legal">${renderMarkdown(LEGAL_BOUNDARY_TIP)}</div>
             </div>
             
+            <!-- AI 回复中未被解析的剩余文本（如详细解释段落），使用 renderMarkdown 渲染 -->
+    `;
+
+    // 提取"证据保存方式"之后的剩余文本
+    const saveMatch = message.match(/【?证据保存方式[】:]?\s*?\n?([\s\S]*)/);
+    if (saveMatch && saveMatch[1].trim()) {
+        let remainingText = saveMatch[1].trim();
+        // 去除剩余文本中的"合法边界提醒"段落，避免重复
+        remainingText = remainingText.replace(/\n?\*\*合法边界提醒\*\*[\s\S]*$/, '').trim();
+        remainingText = remainingText.replace(/\n?合法边界提醒[：:][\s\S]*$/, '').trim();
+        if (remainingText.length > 0) {
+            checklistHTML += `<div class="evidence-extra-text">${renderMarkdown(remainingText)}</div>`;
+        }
+    }
+    
+    // 提取"核心证据类型"之前的引言文本（如果有的话）
+    const introMatch = message.match(/^([\s\S]*?)(?=\n?\s*【?(?:核心证据类型|取证方法))/);
+    if (introMatch && introMatch[1].trim()) {
+        let introText = introMatch[1].trim();
+        if (introText.length > 0 && !/^[•·●\-\d]/.test(introText)) {
+            checklistHTML += `<div class="evidence-extra-text">${renderMarkdown(introText)}</div>`;
+        }
+    }
+
+    checklistHTML += `
             <div class="history-item-actions">
                 <button class="btn-small" onclick="copyHistoryItem('evidence', '${record.id}')">复制</button>
                 <button class="btn-small" onclick="deleteHistoryItem('evidence', '${record.id}')">删除</button>

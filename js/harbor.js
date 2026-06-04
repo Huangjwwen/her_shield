@@ -97,10 +97,16 @@ function createCrisisModal() {
     return modal;
 }
 
+// 标志位：当前这一轮对话中危机干预弹窗是否已显示过
+let crisisModalShownThisSession = false;
+
 /**
  * 显示危机干预弹窗
  */
 function showCrisisModal() {
+    // 本次对话中已显示过，不再重复弹出
+    if (crisisModalShownThisSession) return;
+
     const modal = createCrisisModal();
     modal.classList.add('show');
     // 禁止背景滚动
@@ -116,6 +122,8 @@ function closeCrisisModal() {
         modal.classList.remove('show');
         document.body.style.overflow = '';
     }
+    // 标记本次对话已显示过，同一次对话中不再重复弹出
+    crisisModalShownThisSession = true;
 }
 
 // ==================== 语音引导系统 ====================
@@ -136,6 +144,10 @@ const VOICE_GUIDE_TEXT = `慢慢呼吸……
 // 全局语音状态（统一管理所有语音按钮的播放状态）
 let isSpeaking = false;
 let currentUtterance = null;
+let currentAudio = null; // 云端 TTS 播放的 Audio 实例
+
+// 云端 TTS 代理地址
+const TTS_PROXY_URL = 'https://her-shield-d7gyrtfxm65f3e782-1410225134.ap-shanghai.app.tcloudbase.com/proxy/tts';
 
 /**
  * 切换语音引导播放/停止（输入区域旁的呼吸引导按钮）
@@ -146,9 +158,8 @@ function toggleVoiceGuide() {
 
     if (isSpeaking) {
         // 停止所有语音
-        window.speechSynthesis.cancel();
+        stopAllAudio();
         isSpeaking = false;
-        currentUtterance = null;
         updateAllVoiceButtons();
         resetVoiceGuideBtn();
         return;
@@ -219,9 +230,8 @@ function startVoiceGuide() {
  * 停止语音引导
  */
 function stopVoiceGuide() {
-    window.speechSynthesis.cancel();
+    stopAllAudio();
     isSpeaking = false;
-    currentUtterance = null;
     resetVoiceGuideBtn();
     updateAllVoiceButtons();
 }
@@ -281,11 +291,13 @@ function initHarbor() {
             if (response) {
                 saveHistory('harbor', content, response);
                 harborInput.value = '';
+                crisisModalShownThisSession = false;
                 showToast('倾诉完成');
             } else {
                 const mockResponse = getMockHarborResponse(content);
                 saveHistory('harbor', content, mockResponse);
                 harborInput.value = '';
+                crisisModalShownThisSession = false;
                 showToast('倾诉完成（使用备用数据）');
             }
         } catch (error) {
@@ -293,6 +305,7 @@ function initHarbor() {
             const mockResponse = getMockHarborResponse(content);
             saveHistory('harbor', content, mockResponse);
             harborInput.value = '';
+            crisisModalShownThisSession = false;
             showToast('倾诉完成（使用备用数据）');
         } finally {
             toggleLoading(false);
@@ -531,6 +544,137 @@ function getBestChineseVoice() {
     return null;
 }
 
+// ==================== 云端 TTS 播放系统 ====================
+
+/**
+ * 停止所有正在播放的音频（云端 Audio + 浏览器 SpeechSynthesis）
+ */
+function stopAllAudio() {
+    // 停止云端 TTS 的 Audio 实例
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        // 释放 Blob URL
+        if (currentAudio.src && currentAudio.src.startsWith('blob:')) {
+            URL.revokeObjectURL(currentAudio.src);
+        }
+        currentAudio = null;
+    }
+    // 停止浏览器 SpeechSynthesis
+    window.speechSynthesis.cancel();
+    currentUtterance = null;
+}
+
+/**
+ * 使用云端 Azure TTS 播放语音
+ * @param {string} text - 待播放的文本
+ * @param {HTMLElement} btnElement - 触发播放的按钮
+ * @returns {Promise<boolean>} true 表示成功，false 表示需降级
+ */
+async function playWithCloudTTS(text, btnElement) {
+    try {
+        const url = `${TTS_PROXY_URL}?text=${encodeURIComponent(text)}`;
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            console.warn('云端 TTS 请求失败，状态码:', response.status);
+            return false;
+        }
+
+        const blob = await response.blob();
+        if (!blob || blob.size === 0) {
+            console.warn('云端 TTS 返回空音频');
+            return false;
+        }
+
+        const audioUrl = URL.createObjectURL(blob);
+        const audio = new Audio(audioUrl);
+        currentAudio = audio;
+
+        // 播放开始
+        audio.addEventListener('play', () => {
+            isSpeaking = true;
+            updateVoiceButtonState(btnElement, true);
+        });
+
+        // 播放结束
+        audio.addEventListener('ended', () => {
+            isSpeaking = false;
+            URL.revokeObjectURL(audioUrl);
+            currentAudio = null;
+            updateAllVoiceButtons();
+        });
+
+        // 播放出错
+        audio.addEventListener('error', (e) => {
+            console.error('云端 TTS 音频播放出错:', e);
+            isSpeaking = false;
+            URL.revokeObjectURL(audioUrl);
+            currentAudio = null;
+            updateAllVoiceButtons();
+        });
+
+        await audio.play();
+        return true;
+    } catch (err) {
+        console.error('云端 TTS 调用异常:', err);
+        // 清理可能的残留状态
+        if (currentAudio) {
+            if (currentAudio.src && currentAudio.src.startsWith('blob:')) {
+                URL.revokeObjectURL(currentAudio.src);
+            }
+            currentAudio = null;
+        }
+        return false;
+    }
+}
+
+/**
+ * 使用浏览器内置 SpeechSynthesis 播放语音（降级方案）
+ * @param {string} text - 待播放的文本
+ * @param {HTMLElement} btnElement - 触发播放的按钮
+ */
+function playWithBrowserTTS(text, btnElement) {
+    if (!window.speechSynthesis) {
+        showToast('您的浏览器不支持语音播放功能');
+        return;
+    }
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'zh-CN';
+    utterance.rate = 0.9;
+    utterance.pitch = 1.1;
+    utterance.volume = 1.0;
+
+    const bestVoice = getBestChineseVoice();
+    if (bestVoice) {
+        utterance.voice = bestVoice;
+    }
+
+    utterance.onstart = () => {
+        isSpeaking = true;
+        currentUtterance = utterance;
+        updateVoiceButtonState(btnElement, true);
+    };
+
+    utterance.onend = () => {
+        isSpeaking = false;
+        currentUtterance = null;
+        updateAllVoiceButtons();
+    };
+
+    utterance.onerror = (e) => {
+        if (e.error !== 'canceled') {
+            console.error('浏览器语音播放错误:', e.error);
+        }
+        isSpeaking = false;
+        currentUtterance = null;
+        updateAllVoiceButtons();
+    };
+
+    window.speechSynthesis.speak(utterance);
+}
+
 // 语音引导配置数组
 const VOICE_GUIDES = [
     {
@@ -619,60 +763,19 @@ function speakGuide(guideIndex, btnElement) {
 
     // 如果正在播放，则停止
     if (isSpeaking) {
-        window.speechSynthesis.cancel();
+        stopAllAudio();
         isSpeaking = false;
-        currentUtterance = null;
         updateAllVoiceButtons();
         return;
     }
 
-    // 检查浏览器支持
-    if (!window.speechSynthesis) {
-        showToast('您的浏览器不支持语音播放功能');
-        return;
-    }
-
-    // 如果已有正在播放的，先取消
-    window.speechSynthesis.cancel();
-
-    const utterance = new SpeechSynthesisUtterance(guide.text);
-    utterance.lang = 'zh-CN';
-    utterance.rate = 0.9;
-    utterance.pitch = 1.1;
-    utterance.volume = 1.0;
-
-    // 选择最佳中文语音包
-    const bestVoice = getBestChineseVoice();
-    if (bestVoice) {
-        utterance.voice = bestVoice;
-    } else {
-        showToast('您的浏览器没有中文语音包，请使用 Chrome 或 Edge 浏览器');
-        return;
-    }
-
-    utterance.onstart = () => {
-        isSpeaking = true;
-        currentUtterance = utterance;
-        updateVoiceButtonState(btnElement, true);
-    };
-
-    utterance.onend = () => {
-        isSpeaking = false;
-        currentUtterance = null;
-        updateAllVoiceButtons();
-    };
-
-    utterance.onerror = (e) => {
-        // 'canceled' 是手动停止，不算错误
-        if (e.error !== 'canceled') {
-            console.error('语音播放错误:', e.error);
+    // 先尝试云端 TTS，失败则降级到浏览器 TTS
+    playWithCloudTTS(guide.text, btnElement).then((cloudSuccess) => {
+        if (!cloudSuccess) {
+            // 云端 TTS 不可用，降级使用浏览器内置语音
+            playWithBrowserTTS(guide.text, btnElement);
         }
-        isSpeaking = false;
-        currentUtterance = null;
-        updateAllVoiceButtons();
-    };
-
-    window.speechSynthesis.speak(utterance);
+    });
 }
 
 /**
@@ -710,16 +813,9 @@ function speakGuideHistory(text, btnElement) {
 
     // 如果正在播放，则停止
     if (isSpeaking) {
-        window.speechSynthesis.cancel();
+        stopAllAudio();
         isSpeaking = false;
-        currentUtterance = null;
         updateAllVoiceButtons();
-        return;
-    }
-
-    // 检查浏览器支持
-    if (!window.speechSynthesis) {
-        showToast('您的浏览器不支持语音播放功能');
         return;
     }
 
@@ -730,43 +826,12 @@ function speakGuideHistory(text, btnElement) {
         .replace(/\n/g, '。')
         .substring(0, 1000);
 
-    window.speechSynthesis.cancel();
-
-    const utterance = new SpeechSynthesisUtterance(cleanText);
-    utterance.lang = 'zh-CN';
-    utterance.rate = 0.9;
-    utterance.pitch = 1.1;
-    utterance.volume = 1.0;
-
-    const bestVoice = getBestChineseVoice();
-    if (bestVoice) {
-        utterance.voice = bestVoice;
-    } else {
-        showToast('您的浏览器没有中文语音包，请使用 Chrome 或 Edge 浏览器');
-        return;
-    }
-
-    utterance.onstart = () => {
-        isSpeaking = true;
-        currentUtterance = utterance;
-        updateVoiceButtonState(btnElement, true);
-    };
-
-    utterance.onend = () => {
-        isSpeaking = false;
-        currentUtterance = null;
-        updateAllVoiceButtons();
-    };
-
-    utterance.onerror = (e) => {
-        if (e.error !== 'canceled') {
-            console.error('语音播放错误:', e.error);
+    // 先尝试云端 TTS，失败则降级到浏览器 TTS
+    playWithCloudTTS(cleanText, btnElement).then((cloudSuccess) => {
+        if (!cloudSuccess) {
+            // 云端 TTS 不可用，降级使用浏览器内置语音
+            playWithBrowserTTS(cleanText, btnElement);
         }
-        isSpeaking = false;
-        currentUtterance = null;
-        updateAllVoiceButtons();
-    };
-
-    window.speechSynthesis.speak(utterance);
+    });
 }
 
