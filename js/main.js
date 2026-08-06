@@ -33,6 +33,10 @@ document.addEventListener('DOMContentLoaded', () => {
         initGuide();
     }
 
+    if (document.getElementById('guideTreeMount')) {
+        initGuideTree();
+    }
+
     if (document.getElementById('storyTitle')) {
         initStories();
     }
