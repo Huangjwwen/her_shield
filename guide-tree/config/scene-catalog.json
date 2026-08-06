@@ -1,0 +1,110 @@
+{
+  "schemaVersion": 1,
+  "status": "draft",
+  "catalogVersion": "1.0.0-draft",
+  "scenes": [
+    {
+      "caseType": "pregnancy_pay_cut",
+      "title": "孕期、产期、哺乳期被调岗降薪",
+      "availability": "full",
+      "configStatus": "draft",
+      "classificationKeywords": [
+        "怀孕",
+        "孕期",
+        "产期",
+        "产假",
+        "哺乳",
+        "哺乳期",
+        "调岗",
+        "降薪",
+        "被调",
+        "降工资",
+        "绩效取消"
+      ],
+      "action": {
+        "type": "tree",
+        "treeId": "pregnancy_pay_cut"
+      }
+    },
+    {
+      "caseType": "recruit_discrimination",
+      "title": "招聘/面试性别歧视",
+      "availability": "full",
+      "configStatus": "draft",
+      "classificationKeywords": [
+        "面试",
+        "招聘",
+        "求职",
+        "限男性",
+        "男性优先",
+        "婚育",
+        "结婚",
+        "生育计划",
+        "不招女生"
+      ],
+      "action": {
+        "type": "tree",
+        "treeId": "recruit_discrimination"
+      }
+    },
+    {
+      "caseType": "harassment",
+      "title": "职场性骚扰",
+      "availability": "full",
+      "configStatus": "draft",
+      "classificationKeywords": [
+        "骚扰",
+        "黄色",
+        "性暗示",
+        "开黄腔",
+        "强迫",
+        "摸",
+        "搂",
+        "威胁",
+        "跟踪"
+      ],
+      "action": {
+        "type": "tree",
+        "treeId": "harassment"
+      }
+    },
+    {
+      "caseType": "equal_pay_promotion",
+      "title": "同工不同酬、晋升受限",
+      "availability": "full",
+      "configStatus": "draft",
+      "classificationKeywords": [
+        "同工不同酬",
+        "工资比男同事低",
+        "工资差异",
+        "晋升",
+        "升职",
+        "男性优先晋升",
+        "培训机会"
+      ],
+      "action": {
+        "type": "tree",
+        "treeId": "equal_pay_promotion"
+      }
+    },
+    {
+      "caseType": "leave_benefits",
+      "title": "产假、哺乳假被拒或产假工资、生育津贴争议",
+      "availability": "full",
+      "configStatus": "draft",
+      "classificationKeywords": [
+        "产假不批",
+        "产假",
+        "哺乳假",
+        "哺乳时间",
+        "生育津贴",
+        "产假工资",
+        "生育保险"
+      ],
+      "action": {
+        "type": "tree",
+        "treeId": "leave_benefits"
+      }
+    }
+  ]
+}
