@@ -1,0 +1,22 @@
+[
+  {"id":"R-01","expectedTerminal":"RA","answers":{"R1":"job_posting","R2":"explicit_reference","R4":["job_posting_screenshot"],"R6":"organize_materials"}},
+  {"id":"R-02","expectedTerminal":"RB","answers":{"R1":"interview","R2":"implicit_or_questioning","R4":["recording_interview_notes"],"R6":"request_explanation"}},
+  {"id":"R-03","expectedTerminal":"RC","answers":{"R1":"offer_cancelled","R3":"offer_cancelled_or_reduced","R2":"explicit_reference","R4":["chat_email"],"R6":"administrative_complaint"}},
+  {"id":"R-04","expectedTerminal":"RA","answers":{"R1":"interview","R2":"implicit_or_questioning","R4":["none"]}},
+  {"id":"R-05","expectedTerminal":"RB","answers":{"R1":"rejected_after_application","R3":"not_hired","R2":"no_explicit_reference","R5":"male_comparator","R6":"platform_complaint"}},
+  {"id":"R-06","expectedTerminal":"RA","answers":{"R1":"rejected_after_application","R3":"not_hired","R2":"no_explicit_reference","R5":"no_comparator"}},
+  {"id":"R-07","expectedTerminal":"RB","answers":{"R1":"interview","R2":"explicit_reference","R4":["chat_email"],"R6":"civil_consultation"}},
+  {"id":"R-08","expectedTerminal":"RB","answers":{"R1":"offer_cancelled","R3":"offer_cancelled_or_reduced","R2":"explicit_reference","R4":["chat_email"],"R6":"request_explanation"}},
+  {"id":"R-09","expectedTerminal":"RB","answers":{"R1":"rejected_after_application","R3":"not_hired","R2":"implicit_or_questioning","R4":["recording_interview_notes"],"R6":"civil_consultation"}},
+  {"id":"R-10","expectedTerminal":"RB","answers":{"R1":"job_posting","R2":"explicit_reference","R4":["job_posting_screenshot"],"R6":"platform_complaint"}},
+  {"id":"R-11","expectedTerminal":"RB","answers":{"R1":"rejected_after_application","R3":"not_hired","R2":"no_explicit_reference","R5":"male_comparator","R6":"request_explanation"}},
+  {"id":"R-12","expectedTerminal":"RC","answers":{"R1":"rejected_after_application","R3":"not_hired","R2":"no_explicit_reference","R5":"company_pattern","R6":"administrative_complaint"}},
+  {"id":"R-13","expectedTerminal":"RA","answers":{"R1":"interview","R2":"implicit_or_questioning","R4":["chat_email"],"R6":"organize_materials"}},
+  {"id":"R-14","expectedTerminal":"RA","answers":{"R1":"rejected_after_application","R3":"not_hired","R2":"explicit_reference","R4":["none"]}},
+  {"id":"R-15","expectedTerminal":"RA","answers":{"R1":"rejected_after_application","R3":"not_hired","R2":"no_explicit_reference","R5":"no_comparator"}},
+  {"id":"R-16","expectedTerminal":"OOS","answers":{"R1":"rejected_after_application","R3":"not_hired","R2":"no_explicit_reference","R5":"confirmed_unrelated"}},
+  {"id":"R-17","expectedTerminal":"RC","answers":{"R1":"offer_cancelled","R3":"offer_cancelled_or_reduced","R2":"explicit_reference","R4":["chat_email","rejection_notice"],"R6":"administrative_complaint"}},
+  {"id":"R-18","expectedTerminal":"RA","answers":{"R1":"job_posting","R2":"explicit_reference","R4":["job_posting_screenshot"],"R6":"organize_materials"}},
+  {"id":"R-19","expectedTerminal":"RB","answers":{"R1":"job_posting","R2":"explicit_reference","R4":["job_posting_screenshot"],"R6":"platform_complaint"}},
+  {"id":"R-20","expectedTerminal":"RA","answers":{"R1":"rejected_after_application","R3":"not_hired","R2":"no_explicit_reference","R5":"male_comparator","R6":"organize_materials"}}
+]

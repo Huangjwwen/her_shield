@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "treeId": "equal_pay_promotion",
+  "treeVersion": "1.3.0-draft",
+  "status": "draft",
+  "terminals": {
+    "EA": {
+      "documentKeys": ["evidence_catalog"],
+      "requiredLegalBasisKeys": [],
+      "conditionalLegalBasis": []
+    },
+    "EB": {
+      "documentKeys": ["pay_promotion_standard_request", "evidence_catalog"],
+      "requiredLegalBasisKeys": [],
+      "conditionalLegalBasis": [
+        {"legalBasisKey": "women_rights_45", "when": {"any": [{"node": "E1", "value": "base_pay"}, {"node": "E1", "value": "bonus_performance"}]}},
+        {"legalBasisKey": "labor_law_46", "when": {"any": [{"node": "E1", "value": "base_pay"}, {"node": "E1", "value": "bonus_performance"}]}},
+        {"legalBasisKey": "women_rights_46", "when": {"any": [{"node": "E1", "value": "promotion_title"}, {"node": "E1", "value": "training_project"}]}}
+      ]
+    },
+    "EC": {
+      "documentKeys": ["evidence_catalog"],
+      "conditionalDocuments": [
+        {"documentKey": "arbitration_supplement_list", "when": {"node": "E6", "value": "arbitration_started"}},
+        {"documentKey": "arbitration_application_points", "when": {"all": [
+          {"node": "E6", "value": "external_complaint"},
+          {"any": [{"node": "E1", "value": "base_pay"}, {"node": "E1", "value": "bonus_performance"}]}
+        ]}},
+        {"documentKey": "labor_inspection_materials", "when": {"node": "E6", "value": "external_complaint"}}
+      ],
+      "requiredLegalBasisKeys": ["women_rights_72"],
+      "conditionalLegalBasis": [
+        {"legalBasisKey": "women_rights_45", "when": {"any": [{"node": "E1", "value": "base_pay"}, {"node": "E1", "value": "bonus_performance"}]}},
+        {"legalBasisKey": "labor_law_46", "when": {"any": [{"node": "E1", "value": "base_pay"}, {"node": "E1", "value": "bonus_performance"}]}},
+        {"legalBasisKey": "women_rights_46", "when": {"any": [{"node": "E1", "value": "promotion_title"}, {"node": "E1", "value": "training_project"}]}},
+        {"legalBasisKey": "women_rights_49", "when": {"node": "E6", "value": "external_complaint"}},
+        {"legalBasisKey": "women_rights_74", "when": {"node": "E6", "value": "external_complaint"}}
+      ]
+    },
+    "OOS": {"documentKeys": [], "requiredLegalBasisKeys": [], "conditionalLegalBasis": []}
+  }
+}

@@ -7,7 +7,7 @@
     "start": "electron .",
     "dev": "npx http-server . -p 8080 -c-1",
     "dev:guide-tree": "node scripts/dev-guide-tree-server.js",
-    "validate:guide-tree": "node guide-tree/scripts/validate-pregnancy-pay-cut.js",
+    "validate:guide-tree": "node guide-tree/scripts/validate-all.js",
     "test:guide-tree": "node guide-tree/tests/guide-tree-api.test.js",
     "install-electron": "npm install electron --save-dev"
   },

@@ -1,0 +1,22 @@
+[
+  {"id":"L-01","expectedTerminal":"LA","answers":{"L0":"confirmed","L1":"national_maternity_leave_denied","L2":"not_applied"}},
+  {"id":"L-02","expectedTerminal":"LA","answers":{"L0":"confirmed","L1":"lactation_time_denied","L2":"not_applied"}},
+  {"id":"L-03","expectedTerminal":"LA","answers":{"L0":"uncertain","L1":"local_extended_leave_denied","L2":"not_applied"}},
+  {"id":"L-04","expectedTerminal":"LB","answers":{"L0":"confirmed","L1":"maternity_allowance_issue","L3":"insured_amount_disputed","L3A":"agency_assessment","L5":["allowance_record"],"L6":"administrative_complaint"}},
+  {"id":"L-05","expectedTerminal":"LB","answers":{"L0":"confirmed","L1":"maternity_allowance_issue","L3":"not_insured","L3A":"employer_insurance","L4":"within_one_year","L5":["payroll"],"L6":"internal_failed"}},
+  {"id":"L-06","expectedTerminal":"LC","answers":{"L0":"confirmed","L1":"maternity_pay_unpaid","L3":"employer_pay_unpaid","L3A":"employer_payment","L4":"over_one_year","L5":["payroll"],"L6":"no_formal_action"}},
+  {"id":"L-07","expectedTerminal":"LD","answers":{"L0":"confirmed","L1":"maternity_pay_unpaid","L3":"employer_pay_unpaid","L3A":"employer_payment","L4":"within_one_year","L5":["payroll"],"L6":"arbitration_started"}},
+  {"id":"L-08","expectedTerminal":"LA","answers":{"L0":"uncertain","L1":"local_extended_leave_denied","L2":"not_applied"}},
+  {"id":"L-09","expectedTerminal":"LA","answers":{"L0":"confirmed","L1":"local_extended_leave_denied","L2":"not_applied"}},
+  {"id":"L-10","expectedTerminal":"LB","answers":{"L0":"confirmed","L1":"national_maternity_leave_denied","L2":"written_denial","L5":["leave_application","company_reply"],"L6":"internal_failed"}},
+  {"id":"L-11","expectedTerminal":"LA","answers":{"L0":"confirmed","L1":"maternity_pay_unpaid","L3":"employer_pay_unpaid","L3A":"employer_payment","L4":"within_one_year","L5":["payroll"],"L6":"no_formal_action"}},
+  {"id":"L-12","expectedTerminal":"LB","answers":{"L0":"confirmed","L1":"maternity_allowance_issue","L3":"insured_not_received","L3A":"agency_assessment","L5":["social_insurance_record"],"L6":"administrative_complaint"}},
+  {"id":"L-13","expectedTerminal":"LA","answers":{"L0":"confirmed","L1":"maternity_allowance_issue","L3":"insured_amount_disputed","L3A":"responsible_party_uncertain","L3B":"agency_decision_or_payment_record","L5":["allowance_record"],"L6":"no_formal_action"}},
+  {"id":"L-14","expectedTerminal":"LB","answers":{"L0":"confirmed","L1":"maternity_allowance_issue","L3":"employer_received_not_paid","L3A":"employer_payment","L4":"uncertain","L5":["allowance_record"],"L6":"internal_failed"}},
+  {"id":"L-15","expectedTerminal":"LA","answers":{"L0":"uncertain","L1":"insurance_medical_issue","L3":"insurance_uncertain","L3A":"responsible_party_uncertain","L3B":"records_unavailable","L5":["none"],"L6":"no_formal_action"}},
+  {"id":"L-16","expectedTerminal":"LB","answers":{"L0":"confirmed","L1":"lactation_time_denied","L2":"no_reply","L5":["leave_application"],"L6":"internal_failed"}},
+  {"id":"L-17","expectedTerminal":"LC","answers":{"L0":"confirmed","L1":"maternity_pay_unpaid","L3":"employer_pay_unpaid","L3A":"employer_payment","L4":"over_one_year","L5":["payroll"],"L6":"no_formal_action"}},
+  {"id":"L-18","expectedTerminal":"LD","answers":{"L0":"confirmed","L1":"maternity_pay_unpaid","L3":"employer_pay_unpaid","L3A":"employer_payment","L4":"over_one_year","L5":["payroll"],"L6":"arbitration_started"}},
+  {"id":"L-19","expectedTerminal":"LB","answers":{"L0":"confirmed","L1":"lactation_time_denied","L2":"partial_approval","L5":["leave_application","company_reply"],"L6":"internal_failed"}},
+  {"id":"L-20","expectedTerminal":"LD","answers":{"L0":"confirmed","L1":"maternity_allowance_issue","L3":"employer_received_not_paid","L3A":"employer_payment","L4":"within_one_year","L5":["allowance_record"],"L6":"arbitration_started"}}
+]

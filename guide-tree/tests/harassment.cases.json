@@ -1,0 +1,22 @@
+[
+  {"id":"H-01","expectedTerminal":"HB","answers":{"H1":"text_image_chat","H2":"rejected_but_continues","H4":"supervisor_with_power","H4A":"internal_complaint","H6":"has_channel","H7":["chat_image"],"H8":"not_complained"}},
+  {"id":"H-02","expectedTerminal":"HA","answers":{"H1":"verbal_jokes","H2":"not_expressed","H5":"preserve_evidence"}},
+  {"id":"H-03","expectedTerminal":"HC","answers":{"H1":"physical_contact","H3":"immediate_risk"}},
+  {"id":"H-04","expectedTerminal":"HD","answers":{"H1":"text_image_chat","H2":"rejected_but_continues","H4":"coworker","H4A":"internal_complaint","H6":"complained_no_action"}},
+  {"id":"H-05","expectedTerminal":"HD","answers":{"H1":"verbal_jokes","H2":"rejected_but_continues","H4":"coworker","H4A":"internal_complaint","H6":"has_channel","H7":["contemporaneous_note"],"H8":"retaliation","H8A":"attitude_exclusion"}},
+  {"id":"H-06","expectedTerminal":"HE","answers":{"H1":"text_image_chat","H2":"rejected_but_continues","H4":"supervisor_with_power","H4A":"internal_complaint","H6":"has_channel","H7":["chat_image"],"H8":"retaliation","H8A":"material_action"}},
+  {"id":"H-07","expectedTerminal":"HE","answers":{"H1":"verbal_jokes","H2":"rejected_but_continues","H4":"supervisor_with_power","H4A":"internal_complaint","H6":"has_channel","H7":["witness"],"H8":"retaliation","H8A":"exit_pressure"}},
+  {"id":"H-08","expectedTerminal":"HC","answers":{"H1":"stalking_threat","H3":"immediate_risk"}},
+  {"id":"H-09","expectedTerminal":"HB","answers":{"H1":"text_image_chat","H2":"rejected_but_continues","H4":"coworker","H4A":"internal_complaint","H6":"has_channel","H7":["none"],"H8":"not_complained"}},
+  {"id":"H-10","expectedTerminal":"HB","answers":{"H1":"text_image_chat","H2":"not_expressed","H5":"formal_complaint","H6":"has_channel","H7":["chat_image"],"H8":"not_complained"}},
+  {"id":"H-11","expectedTerminal":"HA","answers":{"H1":"verbal_jokes","H2":"rejected_but_continues","H4":"supervisor_with_power","H4A":"preserve_evidence"}},
+  {"id":"H-12","expectedTerminal":"HD","answers":{"H1":"text_image_chat","H2":"rejected_but_continues","H4":"coworker","H4A":"state_or_police"}},
+  {"id":"H-13","expectedTerminal":"HD","answers":{"H1":"quid_pro_quo","H3":"safe_now","H4":"supervisor_with_power","H4A":"civil_consultation"}},
+  {"id":"H-14","expectedTerminal":"HA","answers":{"H1":"verbal_jokes","H2":"not_expressed","H5":"rejection_script"}},
+  {"id":"H-15","expectedTerminal":"HB","answers":{"H1":"text_image_chat","H2":"rejected_but_continues","H4":"uncertain","H4A":"internal_complaint","H6":"no_clear_channel","H7":["contemporaneous_note"],"H8":"not_complained"}},
+  {"id":"H-16","expectedTerminal":"HB","answers":{"H1":"text_image_chat","H2":"rejected_but_continues","H4":"coworker","H4A":"internal_complaint","H6":"has_channel","H7":["chat_image"],"H8":"pending_internal"}},
+  {"id":"H-17","expectedTerminal":"HD","answers":{"H1":"text_image_chat","H2":"rejected_but_continues","H4":"coworker","H4A":"internal_complaint","H6":"complained_no_action"}},
+  {"id":"H-18","expectedTerminal":"HD","answers":{"H1":"verbal_jokes","H2":"rejected_but_continues","H4":"coworker","H4A":"internal_complaint","H6":"has_channel","H7":["none"],"H8":"retaliation","H8A":"need_more_info"}},
+  {"id":"H-19","expectedTerminal":"HE","answers":{"H1":"text_image_chat","H2":"rejected_but_continues","H4":"supervisor_with_power","H4A":"internal_complaint","H6":"has_channel","H7":["chat_image"],"H8":"retaliation","H8A":"material_action"}},
+  {"id":"H-20","expectedTerminal":"HC","answers":{"H1":"verbal_jokes","H2":"rejected_but_continues","H4":"coworker","H4A":"internal_complaint","H6":"has_channel","H7":["contemporaneous_note"],"H8":"retaliation","H8A":"safety_threat"}}
+]
