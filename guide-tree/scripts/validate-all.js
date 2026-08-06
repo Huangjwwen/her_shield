@@ -51,11 +51,12 @@ function validateTree(tree, mapping, templates, legalBasis) {
   const legalKeys = new Set(legalBasis.records.map((record) => record.legalBasisKey));
   templates.templates.forEach((template) => { if (!template.applicableTreeIds.includes(tree.treeId)) fail(`${tree.treeId} template tree mismatch ${template.documentKey}`); template.applicableTerminals.forEach((terminalId) => { if (!terminalIds.has(terminalId)) fail(`${tree.treeId} template ${template.documentKey} unknown terminal ${terminalId}`); }); });
   Object.entries(mapping.terminals).forEach(([terminalId, entry]) => {
+    const terminal = tree.terminals[terminalId];
     [...(entry.documentKeys || []), ...(entry.conditionalDocuments || []).map((item) => item.documentKey)].forEach((key) => { if (!templateKeys.has(key)) fail(`${tree.treeId} ${terminalId} unknown template ${key}`); });
     [...(entry.requiredLegalBasisKeys || []), ...(entry.conditionalLegalBasis || []).map((item) => item.legalBasisKey)].forEach((key) => { if (!legalKeys.has(key)) fail(`${tree.treeId} ${terminalId} unknown legal basis ${key}`); });
     (entry.conditionalDocuments || []).forEach((item) => validateCondition(tree, item.when, `${tree.treeId}.${terminalId}.document`));
     (entry.conditionalLegalBasis || []).forEach((item) => validateCondition(tree, item.when, `${tree.treeId}.${terminalId}.legal`));
-    if (tree.terminals[terminalId].scopeStatus === 'out_of_scope' && ((entry.documentKeys || []).length || (entry.requiredLegalBasisKeys || []).length || (entry.conditionalDocuments || []).length || (entry.conditionalLegalBasis || []).length)) fail(`${tree.treeId} OOS mapping is not empty`);
+    if (terminal && terminal.scopeStatus === 'out_of_scope' && ((entry.documentKeys || []).length || (entry.requiredLegalBasisKeys || []).length || (entry.conditionalDocuments || []).length || (entry.conditionalLegalBasis || []).length)) fail(`${tree.treeId} OOS mapping is not empty`);
   });
 }
 

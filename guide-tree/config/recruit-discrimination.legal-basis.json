@@ -1,9 +1,97 @@
 {
-  "schemaVersion":1,"treeId":"recruit_discrimination","status":"draft","retrievedAt":"2026-08-02","records":[
-    {"legalBasisKey":"women_rights_43","lawName":"中华人民共和国妇女权益保障法","article":"第四十三条","fullText":"用人单位在招录（聘）过程中，除国家另有规定外，不得实施下列行为：（一）限定为男性或者规定男性优先；（二）除个人基本信息外，进一步询问或者调查女性求职者的婚育情况；（三）将妊娠测试作为入职体检项目；（四）将限制结婚、生育或者婚姻、生育状况作为录（聘）用条件；（五）其他以性别为由拒绝录（聘）用妇女或者差别化地提高对妇女录（聘）用标准的行为。","displayText":"用人单位在招录（聘）过程中，不得限定男性或男性优先，不得进一步询问女性求职者婚育情况，不得将妊娠测试作为入职体检项目，不得将婚育状况作为录用条件，也不得基于性别拒录或差别化提高录用标准。","officialUrl":"https://gzca.miit.gov.cn/zwgk/zcwj/zcfg/art/2022/art_47b4c78a8f52484587e1b198c52fa909.html","regionalScope":"national","issueTags":["recruit_discrimination"],"version":"1.0.0-draft"},
-    {"legalBasisKey":"employment_promotion_27","lawName":"中华人民共和国就业促进法","article":"第二十七条","fullText":"国家保障妇女享有与男子平等的劳动权利。用人单位招用人员，除国家规定的不适合妇女的工种或者岗位外，不得以性别为由拒绝录用妇女或者提高对妇女的录用标准。用人单位录用女职工，不得在劳动合同中规定限制女职工结婚、生育的内容。","displayText":"国家保障妇女享有与男子平等的劳动权利，用人单位不得以性别为由拒绝录用妇女或提高录用标准。","officialUrl":"https://www.mohrss.gov.cn/SYrlzyhshbzb/ztzl/rslyyhyshj/zcwd/202407/t20240723_522714.html","regionalScope":"national","issueTags":["equal_employment"],"version":"1.0.0-draft"},
-    {"legalBasisKey":"employment_promotion_62","lawName":"中华人民共和国就业促进法","article":"第六十二条","fullText":"违反本法规定，实施就业歧视的，劳动者可以向人民法院提起诉讼。","displayText":"实施就业歧视的，劳动者可以向人民法院提起诉讼。","officialUrl":"https://www.npc.gov.cn/npc/c2/c183/c198/201905/t20190522_27234.html","regionalScope":"national","issueTags":["civil_remedy"],"version":"1.0.0-draft"},
-    {"legalBasisKey":"women_rights_49","lawName":"中华人民共和国妇女权益保障法","article":"第四十九条","fullText":"人力资源和社会保障部门应当将招聘、录取、晋职、晋级、评聘专业技术职称和职务、培训、辞退等过程中的性别歧视行为纳入劳动保障监察范围。","displayText":"招聘、录取、晋职、晋级、职称评聘和培训等过程中的性别歧视行为纳入劳动保障监察范围。","officialUrl":"https://gzca.miit.gov.cn/zwgk/zcwj/zcfg/art/2022/art_47b4c78a8f52484587e1b198c52fa909.html","regionalScope":"national","issueTags":["administrative_supervision"],"version":"1.0.0-draft"},
-    {"legalBasisKey":"women_rights_83","lawName":"中华人民共和国妇女权益保障法","article":"第八十三条","fullText":"用人单位违反本法第四十三条和第四十八条规定的，由人力资源和社会保障部门责令改正；拒不改正或者情节严重的，处一万元以上五万元以下罚款。","displayText":"违反第四十三条规定的，由人力资源和社会保障部门责令改正；拒不改正或情节严重的，依法处理。","officialUrl":"https://gzca.miit.gov.cn/zwgk/zcwj/zcfg/art/2022/art_47b4c78a8f52484587e1b198c52fa909.html","regionalScope":"national","issueTags":["administrative_liability"],"version":"1.0.0-draft"}
+  "schemaVersion": 1,
+  "treeId": "recruit_discrimination",
+  "status": "draft",
+  "retrievedAt": "2026-08-02",
+  "records": [
+    {
+      "legalBasisKey": "women_rights_43",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第四十三条",
+      "fullText": "用人单位在招录（聘）过程中，除国家另有规定外，不得实施下列行为：（一）限定为男性或者规定男性优先；（二）除个人基本信息外，进一步询问或者调查女性求职者的婚育情况；（三）将妊娠测试作为入职体检项目；（四）将限制结婚、生育或者婚姻、生育状况作为录（聘）用条件；（五）其他以性别为由拒绝录（聘）用妇女或者差别化地提高对妇女录（聘）用标准的行为。",
+      "displayText": "用人单位在招录（聘）过程中，不得限定男性或男性优先，不得进一步询问女性求职者婚育情况，不得将妊娠测试作为入职体检项目，不得将婚育状况作为录用条件，也不得基于性别拒录或差别化提高录用标准。",
+      "officialUrl": "https://gzca.miit.gov.cn/zwgk/zcwj/zcfg/art/2022/art_47b4c78a8f52484587e1b198c52fa909.html",
+      "regionalScope": "national",
+      "issueTags": [
+        "recruit_discrimination"
+      ],
+      "version": "1.0.0-draft"
+    },
+    {
+      "legalBasisKey": "employment_promotion_27",
+      "lawName": "中华人民共和国就业促进法",
+      "article": "第二十七条",
+      "fullText": "国家保障妇女享有与男子平等的劳动权利。用人单位招用人员，除国家规定的不适合妇女的工种或者岗位外，不得以性别为由拒绝录用妇女或者提高对妇女的录用标准。用人单位录用女职工，不得在劳动合同中规定限制女职工结婚、生育的内容。",
+      "displayText": "国家保障妇女享有与男子平等的劳动权利，用人单位不得以性别为由拒绝录用妇女或提高录用标准。",
+      "officialUrl": "https://www.mohrss.gov.cn/SYrlzyhshbzb/ztzl/rslyyhyshj/zcwd/202407/t20240723_522714.html",
+      "regionalScope": "national",
+      "issueTags": [
+        "equal_employment"
+      ],
+      "version": "1.0.0-draft"
+    },
+    {
+      "legalBasisKey": "employment_promotion_62",
+      "lawName": "中华人民共和国就业促进法",
+      "article": "第六十二条",
+      "fullText": "违反本法规定，实施就业歧视的，劳动者可以向人民法院提起诉讼。",
+      "displayText": "实施就业歧视的，劳动者可以向人民法院提起诉讼。",
+      "officialUrl": "https://www.npc.gov.cn/npc/c2/c183/c198/201905/t20190522_27234.html",
+      "regionalScope": "national",
+      "issueTags": [
+        "civil_remedy"
+      ],
+      "version": "1.0.0-draft"
+    },
+    {
+      "legalBasisKey": "women_rights_49",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第四十九条",
+      "fullText": "人力资源和社会保障部门应当将招聘、录取、晋职、晋级、评聘专业技术职称和职务、培训、辞退等过程中的性别歧视行为纳入劳动保障监察范围。",
+      "displayText": "招聘、录取、晋职、晋级、职称评聘和培训等过程中的性别歧视行为纳入劳动保障监察范围。",
+      "officialUrl": "https://gzca.miit.gov.cn/zwgk/zcwj/zcfg/art/2022/art_47b4c78a8f52484587e1b198c52fa909.html",
+      "regionalScope": "national",
+      "issueTags": [
+        "administrative_supervision"
+      ],
+      "version": "1.0.0-draft"
+    },
+    {
+      "legalBasisKey": "women_rights_83",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第八十三条",
+      "fullText": "用人单位违反本法第四十三条和第四十八条规定的，由人力资源和社会保障部门责令改正；拒不改正或者情节严重的，处一万元以上五万元以下罚款。",
+      "displayText": "违反第四十三条规定的，由人力资源和社会保障部门责令改正；拒不改正或情节严重的，依法处理。",
+      "officialUrl": "https://gzca.miit.gov.cn/zwgk/zcwj/zcfg/art/2022/art_47b4c78a8f52484587e1b198c52fa909.html",
+      "regionalScope": "national",
+      "issueTags": [
+        "administrative_liability"
+      ],
+      "version": "1.0.0-draft"
+    },
+    {
+      "legalBasisKey": "women_rights_72",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第七十二条",
+      "fullText": "妇女合法权益受到侵害的，有权要求有关部门依法处理，或者依法申请调解、仲裁，或者向人民法院起诉。",
+      "displayText": "妇女合法权益受到侵害的，有权要求有关部门依法处理，或者依法申请调解、仲裁，或者向人民法院起诉。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "women_rights_74",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第七十四条",
+      "fullText": "用人单位侵害妇女劳动和社会保障权益的，人力资源和社会保障部门可以依法监督并要求限期纠正。",
+      "displayText": "用人单位侵害妇女劳动和社会保障权益的，人力资源和社会保障部门可以依法监督并要求限期纠正。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    }
   ]
 }
