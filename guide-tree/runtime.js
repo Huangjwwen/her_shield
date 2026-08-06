@@ -50,12 +50,15 @@ function replayTree(tree, submittedAnswers) {
       if (selected.some((value) => !validValues.has(value))) throw new Error(`INVALID_ANSWER: ${nodeId} contains an unknown option`);
       if (node.exclusiveOptionValues && selected.some((value) => node.exclusiveOptionValues.includes(value)) && selected.length !== 1) throw new Error(`INVALID_ANSWER: ${nodeId} exclusive option cannot be combined`);
       context.answers[nodeId] = selected;
+      const selectedOptions = selected.map((value) => node.options.find((item) => item.value === value));
       selected.forEach((value) => {
         const option = node.options.find((item) => item.value === value);
         (option.setFlags || []).forEach((flag) => context.flags.push({ node: nodeId, flag }));
       });
       const preRule = chooseRule(node.preRules, context);
       if (preRule) return { terminalId: preRule.terminal, path, ...context };
+      const terminalOption = selectedOptions.find((option) => option && option.terminal);
+      if (terminalOption) return { terminalId: terminalOption.terminal, path, ...context };
       const nodeRule = chooseRule(node.rules, context);
       if (nodeRule) {
         if (nodeRule.terminal) return { terminalId: nodeRule.terminal, path, ...context };

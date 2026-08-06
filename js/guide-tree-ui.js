@@ -1,6 +1,9 @@
-function guideTreeApiUrl(path) {
-    const base = (window.GUIDE_TREE_API_BASE || '').replace(/\/$/, '');
-    return `${base}${path}`;
+function guideTreeApiUrl(route = '') {
+    const config = window.HER_SHIELD_CONFIG || {};
+    const isLocal = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+    const base = (isLocal ? '' : (window.GUIDE_TREE_API_BASE || config.GUIDE_TREE_API_BASE || '')).replace(/\/$/, '');
+    const root = (isLocal ? '/api/guide-tree' : (window.GUIDE_TREE_API_PATH || config.GUIDE_TREE_API_PATH || '/api/guide-tree')).replace(/\/$/, '');
+    return `${base}${root}${route}`;
 }
 
 function guideTreeEscape(value) {
@@ -33,6 +36,7 @@ function guideTreeNext(tree, state, node, answer) {
     const options = node.options || [];
     const selected = node.type === 'multi' ? answer : [answer];
     const flags = state.flags.slice();
+    const selectedOptions = selected.map((value) => options.find((item) => item.value === value)).filter(Boolean);
     selected.forEach((value) => {
         const option = options.find((item) => item.value === value);
         (option && option.setFlags || []).forEach((flag) => flags.push({ node: node.id, flag }));
@@ -42,6 +46,8 @@ function guideTreeNext(tree, state, node, answer) {
     const option = options.find((item) => item.value === selected[0]);
     const preRule = (node.preRules || []).find((rule) => guideTreeCondition(rule.when, context));
     if (preRule) return { flags, terminal: preRule.terminal };
+    const terminalOption = selectedOptions.find((item) => item.terminal);
+    if (terminalOption) return { flags, terminal: terminalOption.terminal };
     if (option && option.terminal) return { flags, terminal: option.terminal };
     const optionRule = (option && option.rules || []).find((rule) => rule.otherwise || guideTreeCondition(rule.when, context));
     if (optionRule) return { flags, terminal: optionRule.terminal, next: optionRule.next };
@@ -54,7 +60,7 @@ async function initGuideTree() {
     const state = { tree: null, catalog: null, currentNodeId: null, answers: {}, flags: [], path: [], terminal: null, documentFields: {}, online: true };
     const loadCatalog = async () => {
         try {
-            const response = await fetch(guideTreeApiUrl('/api/guide-tree'));
+            const response = await fetch(guideTreeApiUrl());
             if (!response.ok) throw new Error('catalog unavailable');
             state.online = true;
             return (await response.json()).catalog;
@@ -67,7 +73,7 @@ async function initGuideTree() {
     };
     const loadTree = async (treeId) => {
         try {
-            const response = await fetch(guideTreeApiUrl(`/api/guide-tree?treeId=${encodeURIComponent(treeId)}`));
+            const response = await fetch(guideTreeApiUrl(`?treeId=${encodeURIComponent(treeId)}`));
             if (!response.ok) throw new Error('tree unavailable');
             state.online = true;
             return (await response.json()).config;
@@ -82,20 +88,40 @@ async function initGuideTree() {
         }
     };
     const resetState = () => Object.assign(state, { tree: null, currentNodeId: null, answers: {}, flags: [], path: [], terminal: null, documentFields: {} });
+    const selectTree = async (treeId) => {
+        mount.innerHTML = '<div class="guide-tree-loading">正在加载场景...</div>';
+        state.tree = await loadTree(treeId);
+        const startNode = state.tree.nodes[state.tree.startNodeId];
+        const selfSelect = startNode && startNode.type === 'single' && startNode.options.find((option) => option.value === treeId && option.next);
+        if (selfSelect) {
+            state.answers[startNode.id] = treeId;
+            state.path.push(startNode.id);
+            state.currentNodeId = selfSelect.next;
+            renderQuestion();
+            return;
+        }
+        renderStart();
+    };
     const renderStart = () => {
         if (!state.tree) {
             const scenes = state.catalog.scenes.filter((scene) => scene.availability === 'full');
             const options = scenes.map((scene) => `<button type="button" class="btn-small guide-tree-scene" data-tree-id="${guideTreeEscape(scene.action.treeId)}">${guideTreeEscape(scene.title)}</button>`).join('');
-            mount.innerHTML = `<div class="guide-tree-intro"><div><strong>她行·维权导航</strong><p>请选择需要了解的场景。</p></div><div class="guide-tree-actions">${options}</div></div>`;
+            mount.innerHTML = `<div class="guide-tree-intro guide-tree-entry"><div><strong>你现在遇到的是哪类问题？</strong><p>请选择一个场景进入决策树，或选择其他后手动描述。</p></div><div class="guide-tree-actions">${options}<button type="button" class="btn-small guide-tree-scene guide-tree-other">其他问题（手动描述）</button></div></div>`;
             mount.querySelectorAll('[data-tree-id]').forEach((button) => button.addEventListener('click', async () => {
-                mount.innerHTML = '<div class="guide-tree-loading">正在加载场景...</div>';
                 try {
-                    state.tree = await loadTree(button.dataset.treeId);
-                    renderStart();
+                    await selectTree(button.dataset.treeId);
                 } catch (_) {
                     mount.innerHTML = '<div class="guide-tree-error">当前场景暂时无法加载。</div>';
                 }
             }));
+            const other = mount.querySelector('.guide-tree-other');
+            if (other) other.addEventListener('click', () => {
+                const input = document.getElementById('guideInput');
+                if (input) {
+                    input.focus();
+                    input.placeholder = '请手动描述你遇到的问题，系统会调用她行智能体生成维权路径。';
+                }
+            });
             return;
         }
         const scene = state.catalog.scenes.find((item) => item.action && item.action.treeId === state.tree.treeId);
@@ -187,7 +213,7 @@ async function initGuideTree() {
     const resolve = async () => {
         mount.innerHTML = '<div class="guide-tree-loading">正在生成专属维权方案...</div>';
         try {
-            const response = await fetch(guideTreeApiUrl('/api/guide-tree/resolve'), {
+            const response = await fetch(guideTreeApiUrl('/resolve'), {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ treeId: state.tree.treeId, treeVersion: state.tree.treeVersion, path: state.path, answers: state.answers, documentFields: state.documentFields })
             });

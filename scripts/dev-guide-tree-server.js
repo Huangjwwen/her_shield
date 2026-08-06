@@ -23,7 +23,12 @@ function send(response, statusCode, headers, body) {
 
 const server = http.createServer(async (request, response) => {
   const requestUrl = new URL(request.url, `http://${request.headers.host}`);
-  if (requestUrl.pathname.startsWith('/api/guide-tree')) {
+  if (
+    requestUrl.pathname.startsWith('/api/guide-tree') ||
+    requestUrl.pathname === '/guide-tree' ||
+    requestUrl.pathname === '/guide-tree/resolve' ||
+    requestUrl.pathname === '/guide-tree/classify'
+  ) {
     const body = await readBody(request);
     const result = await guideTree({
       httpMethod: request.method,
