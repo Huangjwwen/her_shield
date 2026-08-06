@@ -1,4 +1,10 @@
-const GUIDE_TREE_ID = 'pregnancy_pay_cut';
+const GUIDE_TREE_SCENES = [
+    { id: 'pregnancy_pay_cut', title: '孕产期调岗降薪' },
+    { id: 'recruit_discrimination', title: '招聘与面试性别歧视' },
+    { id: 'harassment', title: '职场性骚扰及投诉后报复' },
+    { id: 'equal_pay_promotion', title: '同工同酬与晋升受限' },
+    { id: 'leave_benefits', title: '产假、哺乳时间与待遇' }
+];
 
 function guideTreeApiUrl(path) {
     const base = (window.GUIDE_TREE_API_BASE || '').replace(/\/$/, '');
@@ -53,28 +59,40 @@ function guideTreeNext(tree, state, node, answer) {
 async function initGuideTree() {
     const mount = document.getElementById('guideTreeMount');
     if (!mount) return;
-    mount.innerHTML = '<div class="guide-tree-loading">正在加载维权问答...</div>';
-    let tree;
-    let online = true;
-    try {
-        const response = await fetch(guideTreeApiUrl(`/api/guide-tree?treeId=${GUIDE_TREE_ID}`));
-        if (!response.ok) throw new Error('config unavailable');
-        tree = (await response.json()).config;
-    } catch (_) {
-        online = false;
+    let tree = null;
+    const state = { currentNodeId: null, answers: {}, flags: [], path: [], terminal: null, documentFields: {}, online: true };
+    const loadTree = async (treeId) => {
+        mount.innerHTML = '<div class="guide-tree-loading">正在加载维权问答...</div>';
         try {
-            const response = await fetch('guide-tree/config/pregnancy-pay-cut.full.json');
-            if (!response.ok) throw new Error('fallback unavailable');
-            tree = await response.json();
+            const response = await fetch(guideTreeApiUrl(`/api/guide-tree?treeId=${treeId}`));
+            if (!response.ok) throw new Error('config unavailable');
+            state.online = true;
+            return (await response.json()).config;
         } catch (_) {
-            mount.innerHTML = '<div class="guide-tree-error">维权问答暂时无法加载。</div>';
+            state.online = false;
+            const scene = GUIDE_TREE_SCENES.find((item) => item.id === treeId);
+            try {
+                const response = await fetch(`guide-tree/config/${scene.id.replaceAll('_', '-')}.full.json`);
+                if (!response.ok) throw new Error('fallback unavailable');
+                return await response.json();
+            } catch (_) {
+                mount.innerHTML = '<div class="guide-tree-error">维权问答暂时无法加载。</div>';
+                return null;
+            }
+        }
+    };
+    const renderStart = () => {
+        if (!tree) {
+            const options = GUIDE_TREE_SCENES.map((scene) => `<button type="button" class="btn-small" data-guide-tree-id="${scene.id}">${scene.title}</button>`).join('');
+            mount.innerHTML = `<div class="guide-tree-intro"><div><strong>维权导航</strong><p>请选择需要了解的场景。</p></div><div class="guide-tree-actions">${options}</div></div>`;
+            mount.querySelectorAll('[data-guide-tree-id]').forEach((button) => button.addEventListener('click', async () => {
+                tree = await loadTree(button.dataset.guideTreeId);
+                if (tree) renderStart();
+            }));
             return;
         }
-    }
-
-    const state = { currentNodeId: null, answers: {}, flags: [], path: [], terminal: null, documentFields: {}, online };
-    const renderStart = () => {
-        mount.innerHTML = `<div class="guide-tree-intro"><div><strong>孕产期调岗降薪</strong><p>请根据实际情况逐题确认。</p></div><button type="button" class="btn-primary guide-tree-start">开始</button></div>`;
+        const scene = GUIDE_TREE_SCENES.find((item) => item.id === tree.treeId);
+        mount.innerHTML = `<div class="guide-tree-intro"><div><strong>${guideTreeEscape(scene.title)}</strong><p>请根据实际情况逐题确认。</p></div><button type="button" class="btn-primary guide-tree-start">开始</button></div>`;
         mount.querySelector('.guide-tree-start').addEventListener('click', () => {
             state.currentNodeId = tree.startNodeId;
             renderQuestion();

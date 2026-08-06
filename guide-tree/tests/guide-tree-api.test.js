@@ -6,6 +6,11 @@ function event({ method, path, query, body }) {
 }
 
 async function run() {
+  for (const treeId of ['recruit_discrimination', 'harassment', 'equal_pay_promotion', 'leave_benefits']) {
+    const response = await main(event({ method: 'GET', path: '/api/guide-tree', query: { treeId } }));
+    assert.strictEqual(response.statusCode, 200);
+    assert.strictEqual(JSON.parse(response.body).config.treeId, treeId);
+  }
   const projectionResponse = await main(event({ method: 'GET', path: '/api/guide-tree', query: { treeId: 'pregnancy_pay_cut' } }));
   assert.strictEqual(projectionResponse.statusCode, 200);
   const projection = JSON.parse(projectionResponse.body).config;

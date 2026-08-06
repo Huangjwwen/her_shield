@@ -54,6 +54,8 @@ function replayTree(tree, submittedAnswers) {
         const option = node.options.find((item) => item.value === value);
         (option.setFlags || []).forEach((flag) => context.flags.push({ node: nodeId, flag }));
       });
+      const terminalOption = selected.map((value) => node.options.find((item) => item.value === value)).find((option) => option && option.terminal);
+      if (terminalOption) return { terminalId: terminalOption.terminal, path, ...context };
       nodeId = node.next;
       continue;
     }

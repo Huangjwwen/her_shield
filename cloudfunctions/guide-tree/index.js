@@ -8,13 +8,27 @@ function readConfig(fileName) {
   return JSON.parse(fs.readFileSync(path.join(configDir, fileName), 'utf8'));
 }
 
-function loadPregnancyPayCut() {
+const TREE_FILES = {
+  pregnancy_pay_cut: 'pregnancy-pay-cut',
+  recruit_discrimination: 'recruit-discrimination',
+  harassment: 'harassment',
+  equal_pay_promotion: 'equal-pay-promotion',
+  leave_benefits: 'leave-benefits'
+};
+
+function loadTree(treeId) {
+  const slug = TREE_FILES[treeId];
+  if (!slug) throw new Error('NOT_FOUND: treeId is not available');
   return {
-    tree: readConfig('pregnancy-pay-cut.full.json'),
-    templates: readConfig('pregnancy-pay-cut.templates.json'),
-    legalBasis: readConfig('pregnancy-pay-cut.legal-basis.json'),
-    mapping: readConfig('pregnancy-pay-cut.terminal-mapping.json')
+    tree: readConfig(`${slug}.full.json`),
+    templates: readConfig(`${slug}.templates.json`),
+    legalBasis: readConfig(`${slug}.legal-basis.json`),
+    mapping: readConfig(`${slug}.terminal-mapping.json`)
   };
+}
+
+function loadPregnancyPayCut() {
+  return loadTree('pregnancy_pay_cut');
 }
 
 function response(statusCode, body) {
@@ -50,7 +64,7 @@ async function handle(event) {
   const method = (event.httpMethod || event.method || 'GET').toUpperCase();
   const requestPath = event.path || '';
   const data = requestData(event);
-  const config = loadPregnancyPayCut();
+  const config = loadTree(data.treeId);
   assertTree(data.treeId, config.tree);
 
   if (method === 'GET' && !requestPath.endsWith('/resolve')) {
@@ -86,4 +100,4 @@ exports.main = async (event) => {
   }
 };
 
-exports._internal = { handle, loadPregnancyPayCut };
+exports._internal = { handle, loadPregnancyPayCut, loadTree, TREE_FILES };
