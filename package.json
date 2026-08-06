@@ -6,6 +6,12 @@
   "scripts": {
     "start": "electron .",
     "dev": "npx http-server . -p 8080 -c-1",
+    "dev:guide-tree": "node scripts/dev-guide-tree-server.js",
+    "prepare:guide-tree-function": "node scripts/prepare-guide-tree-function.js",
+    "check:guide-tree-function": "node scripts/check-guide-tree-function-bundle.js",
+    "build:guide-tree-configs": "node guide-tree/scripts/build-five-tree-configs.js",
+    "validate:guide-tree": "node guide-tree/scripts/validate-pregnancy-pay-cut.js",
+    "test:guide-tree": "node guide-tree/tests/guide-tree-api.test.js && node guide-tree/tests/five-tree-api.test.js",
     "install-electron": "npm install electron --save-dev"
   },
   "keywords": ["women", "rights", "workplace", "legal", "electron"],

@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "treeId": "pregnancy_pay_cut",
+  "conditionIndexVersion": "1.3.0",
+  "status": "draft",
+  "templates": [
+    {
+      "documentKey": "salary_objection",
+      "version": "1.2.0-draft",
+      "conditionIndexVersion": "1.3.0",
+      "title": "调岗/降薪异议函",
+      "applicableTreeIds": ["pregnancy_pay_cut"],
+      "applicableTerminals": ["PA"],
+      "purpose": "明确不同意与孕产相关的调岗、降薪或待遇调整，并请求书面说明和答复。",
+      "requiredFields": ["userName", "companyName", "eventDate", "currentRole"],
+      "optionalFields": ["noticeDate", "replyDeadline"],
+      "warnings": ["使用前逐项核对事实与字段。", "保留发送和送达记录。"],
+      "mutuallyExclusiveGroups": [{ "groupId": "notice_form", "blockIds": ["oral_notice", "written_notice", "implied_notice"], "cardinality": "at_most_one" }, { "groupId": "pregnancy_stage", "blockIds": ["pregnancy", "maternity_leave", "lactation"], "cardinality": "at_most_one" }, { "groupId": "action_type", "blockIds": ["transfer", "salary", "both"], "cardinality": "at_most_one" }],
+      "bodyBlocks": [
+        { "blockId": "title", "type": "fixed", "order": 10, "text": "关于调岗/降薪安排的异议函" },
+        { "blockId": "recipient", "type": "fixed", "order": 20, "text": "致：{{companyName}}" },
+        { "blockId": "facts", "type": "fixed", "order": 30, "text": "本人{{userName}}现任{{currentRole}}。本人于{{eventDate}}获知公司已经或拟对本人岗位、工资、绩效或其他待遇作出调整。现就本人已了解的事实提出书面异议，并请求公司核实和书面说明。" },
+        { "blockId": "oral_notice", "type": "conditional", "order": 40, "when": { "node": "P3", "value": "oral" }, "text": "上述安排目前系口头告知。为避免理解分歧，请公司书面确认调整内容、拟生效时间、理由和依据。" },
+        { "blockId": "written_notice", "type": "conditional", "order": 40, "when": { "node": "P3", "value": "written" }, "text": "本人已收到相关书面通知。请公司说明该通知所依据的制度、协商过程及具体事实。" },
+        { "blockId": "notice_date", "type": "conditional", "order": 45, "when": { "all": [{ "node": "P3", "value": "written" }, { "field": "noticeDate", "op": "exists" }] }, "text": "该通知的接收日期为{{noticeDate}}。", "requiredFieldsWhenRendered": ["noticeDate"] },
+        { "blockId": "implied_notice", "type": "conditional", "order": 40, "when": { "node": "P3", "value": "implied" }, "text": "目前公司尚未正式通知，但有关人员已表达可能调整岗位、工资或待遇的安排。本人先行记录并请求公司书面澄清。" },
+        { "blockId": "pregnancy", "type": "conditional", "order": 50, "when": { "node": "P5", "value": "pregnancy" }, "text": "上述情况发生于本人孕期。" },
+        { "blockId": "maternity_leave", "type": "conditional", "order": 50, "when": { "node": "P5", "value": "maternity_leave" }, "text": "上述情况发生于本人产假期间。" },
+        { "blockId": "lactation", "type": "conditional", "order": 50, "when": { "node": "P5", "value": "lactation" }, "text": "上述情况发生于本人哺乳期。" },
+        { "blockId": "implemented", "type": "fixed", "order": 60, "text": "据本人目前了解，相关安排已经实际执行，请公司书面确认生效时间、执行内容和处理依据。" },
+        { "blockId": "transfer", "type": "conditional", "order": 70, "when": { "node": "P6", "value": "transfer_only" }, "text": "本人对所述岗位调整提出异议，请公司核对事实、职责、劳动条件和协商依据。" },
+        { "blockId": "salary", "type": "conditional", "order": 70, "when": { "node": "P6", "value": "salary_reduced" }, "text": "本人对所述工资、绩效或待遇变化提出异议，请公司核对计算方式和依据。" },
+        { "blockId": "both", "type": "conditional", "order": 70, "when": { "node": "P6", "value": "both" }, "text": "本人对所述调岗及降薪安排提出异议，请公司核对事实、职责、待遇变化和协商依据。" },
+        { "blockId": "unsafe_work", "type": "conditional", "order": 80, "when": { "node": "P7", "value": "unsafe_work" }, "text": "请公司同步评估相关工作安排是否与本人当前孕产状态相适应，并采取必要的劳动保护措施。" },
+        { "blockId": "preserve_records", "type": "fixed", "order": 90, "text": "请公司保留本人现有劳动合同、工资、岗位和考勤资料，并书面告知处理结果。" },
+        { "blockId": "reply_deadline", "type": "conditional", "order": 100, "when": { "field": "replyDeadline", "op": "exists" }, "text": "请于{{replyDeadline}}前书面回复。", "requiredFieldsWhenRendered": ["replyDeadline"] },
+        { "blockId": "disclaimer", "type": "fixed", "order": 110, "text": "本函仅为固定本人异议和请求，不代表对尚未核实事实作出最终法律判断。" },
+        { "blockId": "signature", "type": "fixed", "order": 120, "text": "{{userName}}\n{{generatedDate}}" }
+      ]
+    },
+    {
+      "documentKey": "restore_position_salary_request",
+      "version": "1.2.0-draft",
+      "conditionIndexVersion": "1.3.0",
+      "title": "恢复原岗位/工资待遇请求",
+      "applicableTreeIds": ["pregnancy_pay_cut"],
+      "applicableTerminals": ["PA", "PB"],
+      "purpose": "对已经实施的岗位或待遇变化提出恢复及书面核对请求。",
+      "requiredFields": ["userName", "companyName", "effectiveDate"],
+      "optionalFields": ["originalRole", "currentRole", "originalSalary", "currentSalary", "performanceChange"],
+      "warnings": ["使用前逐项核对事实与字段。", "保留发送和送达记录。"],
+      "bodyBlocks": [
+        { "blockId": "title", "type": "fixed", "order": 10, "text": "关于恢复原岗位/工资待遇并书面说明的请求" },
+        { "blockId": "recipient", "type": "fixed", "order": 20, "text": "致：{{companyName}}" },
+        { "blockId": "facts", "type": "fixed", "order": 30, "text": "本人{{userName}}自{{effectiveDate}}起发现岗位、工资、绩效或其他待遇发生变化，现请求公司核对相关安排及其与本人孕产状态的时间关系。" },
+        { "blockId": "transfer_request", "type": "conditional", "order": 40, "when": { "any": [{ "node": "P6", "value": "transfer_only" }, { "node": "P6", "value": "both" }] }, "text": "本人发现岗位安排已经发生变化。请说明岗位调整的事实依据、职责变化、劳动条件及协商记录，并核对恢复原岗位或提供不降低原有待遇且适合当前身体状况安排的可行方案。" },
+        { "blockId": "roles", "type": "conditional", "order": 45, "when": { "all": [{ "field": "originalRole", "op": "exists" }, { "field": "currentRole", "op": "exists" }] }, "text": "本人原岗位为{{originalRole}}，现岗位为{{currentRole}}。", "requiredFieldsWhenRendered": ["originalRole", "currentRole"] },
+        { "blockId": "salary_request", "type": "conditional", "order": 50, "when": { "any": [{ "node": "P6", "value": "salary_reduced" }, { "node": "P6", "value": "both" }] }, "text": "本人发现工资、绩效或其他待遇已经发生变化。请核对差额、计算方式和依据，并核对恢复原工资待遇或补足差额的处理方案。" },
+        { "blockId": "salaries", "type": "conditional", "order": 55, "when": { "all": [{ "field": "originalSalary", "op": "exists" }, { "field": "currentSalary", "op": "exists" }] }, "text": "本人调整前工资/待遇为{{originalSalary}}，调整后为{{currentSalary}}。", "requiredFieldsWhenRendered": ["originalSalary", "currentSalary"] },
+        { "blockId": "signed", "type": "conditional", "order": 60, "when": { "node": "P8", "flag": "signed_under_pressure" }, "text": "本人同时说明，相关文件的签署背景和真实意思表示仍需结合当时沟通过程核实，请公司妥善保存签署及沟通记录。" },
+        { "blockId": "unknown_document", "type": "conditional", "order": 65, "when": { "node": "P8", "flag": "document_uncertain" }, "text": "本人目前无法确认曾签文件的完整名称和内容，请公司提供本人签署文件的完整副本供核对。" },
+        { "blockId": "close", "type": "fixed", "order": 70, "text": "请以书面方式回复，并保留与本事项有关的通知、工资、岗位、考勤和沟通资料。\n\n{{userName}}\n{{generatedDate}}" }
+      ]
+    },
+    {
+      "documentKey": "evidence_catalog",
+      "version": "1.2.0-draft",
+      "conditionIndexVersion": "1.3.0",
+      "title": "证据目录",
+      "applicableTreeIds": ["pregnancy_pay_cut"],
+      "applicableTerminals": ["PA", "PB", "PC", "PD", "PE", "PF"],
+      "purpose": "按场景整理证据原件、来源、时间和拟证明事项，形成可核对的材料清单。",
+      "requiredFields": ["userName", "caseTitle"],
+      "optionalFields": ["companyName", "evidenceItems", "notes"],
+      "warnings": ["使用前逐项核对事实与字段。", "保留发送和送达记录。", "本清单不是成品申请书。"],
+      "bodyBlocks": [
+        { "blockId": "heading", "type": "fixed", "order": 10, "text": "证据目录\n\n事项：{{caseTitle}}\n整理人：{{userName}}" },
+        { "blockId": "company", "type": "conditional", "order": 20, "when": { "field": "companyName", "op": "exists" }, "text": "涉及单位：{{companyName}}", "requiredFieldsWhenRendered": ["companyName"] },
+        { "blockId": "instruction", "type": "fixed", "order": 30, "text": "请按“编号、材料名称、形成时间、来源、原件位置、拟证明事项、是否已备份”逐项填写。" },
+        { "blockId": "pregnancy_evidence", "type": "conditional", "order": 40, "when": { "node": "P1", "value": "pregnancy_pay_cut" }, "text": "建议优先整理：调岗/降薪通知、确认式沟通、工资条和流水、孕产证明、劳动合同和岗位说明、考勤排班、已签文件及送达记录。按“告知孕产状态—公司知悉—不利措施—本人异议/投诉”的顺序制作时间线。" },
+        { "blockId": "items", "type": "conditional", "order": 50, "when": { "field": "evidenceItems", "op": "exists" }, "text": "现有材料：\n{{evidenceItems}}", "requiredFieldsWhenRendered": ["evidenceItems"] },
+        { "blockId": "notes", "type": "conditional", "order": 60, "when": { "field": "notes", "op": "exists" }, "text": "备注：{{notes}}", "requiredFieldsWhenRendered": ["notes"] },
+        { "blockId": "date", "type": "fixed", "order": 70, "text": "生成日期：{{generatedDate}}" }
+      ]
+    },
+    {
+      "documentKey": "legal_aid_questions",
+      "version": "1.2.0-draft",
+      "conditionIndexVersion": "1.3.0",
+      "title": "法律援助咨询问题清单",
+      "applicableTreeIds": ["pregnancy_pay_cut"],
+      "applicableTerminals": ["PC"],
+      "purpose": "为时效、受理渠道、请求项目和法律援助条件准备结构化咨询问题。",
+      "requiredFields": ["userName", "companyName", "eventDate"],
+      "optionalFields": ["claimRecords", "workRegion", "insuranceRegion"],
+      "warnings": ["使用前逐项核对事实与字段。", "本清单不是成品申请书。"],
+      "bodyBlocks": [
+        { "blockId": "questions", "type": "fixed", "order": 10, "text": "法律援助咨询问题清单\n\n1. 本案争议性质和可能的受理渠道是什么？\n2. 仲裁时效从哪一天起算？\n3. 现有主张记录是否可能造成时效中断？\n4. 是否存在时效中止情形？\n5. 本案是否属于劳动关系存续期间拖欠劳动报酬，是否适用特别规则？\n6. 地方生育假、津贴或补差规则在{{eventDate}}时是否有效？\n7. 现有证据还缺哪些关键材料？\n8. 请求项目和金额应如何避免重复或遗漏？\n9. 是否符合法律援助条件，需要准备哪些经济困难或案件材料？" },
+        { "blockId": "relation", "type": "conditional", "order": 20, "when": { "any": [{ "node": "P2", "flag": "relation_uncertain" }, { "node": "P6", "flag": "relation_uncertain" }] }, "text": "10. 现有材料能否证明不利措施与告知怀孕、产假或返岗之间存在时间和原因关联？" }
+      ]
+    },
+    {
+      "documentKey": "arbitration_application_points",
+      "version": "1.2.0-draft",
+      "conditionIndexVersion": "1.3.0",
+      "title": "劳动仲裁申请书要点清单",
+      "applicableTreeIds": ["pregnancy_pay_cut"],
+      "applicableTerminals": ["PB"],
+      "purpose": "帮助用户在专业审核前核对仲裁请求、事实、证据、金额和时效，不替代成品申请书。",
+      "requiredFields": ["userName", "companyName", "employmentStartDate", "caseTitle"],
+      "optionalFields": ["employmentEndDate", "claimAmount", "eventTimeline", "professionalReviewQuestions"],
+      "warnings": ["使用前逐项核对事实与字段。", "本清单不是成品申请书。"],
+      "bodyBlocks": [
+        { "blockId": "heading", "type": "fixed", "order": 10, "text": "劳动仲裁申请书要点清单（不是成品申请书）\n\n一、当事人信息\n申请人：{{userName}}\n被申请人：{{companyName}}\n劳动关系开始日期：{{employmentStartDate}}" },
+        { "blockId": "implemented_action", "type": "conditional", "order": 20, "when": { "any": [{ "node": "P6", "value": "transfer_only" }, { "node": "P6", "value": "salary_reduced" }, { "node": "P6", "value": "both" }] }, "text": "根据已经实施的岗位、工资或待遇变化，核对恢复安排、工资或待遇差额等请求的事实和法律基础；涉及签署文件时先核对文件名称、内容、签署背景和后续履行。" },
+        { "blockId": "facts", "type": "fixed", "order": 30, "text": "二、事实与理由\n按时间顺序写明劳动关系、岗位待遇、事件发生、申请沟通、公司回复和损失结果，不写无法证明的推测。\n\n三、证据\n列明每项请求对应的证据编号及证明目的。\n\n四、时效\n记录首次知道权益受损日期、向单位主张日期、投诉或调解日期，并核对中断、中止及劳动报酬特别规则。" }
+      ]
+    },
+    {
+      "documentKey": "labor_inspection_materials",
+      "version": "1.2.0-draft",
+      "conditionIndexVersion": "1.3.0",
+      "title": "劳动监察投诉材料清单",
+      "applicableTreeIds": ["pregnancy_pay_cut"],
+      "applicableTerminals": ["PB"],
+      "purpose": "整理属于人社、劳动保障监察或相关行政部门职责的投诉材料，不预判受理机关。",
+      "requiredFields": ["userName", "companyName", "workRegion", "issueTitle"],
+      "optionalFields": [],
+      "warnings": ["使用前逐项核对事实与字段。", "本清单不是成品申请书。", "按实际工作地和事项核对有管辖权的部门。"],
+      "bodyBlocks": [
+        { "blockId": "heading", "type": "fixed", "order": 10, "text": "劳动保障监察/行政反映材料清单\n\n1. 投诉人身份和联系方式；\n2. 用人单位名称、统一社会信用代码、地址和实际用工地；\n3. 劳动关系材料；\n4. 按日期整理的事实经过；\n5. 与当前问题直接相关的申请、回复、工资、绩效、晋升、休假、参保或津贴材料；\n6. 已向单位主张的记录及送达凭证；\n7. 希望主管部门核查的具体事项；\n8. 按实际工作地和事项核对有管辖权的部门。" },
+        { "blockId": "pregnancy_scope", "type": "conditional", "order": 20, "when": { "node": "P1", "value": "pregnancy_pay_cut" }, "text": "应突出孕产状态、单位知悉时间、调岗降薪或待遇变化、本人异议和实际工资/岗位差异；纯解除问题不纳入本项目成文。" }
+      ]
+    },
+    {
+      "documentKey": "arbitration_supplement_list",
+      "version": "1.2.0-draft",
+      "conditionIndexVersion": "1.3.0",
+      "title": "劳动仲裁补充材料清单",
+      "applicableTreeIds": ["pregnancy_pay_cut"],
+      "applicableTerminals": ["PD"],
+      "purpose": "对已立案劳动仲裁的请求、证据、计算和补交期限进行逐项核对。",
+      "requiredFields": ["userName", "companyName", "caseNumber"],
+      "optionalFields": ["hearingDate", "supplementDeadline"],
+      "warnings": ["使用前逐项核对事实与字段。", "本清单不是成品申请书。"],
+      "bodyBlocks": [{ "blockId": "content", "type": "fixed", "order": 10, "text": "劳动仲裁补充材料清单\n\n案件编号：{{caseNumber}}\n申请人：{{userName}}\n被申请人：{{companyName}}\n\n1. 对照每项仲裁请求列出现有证据；\n2. 标明新增证据的形成时间、来源和证明目的；\n3. 核对仲裁庭要求补交的材料和期限；\n4. 准备工资、奖金、绩效或待遇差额计算表；\n5. 准备事件时间线和已向单位主张的送达记录；\n6. 不修改原始文件，不补造聊天记录，不提交与争议无关的他人隐私。" }]
+    }
+  ],
+  "sourceReconciliation": [{ "documentKey": "legal_aid_questions", "sourceMentionedTerminal": "PF", "appliedTerminal": "PC", "reason": "本树终点规则明确 PF 仅返回证据目录，不生成法援、仲裁或调岗降薪文书。" }]
+}

@@ -1,0 +1,214 @@
+{
+  "schemaVersion": 1,
+  "treeId": "harassment",
+  "treeVersion": "1.3.0-draft",
+  "status": "draft",
+  "terminals": {
+    "HA": {
+      "documentKeys": [
+        "evidence_catalog"
+      ],
+      "requiredLegalBasisKeys": [
+        "women_rights_23",
+        "civil_code_1010"
+      ],
+      "conditionalLegalBasis": []
+    },
+    "HB": {
+      "documentKeys": [
+        "evidence_catalog"
+      ],
+      "conditionalDocuments": [
+        {
+          "documentKey": "harassment_internal_complaint",
+          "when": {
+            "node": "H8",
+            "value": "not_complained"
+          }
+        },
+        {
+          "documentKey": "request_company_investigation",
+          "when": {
+            "node": "H8",
+            "value": "pending_internal"
+          }
+        }
+      ],
+      "requiredLegalBasisKeys": [
+        "women_rights_25",
+        "civil_code_1010"
+      ],
+      "conditionalLegalBasis": [
+        {
+          "legalBasisKey": "women_rights_23",
+          "when": {
+            "node": "H8",
+            "value": "not_complained"
+          }
+        },
+        {
+          "legalBasisKey": "women_rights_80",
+          "when": {
+            "node": "H8",
+            "value": "pending_internal"
+          }
+        }
+      ]
+    },
+    "HC": {
+      "documentKeys": [
+        "emergency_help_record",
+        "evidence_catalog"
+      ],
+      "requiredLegalBasisKeys": [
+        "women_rights_23",
+        "civil_code_1010"
+      ],
+      "conditionalLegalBasis": [
+        {
+          "legalBasisKey": "women_rights_25",
+          "when": {
+            "node": "H3",
+            "value": "immediate_risk"
+          }
+        }
+      ]
+    },
+    "HD": {
+      "documentKeys": [
+        "evidence_catalog"
+      ],
+      "conditionalDocuments": [
+        {
+          "documentKey": "personality_rights_civil_materials",
+          "when": {
+            "field": "flags",
+            "op": "contains",
+            "value": {
+              "node": "H4A",
+              "flag": "civil_route"
+            }
+          }
+        },
+        {
+          "documentKey": "labor_inspection_materials",
+          "when": {
+            "field": "documentFields.requestedDocumentKeys",
+            "op": "contains",
+            "value": "labor_inspection_materials"
+          }
+        }
+      ],
+      "requiredLegalBasisKeys": [
+        "women_rights_23",
+        "women_rights_72"
+      ],
+      "conditionalLegalBasis": [
+        {
+          "legalBasisKey": "women_rights_25",
+          "when": {
+            "node": "H8",
+            "value": "company_no_action"
+          }
+        },
+        {
+          "legalBasisKey": "women_rights_80",
+          "when": {
+            "node": "H8",
+            "value": "company_no_action"
+          }
+        },
+        {
+          "legalBasisKey": "women_rights_84",
+          "when": {
+            "field": "flags",
+            "op": "contains",
+            "value": {
+              "node": "H8A",
+              "flag": "retaliation_soft"
+            }
+          }
+        },
+        {
+          "legalBasisKey": "civil_code_1010",
+          "when": {
+            "field": "flags",
+            "op": "contains",
+            "value": {
+              "node": "H4A",
+              "flag": "civil_route"
+            }
+          }
+        }
+      ]
+    },
+    "HE": {
+      "documentKeys": [
+        "request_company_investigation",
+        "evidence_catalog"
+      ],
+      "conditionalDocuments": [
+        {
+          "documentKey": "arbitration_application_points",
+          "when": {
+            "all": [
+              {
+                "field": "flags",
+                "op": "contains",
+                "value": {
+                  "node": "H8A",
+                  "flag": "retaliation_material"
+                }
+              },
+              {
+                "field": "documentFields.requestedDocumentKeys",
+                "op": "contains",
+                "value": "arbitration_application_points"
+              }
+            ]
+          }
+        }
+      ],
+      "requiredLegalBasisKeys": [
+        "women_rights_25",
+        "women_rights_72"
+      ],
+      "conditionalLegalBasis": [
+        {
+          "legalBasisKey": "women_rights_84",
+          "when": {
+            "any": [
+              {
+                "node": "H8A",
+                "value": "material_action"
+              },
+              {
+                "node": "H8A",
+                "value": "exit_pressure"
+              }
+            ]
+          }
+        },
+        {
+          "legalBasisKey": "civil_code_1010",
+          "when": {
+            "node": "H8A",
+            "value": "material_action"
+          }
+        },
+        {
+          "legalBasisKey": "labor_dispute_arbitration_27",
+          "when": {
+            "node": "H8A",
+            "value": "material_action"
+          }
+        }
+      ]
+    },
+    "OOS": {
+      "documentKeys": [],
+      "requiredLegalBasisKeys": [],
+      "conditionalLegalBasis": []
+    }
+  }
+}

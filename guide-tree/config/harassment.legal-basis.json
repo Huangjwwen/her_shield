@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "status": "draft",
+  "retrievedAt": "2026-08-02",
+  "records": [
+    {
+      "legalBasisKey": "women_rights_23",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第二十三条",
+      "fullText": "禁止违背妇女意愿，以言语、文字、图像、肢体行为等方式对妇女实施性骚扰。",
+      "displayText": "禁止违背妇女意愿，以言语、文字、图像、肢体行为等方式对妇女实施性骚扰。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "women_rights_25",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第二十五条",
+      "fullText": "用人单位应当采取措施预防和制止对妇女的性骚扰。",
+      "displayText": "用人单位应当采取措施预防和制止对妇女的性骚扰。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "women_rights_72",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第七十二条",
+      "fullText": "妇女合法权益受到侵害的，有权要求有关部门依法处理，或者依法申请调解、仲裁，或者向人民法院起诉。",
+      "displayText": "妇女合法权益受到侵害的，有权要求有关部门依法处理，或者依法申请调解、仲裁，或者向人民法院起诉。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "women_rights_80",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第八十条",
+      "fullText": "违反预防和制止性骚扰义务的，用人单位或者有关单位可能承担相应责任。",
+      "displayText": "违反预防和制止性骚扰义务的，用人单位或者有关单位可能承担相应责任。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "women_rights_84",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第八十四条",
+      "fullText": "对申诉、控告、检举人打击报复的，依法处理。",
+      "displayText": "对申诉、控告、检举人打击报复的，依法处理。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "women_rights_74",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第七十四条",
+      "fullText": "用人单位侵害妇女劳动和社会保障权益的，人力资源和社会保障部门可以依法监督并要求限期纠正。",
+      "displayText": "用人单位侵害妇女劳动和社会保障权益的，人力资源和社会保障部门可以依法监督并要求限期纠正。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "civil_code_1010",
+      "lawName": "中华人民共和国民法典",
+      "article": "第一千零一十条",
+      "fullText": "违背他人意愿实施性骚扰的，受害人有权依法请求行为人承担民事责任。",
+      "displayText": "违背他人意愿实施性骚扰的，受害人有权依法请求行为人承担民事责任。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "labor_dispute_arbitration_27",
+      "lawName": "中华人民共和国劳动争议调解仲裁法",
+      "article": "第二十七条",
+      "fullText": "劳动争议申请仲裁的时效期间为一年，存在中断、中止和劳动报酬特别规则。",
+      "displayText": "劳动争议申请仲裁的时效期间为一年，存在中断、中止和劳动报酬特别规则。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    }
+  ],
+  "treeId": "harassment"
+}

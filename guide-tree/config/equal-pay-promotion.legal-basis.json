@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "status": "draft",
+  "retrievedAt": "2026-08-02",
+  "records": [
+    {
+      "legalBasisKey": "women_rights_72",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第七十二条",
+      "fullText": "妇女合法权益受到侵害的，有权要求有关部门依法处理，或者依法申请调解、仲裁，或者向人民法院起诉。",
+      "displayText": "妇女合法权益受到侵害的，有权要求有关部门依法处理，或者依法申请调解、仲裁，或者向人民法院起诉。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "women_rights_45",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第四十五条",
+      "fullText": "国家保障妇女享有与男子平等的劳动报酬和福利待遇。",
+      "displayText": "国家保障妇女享有与男子平等的劳动报酬和福利待遇。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "women_rights_46",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第四十六条",
+      "fullText": "在晋职、晋级、评聘专业技术职称和职务、培训等方面，应当坚持男女平等原则。",
+      "displayText": "在晋职、晋级、评聘专业技术职称和职务、培训等方面，应当坚持男女平等原则。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "women_rights_48",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第四十八条",
+      "fullText": "用人单位不得因结婚、怀孕、产假、哺乳等情形，降低女职工工资福利待遇或限制晋职晋级。",
+      "displayText": "用人单位不得因结婚、怀孕、产假、哺乳等情形，降低女职工工资福利待遇或限制晋职晋级。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "labor_law_46",
+      "lawName": "中华人民共和国劳动法",
+      "article": "第四十六条",
+      "fullText": "工资分配应当遵循按劳分配原则，实行同工同酬。",
+      "displayText": "工资分配应当遵循按劳分配原则，实行同工同酬。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "women_rights_74",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第七十四条",
+      "fullText": "用人单位侵害妇女劳动和社会保障权益的，人力资源和社会保障部门可以依法监督并要求限期纠正。",
+      "displayText": "用人单位侵害妇女劳动和社会保障权益的，人力资源和社会保障部门可以依法监督并要求限期纠正。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "women_rights_49",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第四十九条",
+      "fullText": "人力资源和社会保障部门应当将招聘、录用、晋职、晋级、培训等过程中的性别歧视纳入劳动保障监察范围。",
+      "displayText": "人力资源和社会保障部门应当将招聘、录用、晋职、晋级、培训等过程中的性别歧视纳入劳动保障监察范围。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "women_rights_83",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第八十三条",
+      "fullText": "用人单位违反招聘性别歧视和孕产期保护规定的，依法责令改正或处罚。",
+      "displayText": "用人单位违反招聘性别歧视和孕产期保护规定的，依法责令改正或处罚。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    }
+  ],
+  "treeId": "equal_pay_promotion"
+}

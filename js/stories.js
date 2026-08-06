@@ -147,7 +147,11 @@ function initStories() {
         renderStories();
 
         // 上传到云端
-        fetch('https://her-shield-d7gyrtfxm65f3e782-1410225134.ap-shanghai.app.tcloudbase.com/story', {
+        const cloudBaseUrl = (window.HER_SHIELD_CONFIG && window.HER_SHIELD_CONFIG.CLOUDBASE_BASE_URL)
+            ? window.HER_SHIELD_CONFIG.CLOUDBASE_BASE_URL.replace(/\/$/, '')
+            : '';
+
+        fetch(`${cloudBaseUrl}/story`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

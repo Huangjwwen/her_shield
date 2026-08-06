@@ -167,6 +167,71 @@ function parseEvidenceResponse(response) {
     return result;
 }
 
+// ==================== Markdown 渲染与提示文案 ====================
+
+/**
+ * 合法的取证边界提醒（固定文案，展示在"提示"栏中）
+ */
+const LEGAL_BOUNDARY_TIP = `请务必在**合法范围内**收集证据：
+• 不私自进入他人私密空间取证
+• 不采用窃听、偷拍他人私密活动的方式
+• 不在公开平台传播未经处理的他人隐私信息
+• 收集证据时优先采用**公开渠道**获取的信息
+• 涉及人身安全时，请优先**报警求助**`;
+
+/**
+ * 轻量 Markdown → HTML 渲染
+ * 支持：**加粗**、*斜体*、### 标题、- 列表、• 列表、换行分段
+ * 先做 HTML 转义防止 XSS，再替换 Markdown 语法为对应 HTML 标签
+ * @param {string} text - 原始文本（可含 Markdown 语法）
+ * @returns {string} - 安全的 HTML 字符串
+ */
+function renderMarkdown(text) {
+    if (!text) return '';
+
+    // 第一步：HTML 转义，防止 XSS
+    let html = escapeHtml(text);
+
+    // 第二步：Markdown 语法替换（顺序很重要）
+
+    // ### 标题
+    html = html.replace(/^### (.+)$/gm, '<h4 class="md-heading">$1</h4>');
+    html = html.replace(/^## (.+)$/gm, '<h3 class="md-heading">$1</h3>');
+
+    // **加粗**
+    html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+    // *斜体*（注意不要匹配 ** 中的 *）
+    html = html.replace(/(?<!\*)\*([^*\n]+?)\*(?!\*)/g, '<em>$1</em>');
+
+    // 无序列表（- 开头 或 • 开头）
+    html = html.replace(/^- (.+)$/gm, '<li>$1</li>');
+    html = html.replace(/^• (.+)$/gm, '<li>$1</li>');
+
+    // 数字列表
+    html = html.replace(/^(\d+)[\.、)] (.+)$/gm, '<li>$2</li>');
+
+    // 将连续的 <li> 包裹在 <ul> 中
+    html = html.replace(/((?:<li>.*<\/li>\n?)+)/g, '<ul class="md-list">$1</ul>');
+
+    // 双换行 → 段落分隔
+    html = html.replace(/\n\n/g, '</p><p class="md-paragraph">');
+
+    // 单换行 → <br>
+    html = html.replace(/\n/g, '<br>');
+
+    // 包裹在段落中
+    if (!html.startsWith('<h') && !html.startsWith('<ul') && !html.startsWith('<p')) {
+        html = '<p class="md-paragraph">' + html + '</p>';
+    }
+
+    // 清理空段落
+    html = html.replace(/<p class="md-paragraph"><\/p>/g, '');
+    html = html.replace(/<p class="md-paragraph"><br><\/p>/g, '');
+
+    return html;
+}
+
 /**
  * 行动指南 - 获取分步维权路径
  * @param {string} scene - 维权场景
@@ -358,11 +423,13 @@ function initEvidence() {
             if (hasChecklist) {
                 return renderEvidenceChecklist(record);
             } else {
+                // 使用 renderMarkdown 渲染 AI 回复，保留 Markdown 格式（加粗、列表等）
+                const renderedBot = renderMarkdown(record.botMessage);
                 return `
                     <div class="history-item" data-id="${record.id}">
                         <div class="history-time">${record.time}</div>
                         <div class="history-user">${escapeHtml(record.userMessage)}</div>
-                        <div class="history-bot">${escapeHtml(record.botMessage)}</div>
+                        <div class="history-bot">${renderedBot}</div>
                         <div class="history-item-actions">
                             <button class="btn-small" onclick="copyHistoryItem('evidence', '${record.id}')">复制</button>
                             <button class="btn-small" onclick="deleteHistoryItem('evidence', '${record.id}')">删除</button>
@@ -580,7 +647,7 @@ function renderEvidenceChecklist(record) {
                 <input type="checkbox" class="todo-checkbox" id="${itemId}"${checkedAttr}
                     onchange="updateEvidenceProgress('${checklistId}', ${totalItems})">
                 <label for="${itemId}" class="todo-label">
-                    <span class="todo-text">${escapeHtml(method)}</span>
+                    <span class="todo-text">${renderMarkdown(method)}</span>
                 </label>
             </div>`;
         }
@@ -592,25 +659,60 @@ function renderEvidenceChecklist(record) {
                 </div>
             </div>
             
-            <div style="margin-top: 10px; padding: 10px; background: #f9f9f9; border-radius: 6px;">
-                <div style="font-size: 12px; color: #999; margin-bottom: 8px;">📌 提示：</div>
+            <div class="evidence-tip-box">
+                <div class="evidence-tip-title">📌 提示</div>
+                
+                <!-- 核心证据和注意事项 -->
     `;
     
     // 添加其他信息（兼容多种格式）
     const coreMatch = message.match(/【?核心证据类型[】:]?\s*?\n?([\s\S]*?)(?=\n?\s*【?(?:取证方法|取证注意事项|证据保存)|$)/);
     if (coreMatch) {
-        checklistHTML += `<div style="font-size: 12px; color: #666; margin-bottom: 6px;"><strong>核心证据：</strong> ${escapeHtml(coreMatch[1].trim())}</div>`;
+        checklistHTML += `<div class="evidence-tip-row"><strong>核心证据：</strong> ${renderMarkdown(coreMatch[1].trim())}</div>`;
     }
     
     const notesMatch = message.match(/【?取证注意事项[】:]?\s*?\n?([\s\S]*?)(?=\n?\s*【?(?:证据保存|$))/);
     if (notesMatch) {
-        const notesText = notesMatch[1].trim();
-        checklistHTML += `<div style="font-size: 12px; color: #666; margin-bottom: 6px;"><strong>注意事项：</strong><br>${escapeHtml(notesText)}</div>`;
+        let notesText = notesMatch[1].trim();
+        // 去除 AI 回复原文中可能包含的"合法边界提醒"段落，避免与底部静态提示重复
+        notesText = notesText.replace(/\n?\*\*合法边界提醒\*\*[\s\S]*$/, '').trim();
+        notesText = notesText.replace(/\n?合法边界提醒[：:][\s\S]*$/, '').trim();
+        if (notesText.length > 0) {
+            checklistHTML += `<div class="evidence-tip-row"><strong>注意事项：</strong><br>${renderMarkdown(notesText)}</div>`;
+        }
     }
     
+    // 合法边界提醒（固定文案，使用 renderMarkdown 渲染加粗效果）
     checklistHTML += `
+                <div class="evidence-tip-divider"></div>
+                <div class="evidence-tip-row evidence-tip-legal">${renderMarkdown(LEGAL_BOUNDARY_TIP)}</div>
             </div>
             
+            <!-- AI 回复中未被解析的剩余文本（如详细解释段落），使用 renderMarkdown 渲染 -->
+    `;
+
+    // 提取"证据保存方式"之后的剩余文本
+    const saveMatch = message.match(/【?证据保存方式[】:]?\s*?\n?([\s\S]*)/);
+    if (saveMatch && saveMatch[1].trim()) {
+        let remainingText = saveMatch[1].trim();
+        // 去除剩余文本中的"合法边界提醒"段落，避免重复
+        remainingText = remainingText.replace(/\n?\*\*合法边界提醒\*\*[\s\S]*$/, '').trim();
+        remainingText = remainingText.replace(/\n?合法边界提醒[：:][\s\S]*$/, '').trim();
+        if (remainingText.length > 0) {
+            checklistHTML += `<div class="evidence-extra-text">${renderMarkdown(remainingText)}</div>`;
+        }
+    }
+    
+    // 提取"核心证据类型"之前的引言文本（如果有的话）
+    const introMatch = message.match(/^([\s\S]*?)(?=\n?\s*【?(?:核心证据类型|取证方法))/);
+    if (introMatch && introMatch[1].trim()) {
+        let introText = introMatch[1].trim();
+        if (introText.length > 0 && !/^[•·●\-\d]/.test(introText)) {
+            checklistHTML += `<div class="evidence-extra-text">${renderMarkdown(introText)}</div>`;
+        }
+    }
+
+    checklistHTML += `
             <div class="history-item-actions">
                 <button class="btn-small" onclick="copyHistoryItem('evidence', '${record.id}')">复制</button>
                 <button class="btn-small" onclick="deleteHistoryItem('evidence', '${record.id}')">删除</button>

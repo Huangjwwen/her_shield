@@ -1,0 +1,373 @@
+{
+  "schemaVersion": 1,
+  "treeId": "equal_pay_promotion",
+  "treeVersion": "1.3.0-draft",
+  "conditionIndexVersion": "1.3.0",
+  "status": "draft",
+  "reviewedBy": [],
+  "reviewedAt": null,
+  "startNodeId": "E1",
+  "scope": [
+    "gender_discrimination",
+    "workplace_rights"
+  ],
+  "nodes": {
+    "E1": {
+      "id": "E1",
+      "type": "single",
+      "title": "差异待遇主要体现在哪里？",
+      "options": [
+        {
+          "label": "基本工资",
+          "value": "base_pay",
+          "next": "E2"
+        },
+        {
+          "label": "奖金或绩效",
+          "value": "bonus_performance",
+          "next": "E2"
+        },
+        {
+          "label": "晋升、晋级或职称",
+          "value": "promotion_title",
+          "next": "E2"
+        },
+        {
+          "label": "培训、项目或发展机会",
+          "value": "training_project",
+          "next": "E2"
+        }
+      ]
+    },
+    "E2": {
+      "id": "E2",
+      "type": "single",
+      "title": "你是否有较具体的可比较对象或比较范围？",
+      "options": [
+        {
+          "label": "同岗位且工作内容接近",
+          "value": "same_role_same_work",
+          "next": "E3"
+        },
+        {
+          "label": "同职级、职责接近",
+          "value": "same_level_similar_work",
+          "next": "E3"
+        },
+        {
+          "label": "同批次候选人或相同晋升条件",
+          "value": "same_promotion_pool",
+          "next": "E3"
+        },
+        {
+          "label": "只有大概感觉",
+          "value": "general_impression",
+          "next": "E3A",
+          "setFlags": [
+            "comparison_weak"
+          ]
+        },
+        {
+          "label": "暂时无法获得比较信息",
+          "value": "information_unavailable",
+          "next": "E3A",
+          "setFlags": [
+            "comparison_weak"
+          ]
+        }
+      ]
+    },
+    "E3": {
+      "id": "E3",
+      "type": "single",
+      "title": "职责、工作量、绩效、资历和任职条件是否大体可比？",
+      "options": [
+        {
+          "label": "大体可比",
+          "value": "substantially_comparable",
+          "next": "E4"
+        },
+        {
+          "label": "存在明显客观差异",
+          "value": "objective_difference_known",
+          "next": "E4",
+          "setFlags": [
+            "objective_difference_present"
+          ]
+        },
+        {
+          "label": "无法判断",
+          "value": "uncertain",
+          "next": "E4",
+          "setFlags": [
+            "comparability_uncertain"
+          ]
+        }
+      ]
+    },
+    "E3A": {
+      "id": "E3A",
+      "type": "single",
+      "title": "没有明确比较对象时，是否有性别或婚育关联线索？",
+      "options": [
+        {
+          "label": "有直接性别表述",
+          "value": "explicit_gender_statement",
+          "next": "E5",
+          "setFlags": [
+            "gender_link_clue"
+          ]
+        },
+        {
+          "label": "有婚育、怀孕或生育表述",
+          "value": "marriage_maternity_statement",
+          "next": "E5",
+          "setFlags": [
+            "gender_link_clue"
+          ]
+        },
+        {
+          "label": "婚育后出现差异或男性优先模式",
+          "value": "timing_or_pattern",
+          "next": "E5",
+          "setFlags": [
+            "gender_link_clue"
+          ]
+        },
+        {
+          "label": "目前只有待遇差异感受",
+          "value": "no_specific_clue",
+          "terminal": "EA"
+        },
+        {
+          "label": "暂时说不清",
+          "value": "uncertain",
+          "terminal": "EA"
+        }
+      ]
+    },
+    "E4": {
+      "id": "E4",
+      "type": "single",
+      "title": "差异是否可能与性别、婚育、怀孕或生育计划有关？",
+      "options": [
+        {
+          "label": "有明确性别表述",
+          "value": "explicit_gender_statement",
+          "next": "E5",
+          "setFlags": [
+            "gender_link_clue"
+          ]
+        },
+        {
+          "label": "提到婚育或孕产",
+          "value": "marriage_maternity_statement",
+          "next": "E5",
+          "setFlags": [
+            "gender_link_clue"
+          ]
+        },
+        {
+          "label": "女性长期不利或男性被优先",
+          "value": "pattern_or_comparator",
+          "next": "E5",
+          "setFlags": [
+            "gender_link_clue"
+          ]
+        },
+        {
+          "label": "结婚、怀孕、生育后出现差异",
+          "value": "timing_correlation",
+          "next": "E5",
+          "setFlags": [
+            "gender_link_clue"
+          ]
+        },
+        {
+          "label": "暂时不确定",
+          "value": "uncertain",
+          "next": "E5",
+          "setFlags": [
+            "gender_link_uncertain"
+          ]
+        },
+        {
+          "label": "明确可核对的非性别原因",
+          "value": "confirmed_unrelated",
+          "terminal": "OOS"
+        }
+      ]
+    },
+    "E5": {
+      "id": "E5",
+      "type": "multi",
+      "title": "你目前有哪些材料？",
+      "options": [
+        {
+          "label": "工资条、流水或奖金记录",
+          "value": "pay_records"
+        },
+        {
+          "label": "绩效目标和结果",
+          "value": "performance_records"
+        },
+        {
+          "label": "岗位职责、职级或任职文件",
+          "value": "role_grade_records"
+        },
+        {
+          "label": "薪酬/晋升制度",
+          "value": "criteria_policy"
+        },
+        {
+          "label": "可比较对象的合法线索",
+          "value": "comparator_clues"
+        },
+        {
+          "label": "聊天、邮件或会议记录",
+          "value": "communication_records"
+        },
+        {
+          "label": "暂无",
+          "value": "none",
+          "setFlags": [
+            "evidence_weak"
+          ]
+        }
+      ],
+      "next": "E6",
+      "exclusiveOptionValues": [
+        "none"
+      ]
+    },
+    "E6": {
+      "id": "E6",
+      "type": "single",
+      "title": "你已经通过书面方式询问或申诉过吗？",
+      "options": [
+        {
+          "label": "尚未书面询问",
+          "value": "no_written_query"
+        },
+        {
+          "label": "已询问但无回复",
+          "value": "asked_no_reply",
+          "terminal": "EC",
+          "setFlags": [
+            "internal_query_made"
+          ]
+        },
+        {
+          "label": "公司拒绝说明",
+          "value": "reason_refused",
+          "terminal": "EC",
+          "setFlags": [
+            "internal_query_made"
+          ]
+        },
+        {
+          "label": "已内部申诉",
+          "value": "internal_appeal",
+          "terminal": "EC",
+          "setFlags": [
+            "internal_query_made"
+          ]
+        },
+        {
+          "label": "已外部反映",
+          "value": "external_complaint",
+          "terminal": "EC",
+          "setFlags": [
+            "internal_query_made"
+          ]
+        },
+        {
+          "label": "已申请仲裁",
+          "value": "arbitration_started",
+          "terminal": "EC",
+          "setFlags": [
+            "arbitration_started"
+          ]
+        }
+      ],
+      "preRules": [
+        {
+          "when": {
+            "all": [
+              {
+                "field": "answers.E6",
+                "op": "eq",
+                "value": "no_written_query"
+              },
+              {
+                "field": "flags",
+                "op": "containsAny",
+                "value": [
+                  {
+                    "node": "E3A",
+                    "flag": "gender_link_clue"
+                  },
+                  {
+                    "node": "E4",
+                    "flag": "gender_link_clue"
+                  }
+                ]
+              }
+            ]
+          },
+          "terminal": "EB"
+        },
+        {
+          "when": {
+            "all": [
+              {
+                "field": "answers.E6",
+                "op": "eq",
+                "value": "no_written_query"
+              },
+              {
+                "field": "flags",
+                "op": "contains",
+                "value": {
+                  "node": "E5",
+                  "flag": "evidence_weak"
+                }
+              }
+            ]
+          },
+          "terminal": "EA"
+        },
+        {
+          "when": {
+            "field": "answers.E6",
+            "op": "eq",
+            "value": "no_written_query"
+          },
+          "terminal": "EB"
+        }
+      ]
+    }
+  },
+  "terminals": {
+    "EA": {
+      "id": "EA",
+      "title": "EA",
+      "scopeStatus": "in_scope"
+    },
+    "EB": {
+      "id": "EB",
+      "title": "EB",
+      "scopeStatus": "in_scope"
+    },
+    "EC": {
+      "id": "EC",
+      "title": "EC",
+      "scopeStatus": "in_scope"
+    },
+    "OOS": {
+      "id": "OOS",
+      "title": "OOS",
+      "scopeStatus": "out_of_scope"
+    }
+  }
+}

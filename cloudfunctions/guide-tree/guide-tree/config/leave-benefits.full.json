@@ -1,0 +1,406 @@
+{
+  "schemaVersion": 1,
+  "treeId": "leave_benefits",
+  "treeVersion": "1.3.0-draft",
+  "conditionIndexVersion": "1.3.0",
+  "status": "draft",
+  "reviewedBy": [],
+  "reviewedAt": null,
+  "startNodeId": "L0",
+  "scope": [
+    "gender_discrimination",
+    "workplace_rights"
+  ],
+  "nodes": {
+    "L0": {
+      "id": "L0",
+      "type": "single",
+      "title": "实际工作地和生育保险参保地是否已经确认？",
+      "options": [
+        {
+          "label": "已确认",
+          "value": "confirmed",
+          "next": "L1"
+        },
+        {
+          "label": "只确认一项",
+          "value": "partly_confirmed",
+          "next": "L1",
+          "setFlags": [
+            "region_partly_confirmed"
+          ]
+        },
+        {
+          "label": "不确定",
+          "value": "uncertain",
+          "next": "L1",
+          "setFlags": [
+            "region_uncertain"
+          ]
+        }
+      ]
+    },
+    "L1": {
+      "id": "L1",
+      "type": "single",
+      "title": "争议主要是哪一类？",
+      "options": [
+        {
+          "label": "国家法定产假未批准/不足",
+          "value": "national_maternity_leave_denied",
+          "next": "L2"
+        },
+        {
+          "label": "地方延长生育假或连续哺乳假争议",
+          "value": "local_extended_leave_denied",
+          "next": "L2",
+          "setFlags": [
+            "local_rule_required"
+          ]
+        },
+        {
+          "label": "每日哺乳时间未安排",
+          "value": "lactation_time_denied",
+          "next": "L2"
+        },
+        {
+          "label": "产假期间工资未发或少发",
+          "value": "maternity_pay_unpaid",
+          "next": "L3"
+        },
+        {
+          "label": "生育津贴未发、少发或被截留",
+          "value": "maternity_allowance_issue",
+          "next": "L3",
+          "setFlags": [
+            "local_rule_required"
+          ]
+        },
+        {
+          "label": "未参保或生育医疗费用争议",
+          "value": "insurance_medical_issue",
+          "next": "L3",
+          "setFlags": [
+            "local_rule_required"
+          ]
+        }
+      ]
+    },
+    "L2": {
+      "id": "L2",
+      "type": "single",
+      "title": "你是否已经书面申请，公司如何回复？",
+      "options": [
+        {
+          "label": "尚未书面申请",
+          "value": "not_applied",
+          "terminal": "LA"
+        },
+        {
+          "label": "书面拒绝",
+          "value": "written_denial",
+          "next": "L5"
+        },
+        {
+          "label": "口头拒绝",
+          "value": "oral_denial",
+          "next": "L5",
+          "setFlags": [
+            "need_written_record"
+          ]
+        },
+        {
+          "label": "只批准部分假期/时间",
+          "value": "partial_approval",
+          "next": "L5"
+        },
+        {
+          "label": "已申请但未回复",
+          "value": "no_reply",
+          "next": "L5"
+        }
+      ]
+    },
+    "L3": {
+      "id": "L3",
+      "type": "single",
+      "title": "目前掌握的参保和支付情况是什么？",
+      "options": [
+        {
+          "label": "已参保但未收到待遇",
+          "value": "insured_not_received",
+          "next": "L3A"
+        },
+        {
+          "label": "已收到但金额有争议",
+          "value": "insured_amount_disputed",
+          "next": "L3A"
+        },
+        {
+          "label": "单位收到后未转付或情况不明",
+          "value": "employer_received_not_paid",
+          "next": "L3A"
+        },
+        {
+          "label": "单位未参保或疑似断缴",
+          "value": "not_insured",
+          "next": "L3A"
+        },
+        {
+          "label": "不清楚参保情况",
+          "value": "insurance_uncertain",
+          "next": "L3A",
+          "setFlags": [
+            "insurance_status_uncertain"
+          ]
+        },
+        {
+          "label": "未参保且产假工资未支付",
+          "value": "employer_pay_unpaid",
+          "next": "L3A"
+        }
+      ]
+    },
+    "L3A": {
+      "id": "L3A",
+      "type": "single",
+      "title": "当前争议主要涉及谁的处理？",
+      "options": [
+        {
+          "label": "单位工资、转付或补差处理",
+          "value": "employer_payment",
+          "next": "L4"
+        },
+        {
+          "label": "单位未参保、断缴或未办理手续",
+          "value": "employer_insurance",
+          "next": "L4"
+        },
+        {
+          "label": "社保/医保经办机构处理",
+          "value": "agency_assessment",
+          "next": "L5",
+          "setFlags": [
+            "administrative_channel_needed"
+          ]
+        },
+        {
+          "label": "暂不清楚责任主体",
+          "value": "responsible_party_uncertain",
+          "next": "L3B",
+          "setFlags": [
+            "responsible_party_uncertain"
+          ]
+        }
+      ]
+    },
+    "L3B": {
+      "id": "L3B",
+      "type": "single",
+      "title": "现有记录更接近哪种情况？",
+      "options": [
+        {
+          "label": "单位未参保、未办理或收到待遇后未支付",
+          "value": "employer_nonpayment_or_no_insurance",
+          "next": "L4",
+          "setFlags": [
+            "responsibility_employer_clue"
+          ]
+        },
+        {
+          "label": "已有经办机构核定、拒付、金额或拨付记录",
+          "value": "agency_decision_or_payment_record",
+          "next": "L5",
+          "setFlags": [
+            "administrative_channel_needed"
+          ]
+        },
+        {
+          "label": "暂无参保、核定或拨付记录",
+          "value": "records_unavailable",
+          "next": "L5",
+          "setFlags": [
+            "responsible_party_uncertain"
+          ]
+        }
+      ]
+    },
+    "L4": {
+      "id": "L4",
+      "type": "single",
+      "title": "单位责任争议何时知道权益可能受损？",
+      "options": [
+        {
+          "label": "一年内",
+          "value": "within_one_year",
+          "next": "L5"
+        },
+        {
+          "label": "不确定",
+          "value": "uncertain",
+          "next": "L5",
+          "setFlags": [
+            "time_uncertain"
+          ]
+        },
+        {
+          "label": "超过一年",
+          "value": "over_one_year",
+          "next": "L5",
+          "setFlags": [
+            "time_risk"
+          ]
+        }
+      ]
+    },
+    "L5": {
+      "id": "L5",
+      "type": "multi",
+      "title": "你目前有哪些材料？",
+      "options": [
+        {
+          "label": "假期/哺乳时间申请",
+          "value": "leave_application"
+        },
+        {
+          "label": "公司回复",
+          "value": "company_reply"
+        },
+        {
+          "label": "工资条或流水",
+          "value": "payroll"
+        },
+        {
+          "label": "参保记录",
+          "value": "social_insurance_record"
+        },
+        {
+          "label": "津贴核定/拨付记录",
+          "value": "allowance_record"
+        },
+        {
+          "label": "出生、诊疗或费用材料",
+          "value": "medical_record"
+        },
+        {
+          "label": "劳动合同和制度",
+          "value": "contract_policy"
+        },
+        {
+          "label": "暂无",
+          "value": "none",
+          "setFlags": [
+            "evidence_weak"
+          ]
+        }
+      ],
+      "next": "L6",
+      "exclusiveOptionValues": [
+        "none"
+      ]
+    },
+    "L6": {
+      "id": "L6",
+      "type": "single",
+      "title": "你已经采取过什么行动？",
+      "options": [
+        {
+          "label": "已申请仲裁",
+          "value": "arbitration_started",
+          "terminal": "LD",
+          "setFlags": [
+            "arbitration_started"
+          ]
+        },
+        {
+          "label": "还没有正式行动",
+          "value": "no_formal_action"
+        },
+        {
+          "label": "内部沟通无果",
+          "value": "internal_failed"
+        },
+        {
+          "label": "已行政投诉",
+          "value": "administrative_complaint"
+        }
+      ],
+      "preRules": [
+        {
+          "when": {
+            "field": "answers.L6",
+            "op": "eq",
+            "value": "arbitration_started"
+          },
+          "terminal": "LD"
+        },
+        {
+          "when": {
+            "all": [
+              {
+                "field": "flags",
+                "op": "contains",
+                "value": {
+                  "node": "L4",
+                  "flag": "time_risk"
+                }
+              },
+              {
+                "field": "answers.L6",
+                "op": "neq",
+                "value": "arbitration_started"
+              }
+            ]
+          },
+          "terminal": "LC"
+        },
+        {
+          "when": {
+            "field": "answers.L6",
+            "op": "eq",
+            "value": "no_formal_action"
+          },
+          "terminal": "LA"
+        },
+        {
+          "when": {
+            "field": "answers.L6",
+            "op": "in",
+            "value": [
+              "internal_failed",
+              "administrative_complaint"
+            ]
+          },
+          "terminal": "LB"
+        }
+      ]
+    }
+  },
+  "terminals": {
+    "LA": {
+      "id": "LA",
+      "title": "LA",
+      "scopeStatus": "in_scope"
+    },
+    "LB": {
+      "id": "LB",
+      "title": "LB",
+      "scopeStatus": "in_scope"
+    },
+    "LC": {
+      "id": "LC",
+      "title": "LC",
+      "scopeStatus": "in_scope"
+    },
+    "LD": {
+      "id": "LD",
+      "title": "LD",
+      "scopeStatus": "in_scope"
+    },
+    "OOS": {
+      "id": "OOS",
+      "title": "OOS",
+      "scopeStatus": "out_of_scope"
+    }
+  }
+}

@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "treeId": "leave_benefits",
+  "treeVersion": "1.3.0-draft",
+  "status": "draft",
+  "terminals": {
+    "LA": {
+      "documentKeys": [
+        "evidence_catalog"
+      ],
+      "conditionalDocuments": [
+        {
+          "documentKey": "internal_complaint_email",
+          "when": {
+            "any": [
+              {
+                "field": "answers.L1",
+                "op": "in",
+                "value": [
+                  "national_maternity_leave_denied",
+                  "local_extended_leave_denied",
+                  "lactation_time_denied"
+                ]
+              },
+              {
+                "field": "answers.L3A",
+                "op": "in",
+                "value": [
+                  "employer_payment",
+                  "employer_insurance"
+                ]
+              },
+              {
+                "node": "L3B",
+                "value": "employer_nonpayment_or_no_insurance"
+              }
+            ]
+          }
+        }
+      ],
+      "requiredLegalBasisKeys": [
+        "women_rights_51",
+        "women_rights_72"
+      ],
+      "conditionalLegalBasis": [
+        {
+          "legalBasisKey": "female_worker_protection_7",
+          "when": {
+            "node": "L1",
+            "value": "national_maternity_leave_denied"
+          }
+        },
+        {
+          "legalBasisKey": "female_worker_protection_9",
+          "when": {
+            "node": "L1",
+            "value": "lactation_time_denied"
+          }
+        },
+        {
+          "legalBasisKey": "female_worker_protection_8",
+          "when": {
+            "field": "answers.L1",
+            "op": "in",
+            "value": [
+              "maternity_pay_unpaid",
+              "maternity_allowance_issue",
+              "insurance_medical_issue"
+            ]
+          }
+        },
+        {
+          "legalBasisKey": "social_insurance_53",
+          "when": {
+            "node": "L3",
+            "value": "not_insured"
+          }
+        },
+        {
+          "legalBasisKey": "social_insurance_54",
+          "when": {
+            "field": "answers.L1",
+            "op": "in",
+            "value": [
+              "maternity_allowance_issue",
+              "insurance_medical_issue"
+            ]
+          }
+        },
+        {
+          "legalBasisKey": "social_insurance_56",
+          "when": {
+            "node": "L1",
+            "value": "maternity_allowance_issue"
+          }
+        }
+      ]
+    },
+    "LB": {
+      "documentKeys": [
+        "evidence_catalog"
+      ],
+      "conditionalDocuments": [
+        {
+          "documentKey": "labor_inspection_materials",
+          "when": {
+            "node": "L6",
+            "value": "administrative_complaint"
+          }
+        },
+        {
+          "documentKey": "arbitration_application_points",
+          "when": {
+            "field": "documentFields.requestedDocumentKeys",
+            "op": "contains",
+            "value": "arbitration_application_points"
+          }
+        }
+      ],
+      "requiredLegalBasisKeys": [
+        "women_rights_72"
+      ],
+      "conditionalLegalBasis": [
+        {
+          "legalBasisKey": "women_rights_74",
+          "when": {
+            "node": "L6",
+            "value": "administrative_complaint"
+          }
+        },
+        {
+          "legalBasisKey": "female_worker_protection_14",
+          "when": {
+            "field": "answers.L1",
+            "op": "in",
+            "value": [
+              "national_maternity_leave_denied",
+              "lactation_time_denied"
+            ]
+          }
+        }
+      ]
+    },
+    "LC": {
+      "documentKeys": [
+        "legal_aid_questions",
+        "evidence_catalog"
+      ],
+      "requiredLegalBasisKeys": [
+        "labor_dispute_arbitration_27",
+        "women_rights_72"
+      ],
+      "conditionalLegalBasis": [
+        {
+          "legalBasisKey": "female_worker_protection_8",
+          "when": {
+            "field": "answers.L1",
+            "op": "in",
+            "value": [
+              "maternity_pay_unpaid",
+              "maternity_allowance_issue",
+              "insurance_medical_issue"
+            ]
+          }
+        }
+      ]
+    },
+    "LD": {
+      "documentKeys": [
+        "arbitration_supplement_list",
+        "evidence_catalog"
+      ],
+      "requiredLegalBasisKeys": [
+        "women_rights_72"
+      ],
+      "conditionalLegalBasis": [
+        {
+          "legalBasisKey": "labor_dispute_arbitration_27",
+          "when": {
+            "node": "L6",
+            "value": "arbitration_started"
+          }
+        }
+      ]
+    },
+    "OOS": {
+      "documentKeys": [],
+      "requiredLegalBasisKeys": [],
+      "conditionalLegalBasis": []
+    }
+  }
+}

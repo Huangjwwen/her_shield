@@ -1,0 +1,134 @@
+{
+  "schemaVersion": 1,
+  "treeId": "recruit_discrimination",
+  "treeVersion": "1.3.0-draft",
+  "status": "draft",
+  "terminals": {
+    "RA": {
+      "documentKeys": [
+        "evidence_catalog"
+      ],
+      "requiredLegalBasisKeys": [
+        "women_rights_43"
+      ],
+      "conditionalLegalBasis": [
+        {
+          "legalBasisKey": "employment_promotion_27",
+          "when": {
+            "any": [
+              {
+                "node": "R2",
+                "value": "explicit_reference"
+              },
+              {
+                "node": "R2",
+                "value": "implicit_or_questioning"
+              },
+              {
+                "node": "R5",
+                "value": "male_comparator"
+              },
+              {
+                "node": "R5",
+                "value": "company_pattern"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "RB": {
+      "documentKeys": [
+        "evidence_catalog"
+      ],
+      "conditionalDocuments": [
+        {
+          "documentKey": "recruit_discrimination_complaint",
+          "when": {
+            "node": "R6",
+            "value": "platform_complaint"
+          }
+        },
+        {
+          "documentKey": "request_rejection_reason",
+          "when": {
+            "all": [
+              {
+                "node": "R6",
+                "value": "request_explanation"
+              },
+              {
+                "field": "answers.R1",
+                "op": "in",
+                "value": [
+                  "interview",
+                  "offer_cancelled",
+                  "rejected_after_application"
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "requiredLegalBasisKeys": [
+        "women_rights_43",
+        "employment_promotion_27"
+      ],
+      "conditionalLegalBasis": [
+        {
+          "legalBasisKey": "employment_promotion_62",
+          "when": {
+            "node": "R6",
+            "value": "civil_consultation"
+          }
+        },
+        {
+          "legalBasisKey": "women_rights_72",
+          "when": {
+            "node": "R6",
+            "value": "request_explanation"
+          }
+        }
+      ]
+    },
+    "RC": {
+      "documentKeys": [
+        "recruit_discrimination_complaint",
+        "evidence_catalog"
+      ],
+      "requiredLegalBasisKeys": [
+        "women_rights_43",
+        "women_rights_49",
+        "women_rights_72"
+      ],
+      "conditionalLegalBasis": [
+        {
+          "legalBasisKey": "employment_promotion_27",
+          "when": {
+            "node": "R6",
+            "value": "administrative_complaint"
+          }
+        },
+        {
+          "legalBasisKey": "women_rights_83",
+          "when": {
+            "node": "R6",
+            "value": "administrative_complaint"
+          }
+        },
+        {
+          "legalBasisKey": "women_rights_74",
+          "when": {
+            "node": "R6",
+            "value": "administrative_complaint"
+          }
+        }
+      ]
+    },
+    "OOS": {
+      "documentKeys": [],
+      "requiredLegalBasisKeys": [],
+      "conditionalLegalBasis": []
+    }
+  }
+}

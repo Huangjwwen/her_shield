@@ -1,0 +1,22 @@
+[
+  {"id":"E-01","expectedTerminal":"EB","answers":{"E1":"base_pay","E2":"same_role_same_work","E3":"substantially_comparable","E4":"explicit_gender_statement","E5":["pay_records"],"E6":"no_written_query"}},
+  {"id":"E-02","expectedTerminal":"EC","answers":{"E1":"promotion_title","E2":"same_promotion_pool","E3":"substantially_comparable","E4":"explicit_gender_statement","E5":["communication_records"],"E6":"asked_no_reply"}},
+  {"id":"E-03","expectedTerminal":"EC","answers":{"E1":"bonus_performance","E2":"same_level_similar_work","E3":"objective_difference_known","E4":"explicit_gender_statement","E5":["performance_records"],"E6":"internal_appeal"}},
+  {"id":"E-04","expectedTerminal":"EA","answers":{"E1":"base_pay","E2":"general_impression","E3A":"no_specific_clue"}},
+  {"id":"E-05","expectedTerminal":"OOS","answers":{"E1":"bonus_performance","E2":"same_level_similar_work","E3":"substantially_comparable","E4":"confirmed_unrelated"}},
+  {"id":"E-06","expectedTerminal":"EC","answers":{"E1":"promotion_title","E2":"same_promotion_pool","E3":"substantially_comparable","E4":"uncertain","E5":["role_grade_records"],"E6":"arbitration_started"}},
+  {"id":"E-07","expectedTerminal":"EB","answers":{"E1":"base_pay","E2":"information_unavailable","E3A":"explicit_gender_statement","E5":["none"],"E6":"no_written_query"}},
+  {"id":"E-08","expectedTerminal":"EA","answers":{"E1":"base_pay","E2":"information_unavailable","E3A":"no_specific_clue"}},
+  {"id":"E-09","expectedTerminal":"EB","answers":{"E1":"base_pay","E2":"same_role_same_work","E3":"substantially_comparable","E4":"uncertain","E5":["pay_records"],"E6":"no_written_query"}},
+  {"id":"E-10","expectedTerminal":"OOS","answers":{"E1":"bonus_performance","E2":"same_level_similar_work","E3":"substantially_comparable","E4":"confirmed_unrelated"}},
+  {"id":"E-11","expectedTerminal":"EB","answers":{"E1":"training_project","E2":"same_level_similar_work","E3":"substantially_comparable","E4":"marriage_maternity_statement","E5":["communication_records"],"E6":"no_written_query"}},
+  {"id":"E-12","expectedTerminal":"EC","answers":{"E1":"promotion_title","E2":"same_promotion_pool","E3":"substantially_comparable","E4":"explicit_gender_statement","E5":["communication_records"],"E6":"external_complaint"}},
+  {"id":"E-13","expectedTerminal":"EC","answers":{"E1":"base_pay","E2":"same_role_same_work","E3":"substantially_comparable","E4":"pattern_or_comparator","E5":["pay_records"],"E6":"reason_refused"}},
+  {"id":"E-14","expectedTerminal":"EC","answers":{"E1":"promotion_title","E2":"same_promotion_pool","E3":"substantially_comparable","E4":"pattern_or_comparator","E5":["role_grade_records"],"E6":"external_complaint"}},
+  {"id":"E-15","expectedTerminal":"EB","answers":{"E1":"bonus_performance","E2":"same_level_similar_work","E3":"uncertain","E4":"uncertain","E5":["criteria_policy"],"E6":"no_written_query"}},
+  {"id":"E-16","expectedTerminal":"EC","answers":{"E1":"bonus_performance","E2":"same_role_same_work","E3":"substantially_comparable","E4":"timing_correlation","E5":["performance_records"],"E6":"internal_appeal"}},
+  {"id":"E-17","expectedTerminal":"EB","answers":{"E1":"promotion_title","E2":"same_promotion_pool","E3":"objective_difference_known","E4":"explicit_gender_statement","E5":["communication_records"],"E6":"no_written_query"}},
+  {"id":"E-18","expectedTerminal":"EA","answers":{"E1":"base_pay","E2":"same_role_same_work","E3":"uncertain","E4":"uncertain","E5":["none"],"E6":"no_written_query"}},
+  {"id":"E-19","expectedTerminal":"EC","answers":{"E1":"base_pay","E2":"same_role_same_work","E3":"substantially_comparable","E4":"pattern_or_comparator","E5":["pay_records"],"E6":"external_complaint"}},
+  {"id":"E-20","expectedTerminal":"EC","answers":{"E1":"promotion_title","E2":"same_promotion_pool","E3":"substantially_comparable","E4":"explicit_gender_statement","E5":["role_grade_records"],"E6":"arbitration_started"}}
+]

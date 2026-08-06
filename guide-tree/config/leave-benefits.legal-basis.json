@@ -1,0 +1,140 @@
+{
+  "schemaVersion": 1,
+  "status": "draft",
+  "retrievedAt": "2026-08-02",
+  "records": [
+    {
+      "legalBasisKey": "women_rights_51",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第五十一条",
+      "fullText": "妇女依法享有生育休假和生育保险等权益。",
+      "displayText": "妇女依法享有生育休假和生育保险等权益。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "women_rights_72",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第七十二条",
+      "fullText": "妇女合法权益受到侵害的，有权要求有关部门依法处理，或者依法申请调解、仲裁，或者向人民法院起诉。",
+      "displayText": "妇女合法权益受到侵害的，有权要求有关部门依法处理，或者依法申请调解、仲裁，或者向人民法院起诉。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "female_worker_protection_7",
+      "lawName": "女职工劳动保护特别规定",
+      "article": "第七条",
+      "fullText": "女职工生育享受98天产假，难产、多胞胎等情形依法增加产假。",
+      "displayText": "女职工生育享受98天产假，难产、多胞胎等情形依法增加产假。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "female_worker_protection_8",
+      "lawName": "女职工劳动保护特别规定",
+      "article": "第八条",
+      "fullText": "女职工产假期间的生育津贴和生育医疗费用按参保情况依法支付。",
+      "displayText": "女职工产假期间的生育津贴和生育医疗费用按参保情况依法支付。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "female_worker_protection_9",
+      "lawName": "女职工劳动保护特别规定",
+      "article": "第九条",
+      "fullText": "用人单位应当在每天劳动时间内为哺乳期女职工安排哺乳时间。",
+      "displayText": "用人单位应当在每天劳动时间内为哺乳期女职工安排哺乳时间。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "female_worker_protection_14",
+      "lawName": "女职工劳动保护特别规定",
+      "article": "第十四条",
+      "fullText": "用人单位侵害女职工合法权益的，女职工可以依法投诉、举报、申诉、调解仲裁或起诉。",
+      "displayText": "用人单位侵害女职工合法权益的，女职工可以依法投诉、举报、申诉、调解仲裁或起诉。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "social_insurance_53",
+      "lawName": "中华人民共和国社会保险法",
+      "article": "第五十三条",
+      "fullText": "职工应当参加生育保险，由用人单位按照国家规定缴纳生育保险费。",
+      "displayText": "职工应当参加生育保险，由用人单位按照国家规定缴纳生育保险费。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "social_insurance_54",
+      "lawName": "中华人民共和国社会保险法",
+      "article": "第五十四条",
+      "fullText": "用人单位已经缴纳生育保险费的，其职工享受生育保险待遇。",
+      "displayText": "用人单位已经缴纳生育保险费的，其职工享受生育保险待遇。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "social_insurance_56",
+      "lawName": "中华人民共和国社会保险法",
+      "article": "第五十六条",
+      "fullText": "职工依法享受生育津贴，生育津贴按照用人单位上年度职工月平均工资计发。",
+      "displayText": "职工依法享受生育津贴，生育津贴按照用人单位上年度职工月平均工资计发。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "women_rights_74",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第七十四条",
+      "fullText": "用人单位侵害妇女劳动和社会保障权益的，人力资源和社会保障部门可以依法监督并要求限期纠正。",
+      "displayText": "用人单位侵害妇女劳动和社会保障权益的，人力资源和社会保障部门可以依法监督并要求限期纠正。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "labor_dispute_arbitration_27",
+      "lawName": "中华人民共和国劳动争议调解仲裁法",
+      "article": "第二十七条",
+      "fullText": "劳动争议申请仲裁的时效期间为一年，存在中断、中止和劳动报酬特别规则。",
+      "displayText": "劳动争议申请仲裁的时效期间为一年，存在中断、中止和劳动报酬特别规则。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    }
+  ],
+  "treeId": "leave_benefits"
+}
