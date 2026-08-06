@@ -4044,6 +4044,13 @@ body {
     margin-top: 14px;
 }
 
+.guide-tree-scene {
+    flex: 1 1 180px;
+    min-height: 40px;
+    white-space: normal;
+    text-align: left;
+}
+
 .guide-tree-result-title {
     align-items: flex-start;
     padding-bottom: 10px;
@@ -4165,5 +4172,14 @@ body {
 
     .guide-tree-fields {
         grid-template-columns: 1fr;
+    }
+
+    .guide-tree-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .guide-tree-scene {
+        width: 100%;
     }
 }

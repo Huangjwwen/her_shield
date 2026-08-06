@@ -1,5 +1,3 @@
-const GUIDE_TREE_ID = 'pregnancy_pay_cut';
-
 function guideTreeApiUrl(path) {
     const base = (window.GUIDE_TREE_API_BASE || '').replace(/\/$/, '');
     return `${base}${path}`;
@@ -53,32 +51,60 @@ function guideTreeNext(tree, state, node, answer) {
 async function initGuideTree() {
     const mount = document.getElementById('guideTreeMount');
     if (!mount) return;
-    mount.innerHTML = '<div class="guide-tree-loading">正在加载维权问答...</div>';
-    let tree;
-    let online = true;
-    try {
-        const response = await fetch(guideTreeApiUrl(`/api/guide-tree?treeId=${GUIDE_TREE_ID}`));
-        if (!response.ok) throw new Error('config unavailable');
-        tree = (await response.json()).config;
-    } catch (_) {
-        online = false;
+    const state = { tree: null, catalog: null, currentNodeId: null, answers: {}, flags: [], path: [], terminal: null, documentFields: {}, online: true };
+    const loadCatalog = async () => {
         try {
-            const response = await fetch('guide-tree/config/pregnancy-pay-cut.full.json');
-            if (!response.ok) throw new Error('fallback unavailable');
-            tree = await response.json();
+            const response = await fetch(guideTreeApiUrl('/api/guide-tree'));
+            if (!response.ok) throw new Error('catalog unavailable');
+            state.online = true;
+            return (await response.json()).catalog;
         } catch (_) {
-            mount.innerHTML = '<div class="guide-tree-error">维权问答暂时无法加载。</div>';
+            state.online = false;
+            const response = await fetch('guide-tree/config/scene-catalog.json');
+            if (!response.ok) throw new Error('catalog fallback unavailable');
+            return response.json();
+        }
+    };
+    const loadTree = async (treeId) => {
+        try {
+            const response = await fetch(guideTreeApiUrl(`/api/guide-tree?treeId=${encodeURIComponent(treeId)}`));
+            if (!response.ok) throw new Error('tree unavailable');
+            state.online = true;
+            return (await response.json()).config;
+        } catch (_) {
+            state.online = false;
+            const scene = state.catalog.scenes.find((item) => item.action && item.action.treeId === treeId);
+            const slug = scene && scene.action.treeId.replaceAll('_', '-');
+            if (!slug) throw new Error('scene unavailable');
+            const response = await fetch(`guide-tree/config/${slug}.full.json`);
+            if (!response.ok) throw new Error('tree fallback unavailable');
+            return response.json();
+        }
+    };
+    const resetState = () => Object.assign(state, { tree: null, currentNodeId: null, answers: {}, flags: [], path: [], terminal: null, documentFields: {} });
+    const renderStart = () => {
+        if (!state.tree) {
+            const scenes = state.catalog.scenes.filter((scene) => scene.availability === 'full');
+            const options = scenes.map((scene) => `<button type="button" class="btn-small guide-tree-scene" data-tree-id="${guideTreeEscape(scene.action.treeId)}">${guideTreeEscape(scene.title)}</button>`).join('');
+            mount.innerHTML = `<div class="guide-tree-intro"><div><strong>她行·维权导航</strong><p>请选择需要了解的场景。</p></div><div class="guide-tree-actions">${options}</div></div>`;
+            mount.querySelectorAll('[data-tree-id]').forEach((button) => button.addEventListener('click', async () => {
+                mount.innerHTML = '<div class="guide-tree-loading">正在加载场景...</div>';
+                try {
+                    state.tree = await loadTree(button.dataset.treeId);
+                    renderStart();
+                } catch (_) {
+                    mount.innerHTML = '<div class="guide-tree-error">当前场景暂时无法加载。</div>';
+                }
+            }));
             return;
         }
-    }
-
-    const state = { currentNodeId: null, answers: {}, flags: [], path: [], terminal: null, documentFields: {}, online };
-    const renderStart = () => {
-        mount.innerHTML = `<div class="guide-tree-intro"><div><strong>孕产期调岗降薪</strong><p>请根据实际情况逐题确认。</p></div><button type="button" class="btn-primary guide-tree-start">开始</button></div>`;
+        const scene = state.catalog.scenes.find((item) => item.action && item.action.treeId === state.tree.treeId);
+        mount.innerHTML = `<div class="guide-tree-intro"><div><strong>${guideTreeEscape(scene ? scene.title : state.tree.treeId)}</strong><p>请根据实际情况逐题确认。</p></div><button type="button" class="btn-primary guide-tree-start">开始</button><button type="button" class="btn-small guide-tree-change">更换场景</button></div>`;
         mount.querySelector('.guide-tree-start').addEventListener('click', () => {
-            state.currentNodeId = tree.startNodeId;
+            state.currentNodeId = state.tree.startNodeId;
             renderQuestion();
         });
+        mount.querySelector('.guide-tree-change').addEventListener('click', () => { resetState(); renderStart(); });
     };
     const resetTo = (index) => {
         const kept = state.path.slice(0, index);
@@ -86,7 +112,7 @@ async function initGuideTree() {
         state.path = kept;
         state.flags = [];
         kept.forEach((nodeId) => {
-            const node = tree.nodes[nodeId];
+            const node = state.tree.nodes[nodeId];
             const answer = state.answers[nodeId];
             const selected = Array.isArray(answer) ? answer : [answer];
             selected.forEach((value) => {
@@ -94,10 +120,10 @@ async function initGuideTree() {
                 (option && option.setFlags || []).forEach((flag) => state.flags.push({ node: nodeId, flag }));
             });
         });
-        state.currentNodeId = kept[kept.length - 1] || tree.startNodeId;
+        state.currentNodeId = kept[kept.length - 1] || state.tree.startNodeId;
     };
     const renderQuestion = () => {
-        const node = tree.nodes[state.currentNodeId];
+        const node = state.tree.nodes[state.currentNodeId];
         if (!node) return renderStart();
         const back = state.path.length ? '<button type="button" class="btn-small guide-tree-back">返回上一题</button>' : '';
         const multiple = node.type === 'multi';
@@ -105,7 +131,7 @@ async function initGuideTree() {
         mount.innerHTML = `<div class="guide-tree-question"><div class="guide-tree-meta">第 ${state.path.length + 1} 题</div><h3>${guideTreeEscape(node.title)}</h3><div class="guide-tree-options">${options}</div><div class="guide-tree-actions">${back}${multiple ? '<button type="button" class="btn-primary guide-tree-next">继续</button>' : ''}</div></div>`;
         const commit = (answer) => {
             if (multiple && answer.includes('none') && answer.length !== 1) return;
-            const next = guideTreeNext(tree, state, node, answer);
+            const next = guideTreeNext(state.tree, state, node, answer);
             state.answers[node.id] = answer;
             state.flags = next.flags;
             state.path.push(node.id);
@@ -154,7 +180,7 @@ async function initGuideTree() {
             resolve();
         });
         mount.querySelector('.guide-tree-restart').addEventListener('click', () => {
-            Object.assign(state, { currentNodeId: null, answers: {}, flags: [], path: [], terminal: null, documentFields: {} });
+            resetState();
             renderStart();
         });
     };
@@ -163,7 +189,7 @@ async function initGuideTree() {
         try {
             const response = await fetch(guideTreeApiUrl('/api/guide-tree/resolve'), {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ treeId: tree.treeId, treeVersion: tree.treeVersion, path: state.path, answers: state.answers, documentFields: state.documentFields })
+                body: JSON.stringify({ treeId: state.tree.treeId, treeVersion: state.tree.treeVersion, path: state.path, answers: state.answers, documentFields: state.documentFields })
             });
             if (!response.ok) throw new Error('resolve unavailable');
             const payload = await response.json();
@@ -175,5 +201,10 @@ async function initGuideTree() {
             mount.querySelector('.guide-tree-restart').addEventListener('click', renderStart);
         }
     };
-    renderStart();
+    try {
+        state.catalog = await loadCatalog();
+        renderStart();
+    } catch (_) {
+        mount.innerHTML = '<div class="guide-tree-error">维权场景暂时无法加载。</div>';
+    }
 }
