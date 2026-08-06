@@ -1,0 +1,92 @@
+{
+  "schemaVersion": 1,
+  "status": "draft",
+  "retrievedAt": "2026-08-02",
+  "records": [
+    {
+      "legalBasisKey": "women_rights_43",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第四十三条",
+      "fullText": "用人单位在招录过程中不得限定为男性或者规定男性优先，不得询问或者调查女性求职者婚育情况。",
+      "displayText": "用人单位在招录过程中不得限定为男性或者规定男性优先，不得询问或者调查女性求职者婚育情况。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "employment_promotion_27",
+      "lawName": "中华人民共和国就业促进法",
+      "article": "第二十七条",
+      "fullText": "用人单位招用人员不得以性别为由拒绝录用妇女或者提高对妇女的录用标准。",
+      "displayText": "用人单位招用人员不得以性别为由拒绝录用妇女或者提高对妇女的录用标准。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "women_rights_72",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第七十二条",
+      "fullText": "妇女合法权益受到侵害的，有权要求有关部门依法处理，或者依法申请调解、仲裁，或者向人民法院起诉。",
+      "displayText": "妇女合法权益受到侵害的，有权要求有关部门依法处理，或者依法申请调解、仲裁，或者向人民法院起诉。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "employment_promotion_62",
+      "lawName": "中华人民共和国就业促进法",
+      "article": "第六十二条",
+      "fullText": "违反就业促进法规定实施就业歧视的，劳动者可以向人民法院提起诉讼。",
+      "displayText": "违反就业促进法规定实施就业歧视的，劳动者可以向人民法院提起诉讼。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "women_rights_49",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第四十九条",
+      "fullText": "人力资源和社会保障部门应当将招聘、录用、晋职、晋级、培训等过程中的性别歧视纳入劳动保障监察范围。",
+      "displayText": "人力资源和社会保障部门应当将招聘、录用、晋职、晋级、培训等过程中的性别歧视纳入劳动保障监察范围。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "women_rights_83",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第八十三条",
+      "fullText": "用人单位违反招聘性别歧视和孕产期保护规定的，依法责令改正或处罚。",
+      "displayText": "用人单位违反招聘性别歧视和孕产期保护规定的，依法责令改正或处罚。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    },
+    {
+      "legalBasisKey": "women_rights_74",
+      "lawName": "中华人民共和国妇女权益保障法",
+      "article": "第七十四条",
+      "fullText": "用人单位侵害妇女劳动和社会保障权益的，人力资源和社会保障部门可以依法监督并要求限期纠正。",
+      "displayText": "用人单位侵害妇女劳动和社会保障权益的，人力资源和社会保障部门可以依法监督并要求限期纠正。",
+      "officialUrl": "",
+      "regionalScope": "national",
+      "issueTags": [],
+      "version": "1.0.0-draft",
+      "status": "draft"
+    }
+  ],
+  "treeId": "recruit_discrimination"
+}

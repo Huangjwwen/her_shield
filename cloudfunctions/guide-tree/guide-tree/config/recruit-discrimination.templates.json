@@ -1,0 +1,314 @@
+{
+  "schemaVersion": 1,
+  "treeId": "recruit_discrimination",
+  "conditionIndexVersion": "1.3.0",
+  "status": "draft",
+  "templates": [
+    {
+      "documentKey": "evidence_catalog",
+      "version": "1.2.0-draft",
+      "conditionIndexVersion": "1.3.0",
+      "title": "证据目录",
+      "applicableTreeIds": [
+        "recruit_discrimination"
+      ],
+      "applicableTerminals": [
+        "RA",
+        "RB",
+        "RC",
+        "OOS"
+      ],
+      "purpose": "证据目录",
+      "requiredFields": [
+        "userName",
+        "caseTitle"
+      ],
+      "optionalFields": [
+        "companyName",
+        "eventDate",
+        "notes",
+        "attachmentList"
+      ],
+      "warnings": [
+        "使用前逐项核对事实与字段。",
+        "本工具提供法律信息参考和文书草稿，不构成正式法律意见。"
+      ],
+      "bodyBlocks": [
+        {
+          "blockId": "title",
+          "type": "fixed",
+          "order": 10,
+          "text": "证据目录\n\n事项：{{caseTitle}}\n整理人：{{userName}}"
+        },
+        {
+          "blockId": "company",
+          "type": "conditional",
+          "order": 20,
+          "when": {
+            "field": "companyName",
+            "op": "exists"
+          },
+          "text": "涉及单位：{{companyName}}",
+          "requiredFieldsWhenRendered": [
+            "companyName"
+          ]
+        },
+        {
+          "blockId": "event",
+          "type": "conditional",
+          "order": 30,
+          "when": {
+            "field": "eventDate",
+            "op": "exists"
+          },
+          "text": "相关日期：{{eventDate}}",
+          "requiredFieldsWhenRendered": [
+            "eventDate"
+          ]
+        },
+        {
+          "blockId": "body",
+          "type": "fixed",
+          "order": 40,
+          "text": "请结合当前决策树路径，按时间顺序整理事实、沟通记录、证据材料和拟请求事项；不要补造事实，不要写入尚未核实的结论。"
+        },
+        {
+          "blockId": "notes",
+          "type": "conditional",
+          "order": 50,
+          "when": {
+            "field": "notes",
+            "op": "exists"
+          },
+          "text": "补充说明：{{notes}}",
+          "requiredFieldsWhenRendered": [
+            "notes"
+          ]
+        },
+        {
+          "blockId": "attachments",
+          "type": "conditional",
+          "order": 60,
+          "when": {
+            "field": "attachmentList",
+            "op": "exists"
+          },
+          "text": "附件：{{attachmentList}}",
+          "requiredFieldsWhenRendered": [
+            "attachmentList"
+          ]
+        },
+        {
+          "blockId": "date",
+          "type": "fixed",
+          "order": 70,
+          "text": "{{generatedDate}}"
+        }
+      ]
+    },
+    {
+      "documentKey": "request_rejection_reason",
+      "version": "1.2.0-draft",
+      "conditionIndexVersion": "1.3.0",
+      "title": "要求说明不予录用原因函",
+      "applicableTreeIds": [
+        "recruit_discrimination"
+      ],
+      "applicableTerminals": [
+        "RA",
+        "RB",
+        "RC",
+        "OOS"
+      ],
+      "purpose": "要求说明不予录用原因函",
+      "requiredFields": [
+        "userName",
+        "caseTitle"
+      ],
+      "optionalFields": [
+        "companyName",
+        "eventDate",
+        "notes",
+        "attachmentList"
+      ],
+      "warnings": [
+        "使用前逐项核对事实与字段。",
+        "本工具提供法律信息参考和文书草稿，不构成正式法律意见。"
+      ],
+      "bodyBlocks": [
+        {
+          "blockId": "title",
+          "type": "fixed",
+          "order": 10,
+          "text": "要求说明不予录用原因函\n\n事项：{{caseTitle}}\n整理人：{{userName}}"
+        },
+        {
+          "blockId": "company",
+          "type": "conditional",
+          "order": 20,
+          "when": {
+            "field": "companyName",
+            "op": "exists"
+          },
+          "text": "涉及单位：{{companyName}}",
+          "requiredFieldsWhenRendered": [
+            "companyName"
+          ]
+        },
+        {
+          "blockId": "event",
+          "type": "conditional",
+          "order": 30,
+          "when": {
+            "field": "eventDate",
+            "op": "exists"
+          },
+          "text": "相关日期：{{eventDate}}",
+          "requiredFieldsWhenRendered": [
+            "eventDate"
+          ]
+        },
+        {
+          "blockId": "body",
+          "type": "fixed",
+          "order": 40,
+          "text": "请结合当前决策树路径，按时间顺序整理事实、沟通记录、证据材料和拟请求事项；不要补造事实，不要写入尚未核实的结论。"
+        },
+        {
+          "blockId": "notes",
+          "type": "conditional",
+          "order": 50,
+          "when": {
+            "field": "notes",
+            "op": "exists"
+          },
+          "text": "补充说明：{{notes}}",
+          "requiredFieldsWhenRendered": [
+            "notes"
+          ]
+        },
+        {
+          "blockId": "attachments",
+          "type": "conditional",
+          "order": 60,
+          "when": {
+            "field": "attachmentList",
+            "op": "exists"
+          },
+          "text": "附件：{{attachmentList}}",
+          "requiredFieldsWhenRendered": [
+            "attachmentList"
+          ]
+        },
+        {
+          "blockId": "date",
+          "type": "fixed",
+          "order": 70,
+          "text": "{{generatedDate}}"
+        }
+      ]
+    },
+    {
+      "documentKey": "recruit_discrimination_complaint",
+      "version": "1.2.0-draft",
+      "conditionIndexVersion": "1.3.0",
+      "title": "招聘歧视投诉说明",
+      "applicableTreeIds": [
+        "recruit_discrimination"
+      ],
+      "applicableTerminals": [
+        "RA",
+        "RB",
+        "RC",
+        "OOS"
+      ],
+      "purpose": "招聘歧视投诉说明",
+      "requiredFields": [
+        "userName",
+        "caseTitle"
+      ],
+      "optionalFields": [
+        "companyName",
+        "eventDate",
+        "notes",
+        "attachmentList"
+      ],
+      "warnings": [
+        "使用前逐项核对事实与字段。",
+        "本工具提供法律信息参考和文书草稿，不构成正式法律意见。"
+      ],
+      "bodyBlocks": [
+        {
+          "blockId": "title",
+          "type": "fixed",
+          "order": 10,
+          "text": "招聘歧视投诉说明\n\n事项：{{caseTitle}}\n整理人：{{userName}}"
+        },
+        {
+          "blockId": "company",
+          "type": "conditional",
+          "order": 20,
+          "when": {
+            "field": "companyName",
+            "op": "exists"
+          },
+          "text": "涉及单位：{{companyName}}",
+          "requiredFieldsWhenRendered": [
+            "companyName"
+          ]
+        },
+        {
+          "blockId": "event",
+          "type": "conditional",
+          "order": 30,
+          "when": {
+            "field": "eventDate",
+            "op": "exists"
+          },
+          "text": "相关日期：{{eventDate}}",
+          "requiredFieldsWhenRendered": [
+            "eventDate"
+          ]
+        },
+        {
+          "blockId": "body",
+          "type": "fixed",
+          "order": 40,
+          "text": "请结合当前决策树路径，按时间顺序整理事实、沟通记录、证据材料和拟请求事项；不要补造事实，不要写入尚未核实的结论。"
+        },
+        {
+          "blockId": "notes",
+          "type": "conditional",
+          "order": 50,
+          "when": {
+            "field": "notes",
+            "op": "exists"
+          },
+          "text": "补充说明：{{notes}}",
+          "requiredFieldsWhenRendered": [
+            "notes"
+          ]
+        },
+        {
+          "blockId": "attachments",
+          "type": "conditional",
+          "order": 60,
+          "when": {
+            "field": "attachmentList",
+            "op": "exists"
+          },
+          "text": "附件：{{attachmentList}}",
+          "requiredFieldsWhenRendered": [
+            "attachmentList"
+          ]
+        },
+        {
+          "blockId": "date",
+          "type": "fixed",
+          "order": 70,
+          "text": "{{generatedDate}}"
+        }
+      ]
+    }
+  ]
+}
