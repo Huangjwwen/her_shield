@@ -470,111 +470,177 @@ function addPageBackground(slide) {
   });
 }
 
-// ==================== Slide 5:端到端架构(让得理可见)⭐ ====================
+// ==================== Slide 5:五层全栈架构 ⭐ ====================
 {
   const s = pres.addSlide();
   addPageBackground(s);
   addHeaderFooter(s, 5);
-  addSlideTitle(s, '端到端技术架构', '从前端到 AI 到法律知识源,得理 API 在哪');
+  addSlideTitle(s, '五层全栈架构', '交互 / 代理 / 智能 / 知识 / 评测 —— 每一层都为弱势情境下的决策辅助服务');
 
-  // 5 个层级横向排列 + 箭头
-  const layers = [
-    { title: '前端', sub: 'GitHub Pages\nHTML5 + Vanilla JS', color: C.primaryLight },
-    { title: 'CloudBase\n代理 + 缓存', sub: '密钥下沉\n同问同答', color: C.primary },
-    { title: '腾讯元器\n5 大智能体', sub: '工作流编排\n要件式判定', color: C.primaryDark },
-    { title: '得理开放平台', sub: '法规检索\n+ 类案匹配', color: C.accent },
-  ];
-  const startX = 0.5;
-  const boxW = 2.1, boxH = 1.4;
-  const gap = 0.15;
-  layers.forEach((l, i) => {
-    const x = startX + i * (boxW + gap + 0.15);
-    const isDeli = i === 3;
-    // 卡
+  // 整体区域:主架构 7.6 宽(0.4 - 8.0),评测体系侧边栏 1.5 宽(8.1 - 9.6)
+  const MAIN_X = 0.4, MAIN_W = 7.6;
+  const SIDE_X = 8.1, SIDE_W = 1.5;
+
+  // —— 主架构:4 层垂直堆叠(交互 → 代理 → 智能 → 知识)+ 箭头 ——
+  const LAYER_Y_START = 1.55;
+  const LAYER_H = 0.78;
+  const ARROW_H = 0.22;
+  const ROW = (i) => LAYER_Y_START + i * (LAYER_H + ARROW_H);
+
+  // 通用画"层带":左侧色条 + 层名 + 右侧内容子卡片们
+  const drawLayer = (rowIdx, label, sublabel, color, cards) => {
+    const y = ROW(rowIdx);
+    // 层外框
     s.addShape(pres.shapes.RECTANGLE, {
-      x, y: 2.1, w: boxW, h: boxH,
-      fill: { color: isDeli ? C.bgSoft : C.bgWhite },
-      line: { color: l.color, width: isDeli ? 2.5 : 1 },
+      x: MAIN_X, y, w: MAIN_W, h: LAYER_H,
+      fill: { color: C.bgWhite }, line: { color, width: 1 }
     });
-    // 顶部色条
+    // 左侧色条
     s.addShape(pres.shapes.RECTANGLE, {
-      x, y: 2.1, w: boxW, h: 0.08,
-      fill: { color: l.color }, line: { type: 'none' }
+      x: MAIN_X, y, w: 0.08, h: LAYER_H,
+      fill: { color }, line: { type: 'none' }
     });
-    // 标题
-    s.addText(l.title, {
-      x: x + 0.1, y: 2.3, w: boxW - 0.2, h: 0.6,
-      fontSize: 13, fontFace: F.serif, bold: true, color: C.primaryDark,
-      align: 'center', valign: 'top', margin: 0
+    // 层名 + 副标(左侧 1.5 宽)
+    s.addText(label, {
+      x: MAIN_X + 0.15, y: y + 0.05, w: 1.45, h: 0.3,
+      fontSize: 12, fontFace: F.serif, bold: true, color: C.primaryDark, margin: 0
     });
-    // 副文
-    s.addText(l.sub, {
-      x: x + 0.1, y: 2.9, w: boxW - 0.2, h: 0.55,
-      fontSize: 10, fontFace: F.sans, color: C.textGray,
-      align: 'center', valign: 'top', margin: 0
-    });
-    // 箭头(除最后一个)
-    if (i < layers.length - 1) {
-      const ax = x + boxW + 0.02;
-      s.addText('→', {
-        x: ax, y: 2.55, w: 0.4, h: 0.5,
-        fontSize: 20, fontFace: F.sans, color: C.primary,
-        align: 'center', valign: 'middle', bold: true, margin: 0
+    if (sublabel) {
+      s.addText(sublabel, {
+        x: MAIN_X + 0.15, y: y + 0.36, w: 1.45, h: 0.4,
+        fontSize: 8.5, fontFace: F.sans, italic: true, color: C.textGray, margin: 0
       });
     }
-  });
+    // 右侧内容卡片(从 x = 1.7 到层右边界)
+    const CARDS_X = MAIN_X + 1.7;
+    const CARDS_W = MAIN_W - 1.85;
+    const cardCount = cards.length;
+    const cardGap = 0.08;
+    const cardW = (CARDS_W - cardGap * (cardCount - 1)) / cardCount;
+    cards.forEach((c, i) => {
+      const cx = CARDS_X + i * (cardW + cardGap);
+      s.addShape(pres.shapes.RECTANGLE, {
+        x: cx, y: y + 0.08, w: cardW, h: LAYER_H - 0.16,
+        fill: { color: c.bg || C.bgSoft }, line: { color: c.border || color, width: 0.5 }
+      });
+      s.addText(c.title, {
+        x: cx + 0.05, y: y + 0.1, w: cardW - 0.1, h: 0.3,
+        fontSize: 11, fontFace: F.sans, bold: true, color: C.primaryDark,
+        align: 'center', margin: 0
+      });
+      if (c.sub) {
+        s.addText(c.sub, {
+          x: cx + 0.05, y: y + 0.36, w: cardW - 0.1, h: LAYER_H - 0.44,
+          fontSize: 8.5, fontFace: F.sans, color: C.textGray,
+          align: 'center', valign: 'top', margin: 0
+        });
+      }
+    });
+  };
 
-  // 高亮"得理"
-  s.addShape(pres.shapes.OVAL, {
-    x: 7.4, y: 1.85, w: 0.35, h: 0.35,
-    fill: { color: C.accent }, line: { type: 'none' }
-  });
-  s.addText('⭐', {
-    x: 7.4, y: 1.85, w: 0.35, h: 0.35,
-    fontSize: 13, align: 'center', valign: 'middle', margin: 0
-  });
+  // 层间下行箭头
+  const drawArrow = (rowIdx, label) => {
+    const y = ROW(rowIdx) + LAYER_H + 0.02;
+    s.addText('▼', {
+      x: MAIN_X + MAIN_W / 2 - 0.18, y, w: 0.36, h: 0.18,
+      fontSize: 12, fontFace: F.sans, bold: true, color: C.primary,
+      align: 'center', margin: 0
+    });
+    if (label) {
+      s.addText(label, {
+        x: MAIN_X + MAIN_W / 2 + 0.22, y: y + 0.01, w: 2.5, h: 0.18,
+        fontSize: 8.5, fontFace: F.sans, italic: true, color: C.textGray, margin: 0
+      });
+    }
+  };
 
-  // 对比框:通用 GPT vs 得理 API(预防"为什么不用 ChatGPT"质疑)
-  // 左:GPT
-  s.addShape(pres.shapes.RECTANGLE, {
-    x: 0.5, y: 3.95, w: 4.4, h: 1.1,
-    fill: { color: 'F5F5F5' }, line: { color: 'D0D0D0', width: 0.75 }
-  });
-  s.addShape(pres.shapes.RECTANGLE, {
-    x: 0.5, y: 3.95, w: 0.05, h: 1.1,
-    fill: { color: 'B0B0B0' }, line: { type: 'none' }
-  });
-  s.addText('通用大模型(如 ChatGPT)', {
-    x: 0.65, y: 4.0, w: 4.2, h: 0.3,
-    fontSize: 12, fontFace: F.sans, bold: true, color: '666666', margin: 0
-  });
-  s.addText([
-    { text: '✗ 可能伪造案号 / 编造法条', options: { color: '666666', breakLine: true } },
-    { text: '✗ 黑盒判定,不可追溯', options: { color: '666666' } },
-  ], {
-    x: 0.65, y: 4.32, w: 4.2, h: 0.7,
-    fontSize: 11, fontFace: F.sans, paraSpaceAfter: 3, margin: 0
-  });
+  // ① 交互层
+  drawLayer(0, '交互层', 'Vanilla JS', C.primaryLight, [
+    { title: 'features.html', sub: '6 模块界面' },
+    { title: '10 个独立 JS', sub: 'radar / consult / selfcheck /\nevidence / guide / harbor /\nstories / history / ui / main' },
+    { title: 'Web Crypto', sub: '浏览器端 SHA-256\n证据指纹' },
+  ]);
+  drawArrow(0, 'HTTPS POST');
 
-  // 右:得理
+  // ② 后端代理层
+  drawLayer(1, '后端代理层', 'CloudBase', C.primary, [
+    { title: '云函数 proxy', sub: '密钥下沉 +\n3 层缓存策略' },
+    { title: '云数据库', sub: '她声故事\n千万级文档' },
+  ]);
+  drawArrow(1, 'appkey Bearer 转发');
+
+  // ③ 智能层(5 智能体)
+  drawLayer(2, '智能层', '腾讯元器', C.primaryDark, [
+    { title: '她眼·言行雷达', sub: '单工作流' },
+    { title: '她权·权益指南', sub: '单工作流' },
+    { title: '她证·证据保全', sub: '单工作流' },
+    { title: '她行·维权导航', sub: '单工作流' },
+    { title: '她心·情绪树洞', sub: '标准模式' },
+  ]);
+  drawArrow(2, 'RAG(她眼 / 她权)');
+
+  // ④ 知识层
+  drawLayer(3, '知识层', '法律 RAG', C.accent, [
+    { title: '得理开放平台 — 类案 + 法规检索', sub: '所有引用可追溯案号 / 法院 / 年份', bg: C.bgSoft, border: C.accent },
+  ]);
+
+  // —— 右侧:评测体系 侧边栏(跨整个 4 层高度)——
+  const SIDE_Y = ROW(0);
+  const SIDE_H = ROW(3) + LAYER_H - SIDE_Y;
+  // 外框 + 顶部色条
   s.addShape(pres.shapes.RECTANGLE, {
-    x: 5.1, y: 3.95, w: 4.4, h: 1.1,
-    fill: { color: C.bgSoft }, line: { color: C.primary, width: 1 }
+    x: SIDE_X, y: SIDE_Y, w: SIDE_W, h: SIDE_H,
+    fill: { color: C.bgWhite }, line: { color: '7B5DC4', width: 1, dashType: 'dash' }
   });
   s.addShape(pres.shapes.RECTANGLE, {
-    x: 5.1, y: 3.95, w: 0.05, h: 1.1,
-    fill: { color: C.primary }, line: { type: 'none' }
+    x: SIDE_X, y: SIDE_Y, w: SIDE_W, h: 0.08,
+    fill: { color: '7B5DC4' }, line: { type: 'none' }
   });
-  s.addText('得理 API + 工作流编排', {
-    x: 5.25, y: 4.0, w: 4.2, h: 0.3,
-    fontSize: 12, fontFace: F.sans, bold: true, color: C.primaryDark, margin: 0
+  s.addText('评测体系', {
+    x: SIDE_X + 0.05, y: SIDE_Y + 0.15, w: SIDE_W - 0.1, h: 0.3,
+    fontSize: 12, fontFace: F.serif, bold: true, color: C.primaryDark,
+    align: 'center', margin: 0
   });
-  s.addText([
-    { text: '✓ 真实判例锚定 — 可查裁判文书网', options: { color: C.text, breakLine: true } },
-    { text: '✓ 代码节点确定性映射 — 同问同答', options: { color: C.text } },
-  ], {
-    x: 5.25, y: 4.32, w: 4.2, h: 0.7,
-    fontSize: 11, fontFace: F.sans, paraSpaceAfter: 3, margin: 0
+  s.addText('双层方法学', {
+    x: SIDE_X + 0.05, y: SIDE_Y + 0.45, w: SIDE_W - 0.1, h: 0.25,
+    fontSize: 9, fontFace: F.sans, italic: true, color: C.textGray,
+    align: 'center', margin: 0
+  });
+  // 内容卡片
+  s.addShape(pres.shapes.RECTANGLE, {
+    x: SIDE_X + 0.1, y: SIDE_Y + 0.85, w: SIDE_W - 0.2, h: 1.1,
+    fill: { color: C.bgSoft }, line: { type: 'none' }
+  });
+  s.addText('eval/run.js', {
+    x: SIDE_X + 0.1, y: SIDE_Y + 0.9, w: SIDE_W - 0.2, h: 0.25,
+    fontSize: 10, fontFace: F.sans, bold: true, color: C.primaryDark,
+    align: 'center', margin: 0
+  });
+  s.addText('100 条\n标注测试集', {
+    x: SIDE_X + 0.1, y: SIDE_Y + 1.18, w: SIDE_W - 0.2, h: 0.6,
+    fontSize: 9, fontFace: F.sans, color: C.textGray,
+    align: 'center', margin: 0
+  });
+  // 第二张卡片
+  s.addShape(pres.shapes.RECTANGLE, {
+    x: SIDE_X + 0.1, y: SIDE_Y + 2.1, w: SIDE_W - 0.2, h: 1.1,
+    fill: { color: C.bgSoft }, line: { type: 'none' }
+  });
+  s.addText('要件级标注', {
+    x: SIDE_X + 0.1, y: SIDE_Y + 2.15, w: SIDE_W - 0.2, h: 0.25,
+    fontSize: 10, fontFace: F.sans, bold: true, color: C.primaryDark,
+    align: 'center', margin: 0
+  });
+  s.addText('compute_risk_level\n机械映射', {
+    x: SIDE_X + 0.1, y: SIDE_Y + 2.43, w: SIDE_W - 0.2, h: 0.6,
+    fontSize: 9, fontFace: F.sans, color: C.textGray,
+    align: 'center', margin: 0
+  });
+  // 虚线连接:智能层 → 评测体系
+  s.addText('⇠ 定期回归', {
+    x: SIDE_X - 0.65, y: SIDE_Y + 0.95, w: 0.7, h: 0.2,
+    fontSize: 7.5, fontFace: F.sans, italic: true, color: C.textGray,
+    align: 'center', margin: 0
   });
 }
 
@@ -1413,7 +1479,7 @@ addModuleShowcasePage(15, {
 }
 
 // ==================== 写出 ====================
-const outPath = path.join(__dirname, '她盾_答辩_v0.6.pptx');
+const outPath = path.join(__dirname, '她盾_答辩_v0.7.pptx');
 pres.writeFile({ fileName: outPath }).then(file => {
   console.log('Written:', file);
 }).catch(err => {

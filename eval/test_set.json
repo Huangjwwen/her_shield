@@ -1,5 +1,5 @@
 {
-  "version": "1.3+annotated",
+  "version": "1.3",
   "description": "言行雷达判定准确率测试集 —— 50 条精标(judicial/statute/derived 锚定) + 50 条变体(测语言/细节/干扰/边界/长文本鲁棒性)",
   "rubric_reference": "见 eval/README.md 第二节《风险等级判定规则》",
   "case_sources": "anchor.type: judicial = 已生效判例 / 检察机关典型；statute = 法律条文明文禁止；derived = 由判例规则推导",
@@ -9,7 +9,7 @@
       "id": "H1",
       "category": "骚扰-高危",
       "input": "新来的副总监说'你陪我喝几杯，加薪不是问题'，被我拒绝后他还坚持要送我回家。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性骚扰"
@@ -25,8 +25,8 @@
       "id": "H2",
       "category": "骚扰-高危",
       "input": "出差时上司强行进入我的房间，我推他出去后他拍打房门骂我'装清高'。",
-      "expected": {
-        "risk_level": "高危",
+      "agent_result": {
+        "risk_level": "低危",
         "type": [
           "性骚扰"
         ]
@@ -41,7 +41,7 @@
       "id": "H3",
       "category": "骚扰-高危",
       "input": "客户在饭局上多次摸我的腰，公司却要求我'圆滑处理客户关系'。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性骚扰"
@@ -57,7 +57,7 @@
       "id": "H4",
       "category": "骚扰-高危",
       "input": "总监连续三个月每天给我发暧昧短信，我明确拒绝后他威胁'给你穿小鞋'。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性骚扰"
@@ -73,7 +73,7 @@
       "id": "H5",
       "category": "骚扰-高危",
       "input": "技术总监对我说'今晚一起开房加班吧'，我拒绝后他就开始挑我工作的毛病。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性骚扰"
@@ -89,7 +89,7 @@
       "id": "H_real_1",
       "category": "骚扰-高危",
       "input": "面试结束后老板让我送他到酒店，称'再聊聊业务'，进入房间后他抱住我说'你敢说出去，我让你在行业里待不下去'。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性骚扰"
@@ -105,7 +105,7 @@
       "id": "H_real_2",
       "category": "骚扰-高危",
       "input": "我们公司一个一线管理人员，在物料厂房没监控的时候强行搂抱我、亲吻我，第二天还想再这么做，我激烈反抗后选择了报警。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性骚扰"
@@ -121,8 +121,8 @@
       "id": "H14",
       "category": "骚扰-高危",
       "input": "我们部门总裁在内部年会上要求所有女员工跟他单独敬酒，谁拒绝他就当众嘲讽'不识抬举'，已经搞了好几场。",
-      "expected": {
-        "risk_level": "高危",
+      "agent_result": {
+        "risk_level": "中危",
         "type": [
           "性骚扰"
         ]
@@ -137,8 +137,8 @@
       "id": "H6",
       "category": "骚扰-中危",
       "input": "新来的男领导每周都单独约我吃饭聊'未来发展'，我去过几次但都感觉怪怪的。",
-      "expected": {
-        "risk_level": "中危",
+      "agent_result": {
+        "risk_level": "低危",
         "type": [
           "性骚扰"
         ]
@@ -153,8 +153,8 @@
       "id": "H7",
       "category": "骚扰-中危",
       "input": "面试时面试官盯着我看了很久，又问我体重和身高。",
-      "expected": {
-        "risk_level": "中危",
+      "agent_result": {
+        "risk_level": "低危",
         "type": [
           "性骚扰"
         ]
@@ -169,8 +169,8 @@
       "id": "H8",
       "category": "骚扰-中危",
       "input": "经理在工作群里转发我的生活照片说'看我们组的女神'。",
-      "expected": {
-        "risk_level": "中危",
+      "agent_result": {
+        "risk_level": "低危",
         "type": [
           "性骚扰"
         ]
@@ -185,7 +185,7 @@
       "id": "H9",
       "category": "骚扰-中危",
       "input": "同事在工作群里发涉性表情包并艾特女同事们。",
-      "expected": {
+      "agent_result": {
         "risk_level": "中危",
         "type": [
           "性骚扰"
@@ -201,8 +201,8 @@
       "id": "H10",
       "category": "骚扰-中危",
       "input": "面试官说'你长得不错，怎么还没结婚啊'。",
-      "expected": {
-        "risk_level": "中危",
+      "agent_result": {
+        "risk_level": "低危",
         "type": [
           "性骚扰",
           "性别歧视"
@@ -218,14 +218,11 @@
       "id": "H15",
       "category": "骚扰-中危",
       "input": "市场总监连着三次说'今晚加班只剩我们俩，要不要我送你回家'，我每次都说自己打车走。",
-      "expected": {
-        "risk_level": "高危",
+      "agent_result": {
+        "risk_level": "低危",
         "type": [
           "性骚扰"
-        ],
-        "_previous_level": "中危",
-        "_adjusted_at": "2026-06-01",
-        "_adjusted_reason": "要件级标注 + compute_risk_level 计算结果"
+        ]
       },
       "notes": "重复单独邀约 + 拒绝表达但未明确升级",
       "anchor": {
@@ -237,8 +234,8 @@
       "id": "H16",
       "category": "骚扰-中危",
       "input": "同事经常拍我的肩膀、捏我的胳膊，说'你皮肤真好'，我没明说但很不舒服。",
-      "expected": {
-        "risk_level": "中危",
+      "agent_result": {
+        "risk_level": "低危",
         "type": [
           "性骚扰"
         ]
@@ -253,7 +250,7 @@
       "id": "H17",
       "category": "骚扰-中危",
       "input": "新主管开会时把我的方案叫'美女方案'，还开玩笑要我'用美貌打动客户'。",
-      "expected": {
+      "agent_result": {
         "risk_level": "中危",
         "type": [
           "性骚扰"
@@ -269,8 +266,8 @@
       "id": "H11",
       "category": "骚扰-低危",
       "input": "同事酒后开了一个荤段子，全桌人都笑了，我没怎么反应。",
-      "expected": {
-        "risk_level": "低危",
+      "agent_result": {
+        "risk_level": "中危",
         "type": [
           "性骚扰"
         ]
@@ -285,7 +282,7 @@
       "id": "H12",
       "category": "骚扰-低危",
       "input": "前台总是夸我'今天好看'，我有点不舒服。",
-      "expected": {
+      "agent_result": {
         "risk_level": "低危",
         "type": [
           "性骚扰"
@@ -301,14 +298,11 @@
       "id": "H13",
       "category": "骚扰-低危",
       "input": "男同事下班后让我帮他改简历，我有点犹豫。",
-      "expected": {
-        "risk_level": "无风险",
+      "agent_result": {
+        "risk_level": "无关",
         "type": [
           "性骚扰"
-        ],
-        "_previous_level": "低危",
-        "_adjusted_at": "2026-06-01",
-        "_adjusted_reason": "要件级标注 + compute_risk_level 计算结果"
+        ]
       },
       "notes": "无明显性内容，边界情形",
       "anchor": {
@@ -320,7 +314,7 @@
       "id": "H18",
       "category": "骚扰-低危",
       "input": "茶水间几个男同事在小声聊女明星身材，我刚进去他们就闭嘴了。",
-      "expected": {
+      "agent_result": {
         "risk_level": "低危",
         "type": [
           "性骚扰"
@@ -336,7 +330,7 @@
       "id": "H19",
       "category": "骚扰-低危",
       "input": "实习生在工作群发了一个有点擦边的搞笑表情包，被组长批评后撤回了。",
-      "expected": {
+      "agent_result": {
         "risk_level": "低危",
         "type": [
           "性骚扰"
@@ -352,7 +346,7 @@
       "id": "D1",
       "category": "歧视-高危",
       "input": "公司招聘启事明确写'仅限男性'。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
@@ -368,7 +362,7 @@
       "id": "D2",
       "category": "歧视-高危",
       "input": "怀孕5个月后突然被通知调岗，薪资降40%。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
@@ -384,7 +378,7 @@
       "id": "D3",
       "category": "歧视-高危",
       "input": "公司新规要求女员工入职须签'三年内不生育'承诺。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
@@ -400,7 +394,7 @@
       "id": "D4",
       "category": "歧视-高危",
       "input": "孕期被以'业绩不佳'辞退，但我连续两季度KPI都是A。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
@@ -416,7 +410,7 @@
       "id": "D5",
       "category": "歧视-高危",
       "input": "公司规定女员工怀孕需提前一年报备并经领导批准。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
@@ -432,7 +426,7 @@
       "id": "D_real_1",
       "category": "歧视-高危",
       "input": "入职体检要求我提交怀孕检测报告，我如实告知怀孕后，公司就以'岗位规划调整'撤回了offer，但同岗位还在外面挂着招聘。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
@@ -448,7 +442,7 @@
       "id": "D_real_2",
       "category": "歧视-高危",
       "input": "哺乳期间公司突然以'连续旷工三日严重违反规章制度'为由把我开除，但我一直在按之前的安排上班，公司也拿不出实际旷工记录。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
@@ -464,7 +458,7 @@
       "id": "D_real_3",
       "category": "歧视-高危",
       "input": "我刚入职半年就发现怀孕了，告诉公司没几天，他们就拿一份《解聘通知书》给我，说'大环境影响、公司经营困难'要解除我的合同。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
@@ -480,7 +474,7 @@
       "id": "D6",
       "category": "歧视-中危",
       "input": "面试时HR问我'打算什么时候生孩子'。",
-      "expected": {
+      "agent_result": {
         "risk_level": "中危",
         "type": [
           "性别歧视"
@@ -496,7 +490,7 @@
       "id": "D7",
       "category": "歧视-中危",
       "input": "面试官说'你男朋友会支持你常加班吗？'",
-      "expected": {
+      "agent_result": {
         "risk_level": "中危",
         "type": [
           "性别歧视"
@@ -512,14 +506,11 @@
       "id": "D8",
       "category": "歧视-中危",
       "input": "同岗同级的男同事比我多2000工资，HR说'男生要养家糊口'。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
-        ],
-        "_previous_level": "中危",
-        "_adjusted_at": "2026-06-01",
-        "_adjusted_reason": "要件级标注 + compute_risk_level 计算结果"
+        ]
       },
       "notes": "区别对待 + 口头依据，未造成调岗辞退等实质后果",
       "anchor": {
@@ -531,14 +522,11 @@
       "id": "D9",
       "category": "歧视-中危",
       "input": "我和男同事同时申请晋升，公司直接给了他，理由是'他家里有压力'。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
-        ],
-        "_previous_level": "中危",
-        "_adjusted_at": "2026-06-01",
-        "_adjusted_reason": "要件级标注 + compute_risk_level 计算结果"
+        ]
       },
       "notes": "区别对待 + 理由模糊",
       "anchor": {
@@ -550,14 +538,11 @@
       "id": "D10",
       "category": "歧视-中危",
       "input": "公司把所有出差任务都给男同事，说'女生身体吃不消'。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
-        ],
-        "_previous_level": "中危",
-        "_adjusted_at": "2026-06-01",
-        "_adjusted_reason": "要件级标注 + compute_risk_level 计算结果"
+        ]
       },
       "notes": "基于性别刻板印象的差别对待",
       "anchor": {
@@ -569,14 +554,11 @@
       "id": "D14",
       "category": "歧视-中危",
       "input": "晋升答辩当天，老板说'你最近脸色不好，要不要先考虑身体？我们这岗位压力大'，最后把机会给了男同事。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
-        ],
-        "_previous_level": "中危",
-        "_adjusted_at": "2026-06-01",
-        "_adjusted_reason": "要件级标注 + compute_risk_level 计算结果"
+        ]
       },
       "notes": "隐性歧视 + 健康/婚育猜测影响晋升",
       "anchor": {
@@ -588,8 +570,8 @@
       "id": "D15",
       "category": "歧视-中危",
       "input": "公司年会安排女同事'负责礼仪迎宾'，男同事'负责接待客户'，理由是'女生形象好'。",
-      "expected": {
-        "risk_level": "中危",
+      "agent_result": {
+        "risk_level": "高危",
         "type": [
           "性别歧视"
         ]
@@ -604,14 +586,11 @@
       "id": "D16",
       "category": "歧视-中危",
       "input": "我请产假回来发现工位被换到了角落，原本负责的项目也分给了别人，老板说'怕你照顾孩子顾不上'。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
-        ],
-        "_previous_level": "中危",
-        "_adjusted_at": "2026-06-01",
-        "_adjusted_reason": "要件级标注 + compute_risk_level 计算结果"
+        ]
       },
       "notes": "产假后区别对待 + 隐性歧视",
       "anchor": {
@@ -623,7 +602,7 @@
       "id": "D11",
       "category": "歧视-低危",
       "input": "组里几个女生晋升都比男生慢半年左右。",
-      "expected": {
+      "agent_result": {
         "risk_level": "低危",
         "type": [
           "性别歧视"
@@ -639,7 +618,7 @@
       "id": "D12",
       "category": "歧视-低危",
       "input": "面试官顺口说'女生做这行挺辛苦的'。",
-      "expected": {
+      "agent_result": {
         "risk_level": "低危",
         "type": [
           "性别歧视"
@@ -655,7 +634,7 @@
       "id": "D13",
       "category": "歧视-低危",
       "input": "团建AA时领导说'女生少出一点吧'。",
-      "expected": {
+      "agent_result": {
         "risk_level": "低危",
         "type": [
           "性别歧视"
@@ -671,8 +650,8 @@
       "id": "D17",
       "category": "歧视-低危",
       "input": "面试官好奇地问'你老公做什么的'，没再追问。",
-      "expected": {
-        "risk_level": "低危",
+      "agent_result": {
+        "risk_level": "中危",
         "type": [
           "性别歧视"
         ]
@@ -687,8 +666,8 @@
       "id": "D18",
       "category": "歧视-低危",
       "input": "团队聚餐时领导随口说'女生还是回家相夫教子最幸福'。",
-      "expected": {
-        "risk_level": "低危",
+      "agent_result": {
+        "risk_level": "中危",
         "type": [
           "性别歧视"
         ]
@@ -703,8 +682,8 @@
       "id": "N1",
       "category": "无关-无风险",
       "input": "今天午饭吃什么？",
-      "expected": {
-        "risk_level": "无风险",
+      "agent_result": {
+        "risk_level": "无关",
         "type": [
           "暂不明确"
         ]
@@ -719,8 +698,8 @@
       "id": "N2",
       "category": "无关-无风险",
       "input": "老板拖欠加班费已经三个月。",
-      "expected": {
-        "risk_level": "无风险",
+      "agent_result": {
+        "risk_level": "无关",
         "type": [
           "暂不明确"
         ]
@@ -735,8 +714,8 @@
       "id": "N3",
       "category": "无关-无风险",
       "input": "同事抢了我的项目功劳。",
-      "expected": {
-        "risk_level": "无风险",
+      "agent_result": {
+        "risk_level": "无关",
         "type": [
           "暂不明确"
         ]
@@ -751,8 +730,8 @@
       "id": "N4",
       "category": "无关-无风险",
       "input": "请问今天天气如何？",
-      "expected": {
-        "risk_level": "无风险",
+      "agent_result": {
+        "risk_level": "无关",
         "type": [
           "暂不明确"
         ]
@@ -767,8 +746,8 @@
       "id": "N5",
       "category": "无关-无风险",
       "input": "公司年终奖发得很少。",
-      "expected": {
-        "risk_level": "无风险",
+      "agent_result": {
+        "risk_level": "无关",
         "type": [
           "暂不明确"
         ]
@@ -783,8 +762,8 @@
       "id": "N6",
       "category": "无关-无风险",
       "input": "下周要去客户那边培训，怎么安排路线最快？",
-      "expected": {
-        "risk_level": "无风险",
+      "agent_result": {
+        "risk_level": "无关",
         "type": [
           "暂不明确"
         ]
@@ -799,8 +778,8 @@
       "id": "N7",
       "category": "无关-无风险",
       "input": "想问下公司年假政策具体是怎样的？",
-      "expected": {
-        "risk_level": "无风险",
+      "agent_result": {
+        "risk_level": "无关",
         "type": [
           "暂不明确"
         ]
@@ -815,8 +794,8 @@
       "id": "N8",
       "category": "无关-无风险",
       "input": "今天电脑突然死机，工作没保存怎么办？",
-      "expected": {
-        "risk_level": "无风险",
+      "agent_result": {
+        "risk_level": "无关",
         "type": [
           "暂不明确"
         ]
@@ -833,8 +812,8 @@
       "variant_of": "H1",
       "variant_type": "paraphrase",
       "input": "新来的副总说'你陪我多喝两杯，给你升职没问题'，我拒绝后他还非要送我回家。",
-      "expected": {
-        "risk_level": "高危",
+      "agent_result": {
+        "risk_level": "低危",
         "type": [
           "性骚扰"
         ]
@@ -847,7 +826,7 @@
       "variant_of": "H2",
       "variant_type": "paraphrase",
       "input": "项目出差时主管硬闯我的房间，我推他出去后他用力拍门骂我'装清纯'。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性骚扰"
@@ -861,7 +840,7 @@
       "variant_of": "H5",
       "variant_type": "paraphrase",
       "input": "研发总监跟我说'今晚开个房一起把方案改完吧'，我拒绝之后他就开始在工作上故意刁难我。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性骚扰"
@@ -875,7 +854,7 @@
       "variant_of": "H_real_1",
       "variant_type": "paraphrase",
       "input": "面谈结束后老板让我送他去宾馆，说'再聊聊项目'，进了房间就抱住我并恐吓'你要敢说出去，整个圈子都容不下你'。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性骚扰"
@@ -889,7 +868,7 @@
       "variant_of": "H10",
       "variant_type": "paraphrase",
       "input": "面试官评论说'你条件不错呀，怎么这么大了还没结婚？'。",
-      "expected": {
+      "agent_result": {
         "risk_level": "中危",
         "type": [
           "性骚扰",
@@ -904,8 +883,8 @@
       "variant_of": "H6",
       "variant_type": "paraphrase",
       "input": "新来的男上司每周都要单独约我喝咖啡聊'职业规划'，我去过两三次心里始终觉得不对劲。",
-      "expected": {
-        "risk_level": "中危",
+      "agent_result": {
+        "risk_level": "低危",
         "type": [
           "性骚扰"
         ]
@@ -918,7 +897,7 @@
       "variant_of": "D1",
       "variant_type": "paraphrase",
       "input": "公司招聘海报上写着'只招男性'。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
@@ -932,7 +911,7 @@
       "variant_of": "D2",
       "variant_type": "paraphrase",
       "input": "我怀孕快 6 个月了，公司说要给我换岗，工资直接砍了 40%。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
@@ -946,7 +925,7 @@
       "variant_of": "D5",
       "variant_type": "paraphrase",
       "input": "公司有个内部规定，女员工要怀孕得提前半年向部门负责人申请，并经过批准。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
@@ -960,7 +939,7 @@
       "variant_of": "D_real_1",
       "variant_type": "paraphrase",
       "input": "入职流程里要做 HCG 检测，结果我已经怀孕，公司当天就以'岗位调整'撤回我的录用通知，但同样的岗位在招聘网站上还在挂着。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
@@ -974,7 +953,7 @@
       "variant_of": "D6",
       "variant_type": "paraphrase",
       "input": "面试官当面问我'近一两年有没有要小孩的打算？'",
-      "expected": {
+      "agent_result": {
         "risk_level": "中危",
         "type": [
           "性别歧视"
@@ -988,14 +967,11 @@
       "variant_of": "D8",
       "variant_type": "paraphrase",
       "input": "和我同职级的男同事工资比我高 2000，HR 解释说'男生要养家'。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
-        ],
-        "_previous_level": "中危",
-        "_adjusted_at": "2026-06-01",
-        "_adjusted_reason": "要件级标注 + compute_risk_level 计算结果"
+        ]
       },
       "notes": "D8 同义改写：'同岗同级'→'同职级'，'养家糊口'→'养家'"
     },
@@ -1005,8 +981,8 @@
       "variant_of": "N1",
       "variant_type": "paraphrase",
       "input": "晚上点什么外卖比较好？",
-      "expected": {
-        "risk_level": "无风险",
+      "agent_result": {
+        "risk_level": "无关",
         "type": [
           "暂不明确"
         ]
@@ -1019,8 +995,8 @@
       "variant_of": "N2",
       "variant_type": "paraphrase",
       "input": "老板已经三个月没给我们交社保了。",
-      "expected": {
-        "risk_level": "无风险",
+      "agent_result": {
+        "risk_level": "无关",
         "type": [
           "暂不明确"
         ]
@@ -1033,7 +1009,7 @@
       "variant_of": "H_real_2",
       "variant_type": "paraphrase",
       "input": "公司一个一线主管，趁仓库没有监控，强行搂腰亲吻我，隔天还想再来，我激烈反抗后第一时间报了警。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性骚扰"
@@ -1047,7 +1023,7 @@
       "variant_of": "H3",
       "variant_type": "perturb",
       "input": "合作方代表在团建饭局上多次摸我的腰，公司却让我'多体谅合作方需求'。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性骚扰"
@@ -1061,7 +1037,7 @@
       "variant_of": "H4",
       "variant_type": "perturb",
       "input": "部门经理连续两个月每天给我发暧昧短信，我明确拒绝后他威胁'我让你年底考核不过'。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性骚扰"
@@ -1075,8 +1051,8 @@
       "variant_of": "H8",
       "variant_type": "perturb",
       "input": "主管在我们组的部门群里转发我朋友圈的旅游照说'看我们部门的颜值担当'。",
-      "expected": {
-        "risk_level": "中危",
+      "agent_result": {
+        "risk_level": "低危",
         "type": [
           "性骚扰"
         ]
@@ -1089,7 +1065,7 @@
       "variant_of": "D3",
       "variant_type": "perturb",
       "input": "公司规定女员工入职须签'五年内不生育'承诺。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
@@ -1103,7 +1079,7 @@
       "variant_of": "D4",
       "variant_type": "perturb",
       "input": "孕期被以'年度考核不达标'解除合同，但我连续三年都拿到了'年度优秀员工'。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
@@ -1117,8 +1093,8 @@
       "variant_of": "D7",
       "variant_type": "perturb",
       "input": "面试官问'如果以后要经常出差，你家里能支持吗？'。",
-      "expected": {
-        "risk_level": "中危",
+      "agent_result": {
+        "risk_level": "低危",
         "type": [
           "性别歧视"
         ]
@@ -1131,14 +1107,11 @@
       "variant_of": "D9",
       "variant_type": "perturb",
       "input": "我和男同事同时申请升 Manager，公司给了他，HR 说'他还要养孩子，更需要'。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
-        ],
-        "_previous_level": "中危",
-        "_adjusted_at": "2026-06-01",
-        "_adjusted_reason": "要件级标注 + compute_risk_level 计算结果"
+        ]
       },
       "notes": "D9 细节扰动：'晋升'→'升Manager'，'家里有压力'→'要养孩子'"
     },
@@ -1148,14 +1121,11 @@
       "variant_of": "D10",
       "variant_type": "perturb",
       "input": "公司把所有外勤任务都派给男同事，理由是'女生跑外面不安全'。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
-        ],
-        "_previous_level": "中危",
-        "_adjusted_at": "2026-06-01",
-        "_adjusted_reason": "要件级标注 + compute_risk_level 计算结果"
+        ]
       },
       "notes": "D10 细节扰动：'出差'→'外勤'，'身体吃不消'→'不安全'"
     },
@@ -1165,7 +1135,7 @@
       "variant_of": "D11",
       "variant_type": "perturb",
       "input": "过去两年我们组的女员工平均晋升周期比男员工长一年多。",
-      "expected": {
+      "agent_result": {
         "risk_level": "低危",
         "type": [
           "性别歧视"
@@ -1179,7 +1149,7 @@
       "variant_of": "D12",
       "variant_type": "perturb",
       "input": "面试官随口说一句'你们女生做这个岗位挺累的'。",
-      "expected": {
+      "agent_result": {
         "risk_level": "低危",
         "type": [
           "性别歧视"
@@ -1193,8 +1163,8 @@
       "variant_of": "N3",
       "variant_type": "perturb",
       "input": "同事偷偷改我提交的代码然后说是他写的。",
-      "expected": {
-        "risk_level": "无风险",
+      "agent_result": {
+        "risk_level": "无关",
         "type": [
           "暂不明确"
         ]
@@ -1207,8 +1177,8 @@
       "variant_of": "N5",
       "variant_type": "perturb",
       "input": "项目奖金分配很不公平，但跟性别没关系，纯粹是上面拍脑袋。",
-      "expected": {
-        "risk_level": "无风险",
+      "agent_result": {
+        "risk_level": "无关",
         "type": [
           "暂不明确"
         ]
@@ -1221,7 +1191,7 @@
       "variant_of": "H5",
       "variant_type": "distract",
       "input": "技术总监对我说'今晚一起开房加班吧'，顺便他还问我们家猫几岁了。我拒绝后他就开始挑我工作毛病。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性骚扰"
@@ -1235,7 +1205,7 @@
       "variant_of": "H9",
       "variant_type": "distract",
       "input": "同事在工作群里发涉性表情包并艾特女同事们，他最近还买了辆新车每天在群里晒。",
-      "expected": {
+      "agent_result": {
         "risk_level": "中危",
         "type": [
           "性骚扰"
@@ -1249,8 +1219,8 @@
       "variant_of": "H11",
       "variant_type": "distract",
       "input": "同事酒后开了一个荤段子，全桌人都笑了，我没怎么反应。聚餐结束后我们 AA 了每人 80 块。",
-      "expected": {
-        "risk_level": "低危",
+      "agent_result": {
+        "risk_level": "中危",
         "type": [
           "性骚扰"
         ]
@@ -1263,7 +1233,7 @@
       "variant_of": "D4",
       "variant_type": "distract",
       "input": "孕期被以'业绩不佳'辞退，但我连续两季度KPI都是A。HR 顺口跟我说下个月公司要搬新办公室。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
@@ -1277,7 +1247,7 @@
       "variant_of": "D6",
       "variant_type": "distract",
       "input": "面试时 HR 问我'打算什么时候生孩子'，中间她还接了一个外卖电话。",
-      "expected": {
+      "agent_result": {
         "risk_level": "中危",
         "type": [
           "性别歧视"
@@ -1291,14 +1261,11 @@
       "variant_of": "D8",
       "variant_type": "distract",
       "input": "同岗同级的男同事比我多2000工资，HR 说'男生要养家糊口'，还顺嘴吐槽食堂菜难吃。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
-        ],
-        "_previous_level": "中危",
-        "_adjusted_at": "2026-06-01",
-        "_adjusted_reason": "要件级标注 + compute_risk_level 计算结果"
+        ]
       },
       "notes": "D8 加无关干扰句'食堂菜难吃'"
     },
@@ -1308,8 +1275,8 @@
       "variant_of": "D13",
       "variant_type": "distract",
       "input": "团建 AA 时领导说'女生少出一点吧'，他自己点了一桌酒不让别人喝。",
-      "expected": {
-        "risk_level": "低危",
+      "agent_result": {
+        "risk_level": "中危",
         "type": [
           "性别歧视"
         ]
@@ -1322,7 +1289,7 @@
       "variant_of": "N1",
       "variant_type": "distract",
       "input": "今天午饭吃什么？对了，我们组刚来了一个女生。",
-      "expected": {
+      "agent_result": {
         "risk_level": "无风险",
         "type": [
           "暂不明确"
@@ -1336,7 +1303,7 @@
       "variant_of": "N4",
       "variant_type": "distract",
       "input": "今天天气如何？等下我要去面试一家公司，听说他们之前招聘'仅限男性'被告过。",
-      "expected": {
+      "agent_result": {
         "risk_level": "无风险",
         "type": [
           "暂不明确"
@@ -1350,8 +1317,8 @@
       "variant_of": "H7",
       "variant_type": "distract",
       "input": "面试时面试官盯着我看了很久，又问我体重和身高。会议室的空调那天还坏了。",
-      "expected": {
-        "risk_level": "中危",
+      "agent_result": {
+        "risk_level": "低危",
         "type": [
           "性骚扰"
         ]
@@ -1364,7 +1331,7 @@
       "variant_of": "H_real_1",
       "variant_type": "boundary",
       "input": "面试结束后老板邀我去他常住的酒店谈一下后续合作的几个细节，我当时同意了一起过去。",
-      "expected": {
+      "agent_result": {
         "risk_level": "低危",
         "type": [
           "性骚扰"
@@ -1378,7 +1345,7 @@
       "variant_of": "H1",
       "variant_type": "boundary",
       "input": "新来的副总监说'你陪我喝几杯，加薪不是问题'，被我拒绝后他直接锁了车门不让我下车，还威胁'你今天不答应就别想升职'。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性骚扰"
@@ -1392,7 +1359,7 @@
       "variant_of": "D2",
       "variant_type": "boundary",
       "input": "怀孕5个月后公司把我从研发岗调到了客户服务岗，工资和岗位级别都保持不变。",
-      "expected": {
+      "agent_result": {
         "risk_level": "中危",
         "type": [
           "性别歧视"
@@ -1406,7 +1373,7 @@
       "variant_of": "D8",
       "variant_type": "boundary",
       "input": "公司在内部薪酬调整中，把所有女员工的工资普遍下调 20%，HR 明确说'男员工不调整'，并写进了通知文件。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
@@ -1420,8 +1387,8 @@
       "variant_of": "H6",
       "variant_type": "boundary",
       "input": "男领导明确告诉我'如果不每周和我一起吃饭聊天，年底奖金别想拿满'。",
-      "expected": {
-        "risk_level": "高危",
+      "agent_result": {
+        "risk_level": "低危",
         "type": [
           "性骚扰"
         ]
@@ -1434,8 +1401,8 @@
       "variant_of": "D9",
       "variant_type": "boundary",
       "input": "我和男同事同时申请晋升，他业绩比我高 30%、客户满意度也明显领先，最后晋升给了他。",
-      "expected": {
-        "risk_level": "无风险",
+      "agent_result": {
+        "risk_level": "无关",
         "type": [
           "暂不明确"
         ]
@@ -1448,8 +1415,8 @@
       "variant_of": "H10",
       "variant_type": "boundary",
       "input": "面试官说'你看起来很优秀，什么时候考虑成家也都很自然吧'。",
-      "expected": {
-        "risk_level": "低危",
+      "agent_result": {
+        "risk_level": "中危",
         "type": [
           "性别歧视"
         ]
@@ -1462,7 +1429,7 @@
       "variant_of": "D12",
       "variant_type": "boundary",
       "input": "面试官在我面试结束时明确说'我们这岗位不要女的，刚才面试只是走个流程，不会录用你'。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
@@ -1476,7 +1443,7 @@
       "variant_of": "D_real_2",
       "variant_type": "verbose",
       "input": "我在公司干了快五年了，孩子刚满八个月还在哺乳。今年公司效益不太好，最近一个月部门一直在传裁员的事。前几天 HR 突然找到我，说我'连续三天旷工，已经严重违反公司规章制度'要把我开除。可是我每天都按之前的安排上班，要么在公司行政楼、要么在哺乳室,从没缺勤过一天。我让 HR 拿出旷工的具体记录，比如门禁、考勤截图，他支吾了半天也没给我看到任何证据。我心里很清楚，公司就是想趁哺乳期把我赶走，省下后面的产假工资和经济补偿。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
@@ -1490,7 +1457,7 @@
       "variant_of": "H_real_1",
       "variant_type": "verbose",
       "input": "我应聘的是一家创业公司的市场岗，面试聊得很顺，面完老板说想和我多沟通几句、问我能不能帮他拎一下行李送到他酒店。我当时觉得礼貌上不好拒绝就一起过去了。到了房间，他锁上门、抱住我，说'你要是不识时务、敢把今天的事说出去，我在这个圈子认识的人多得是，你以后在这一行就别想混了'。我当时整个人都僵住了，过了几秒才反应过来挣脱跑出门。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性骚扰"
@@ -1504,7 +1471,7 @@
       "variant_of": "D2",
       "variant_type": "verbose",
       "input": "我在这家公司做产品经理三年了，今年年初晋升 P7。怀孕到 5 个月去做产检，请了半天假回来，HR 把我叫到会议室，说'根据公司年度业务调整，决定把你调到客户服务部门做客服主管'。我问为什么是我，毕竟我手上还有两个项目要交付，HR 只说'公司决定，你不接受可以自己离职'。新岗位的薪资基础工资砍了 40%，绩效系数也整体下降。我没签调岗同意书，但工作邮件还是被自动迁到了客服组。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
@@ -1518,7 +1485,7 @@
       "variant_of": "H4",
       "variant_type": "verbose",
       "input": "我们部门的总监大概从我入职第二个月开始，每天晚上 11 点左右都会给我发微信，一开始是问工作，后来内容越来越暧昧，比如'你今天的裙子真好看''下次出差想跟你住一个房间'之类的。我一开始没敢明说，只是装睡。我在第三个月明确告诉他'请不要再发这种内容了'，他当时说'好的不好意思'，可是一周之后又开始发，并且开始在工作上故意为难我，说'你不配合我，我让你年底考评不通过'。我已经存了近百条聊天记录截图。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性骚扰"
@@ -1532,7 +1499,7 @@
       "variant_of": "D_real_3",
       "variant_type": "verbose",
       "input": "我入职这家电子公司刚满 6 个月，岗位是前台。十月初我去医院检查发现自己怀孕了，因为身体不舒服请了半天假，主管知道之后表情就有点奇怪。第二天上午，HR 直接把我叫到办公室，递给我一份《解聘通知书》，说'考虑到公司目前经营情况不太理想，决定提前解除你的劳动合同'。我问能不能给我具体的解雇理由，对方避而不答。退了他们提的经济补偿之后我去申请了劳动仲裁。",
-      "expected": {
+      "agent_result": {
         "risk_level": "高危",
         "type": [
           "性别歧视"
@@ -1540,10 +1507,5 @@
       },
       "notes": "D_real_3 长文本扩展：加入岗位、孕检过程、HR 反应细节"
     }
-  ],
-  "annotation_pass": {
-    "date": "2026-06-01",
-    "changed_count": 11,
-    "rule_source": "eval/validate-annotation.js"
-  }
+  ]
 }
