@@ -4,7 +4,7 @@
 # 用法:bash eval/health-check.sh
 
 set -e
-URL='https://her-shield-d7gyrtfxm65f3e782-1410225134.ap-shanghai.app.tcloudbase.com/proxy'
+URL="${PROXY_URL:-https://her-shield-d8g3dpm9ucee2058f-1410225134.ap-shanghai.app.tcloudbase.com/proxy}"
 TYPES=(radar consultation selfcheck evidence guide harbor)
 
 failed=0

@@ -2,7 +2,7 @@
 # proxy-timeout-probe.sh —— 验证代理 120s 超时是否够用
 # 用 5 条详细的真实输入(每条加随机后缀绕过缓存)走深度链路,记录耗时和成功率
 
-URL='https://her-shield-d7gyrtfxm65f3e782-1410225134.ap-shanghai.app.tcloudbase.com/proxy'
+URL="${PROXY_URL:-https://her-shield-d8g3dpm9ucee2058f-1410225134.ap-shanghai.app.tcloudbase.com/proxy}"
 TS=$(date +%s)
 
 INPUTS=(

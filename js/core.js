@@ -56,6 +56,10 @@ const YUANQI_CONFIG = {
     }
 };
 
+const CLOUD_BASE_URL = (window.HER_SHIELD_CONFIG && window.HER_SHIELD_CONFIG.CLOUDBASE_BASE_URL)
+    ? window.HER_SHIELD_CONFIG.CLOUDBASE_BASE_URL.replace(/\/$/, '')
+    : '';
+
 // 全局变量
 let conversations = [];
 let sessionId = generateSessionId();
@@ -161,7 +165,7 @@ async function callYuanqiAPI(agentType, userMessage, useStream = false, extras =
         }
 
         const response = await fetch(
-            'https://her-shield-d7gyrtfxm65f3e782-1410225134.ap-shanghai.app.tcloudbase.com/proxy',
+            `${CLOUD_BASE_URL}/proxy`,
             {
                 method: 'POST',
                 headers: {

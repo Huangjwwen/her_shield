@@ -147,7 +147,10 @@ let currentUtterance = null;
 let currentAudio = null; // 云端 TTS 播放的 Audio 实例
 
 // 云端 TTS 代理地址
-const TTS_PROXY_URL = 'https://her-shield-d7gyrtfxm65f3e782-1410225134.ap-shanghai.app.tcloudbase.com/proxy/tts';
+const HARBOR_CLOUD_BASE_URL = (window.HER_SHIELD_CONFIG && window.HER_SHIELD_CONFIG.CLOUDBASE_BASE_URL)
+    ? window.HER_SHIELD_CONFIG.CLOUDBASE_BASE_URL.replace(/\/$/, '')
+    : '';
+const TTS_PROXY_URL = `${HARBOR_CLOUD_BASE_URL}/proxy/tts`;
 
 /**
  * 切换语音引导播放/停止（输入区域旁的呼吸引导按钮）
@@ -834,4 +837,3 @@ function speakGuideHistory(text, btnElement) {
         }
     });
 }
-

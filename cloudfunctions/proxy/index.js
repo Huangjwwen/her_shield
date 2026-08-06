@@ -1,16 +1,191 @@
 /**
  * CloudBase proxy 云函数
- * 
+ *
  * 路由：
- *   /proxy              — 默认转发，保持向后兼容
+ *   /proxy              — 转发到腾讯元器智能体
  *   /proxy/tts          — Azure TTS 语音合成（将文本转为 MP3 音频流）
- * 
+ *
  * 环境变量（需在 CloudBase 控制台配置）：
+ *   KEY_CONSULTATION    — 元器 consultation 智能体 appkey
+ *   KEY_RADAR           — 元器 radar 智能体 appkey
+ *   KEY_SELFCHECK       — 元器 selfcheck 智能体 appkey
+ *   KEY_EVIDENCE        — 元器 evidence 智能体 appkey
+ *   KEY_GUIDE           — 元器 guide 智能体 appkey
+ *   KEY_HARBOR          — 元器 harbor 智能体 appkey
  *   AZURE_TTS_KEY       — 微软 Azure 语音服务密钥
  *   AZURE_TTS_REGION    — 微软 Azure 区域（如 eastasia）
  */
 
 const https = require('https');
+const crypto = require('crypto');
+
+const YUANQI_HOST = 'yuanqi.tencent.com';
+const YUANQI_PATH = '/openapi/v1/agent/chat/completions';
+const CACHE_TTL_MS = 30 * 60 * 1000;
+const CACHE_MAX_SIZE = 1000;
+const responseCache = new Map();
+
+const APPID_MAP = {
+    consultation: '2037893130997763264',
+    radar: '2037893130997763264',
+    selfcheck: '2041405236168255296',
+    evidence: '2041711833478227776',
+    guide: '2041721348920706112',
+    harbor: '2043227755042047040'
+};
+
+function keyMap() {
+    return {
+        consultation: process.env.KEY_CONSULTATION,
+        radar: process.env.KEY_RADAR,
+        selfcheck: process.env.KEY_SELFCHECK,
+        evidence: process.env.KEY_EVIDENCE,
+        guide: process.env.KEY_GUIDE,
+        harbor: process.env.KEY_HARBOR
+    };
+}
+
+function jsonResponse(statusCode, payload) {
+    return {
+        statusCode,
+        headers: {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+            'Access-Control-Allow-Methods': 'GET,POST,OPTIONS'
+        },
+        body: JSON.stringify(payload)
+    };
+}
+
+function parseBody(event) {
+    if (!event || event.body == null) return {};
+    if (typeof event.body === 'object') return event.body;
+    const text = event.isBase64Encoded
+        ? Buffer.from(event.body, 'base64').toString('utf8')
+        : String(event.body);
+    return text ? JSON.parse(text) : {};
+}
+
+function computeCacheKey(agentType, messages, extras) {
+    const stable = JSON.stringify({ agentType, messages, extras });
+    return crypto.createHash('sha256').update(stable).digest('hex');
+}
+
+function getCached(cacheKey) {
+    const hit = responseCache.get(cacheKey);
+    if (!hit) return null;
+    if (Date.now() > hit.expiry) {
+        responseCache.delete(cacheKey);
+        return null;
+    }
+    return hit.value;
+}
+
+function setCached(cacheKey, value) {
+    if (responseCache.size >= CACHE_MAX_SIZE) {
+        const oldest = responseCache.keys().next().value;
+        responseCache.delete(oldest);
+    }
+    responseCache.set(cacheKey, {
+        expiry: Date.now() + CACHE_TTL_MS,
+        value
+    });
+}
+
+function shouldCache(result) {
+    const data = result && result.data ? result.data : result;
+    if (!data || data.error) return false;
+    const choice = data.choices && data.choices[0];
+    if (choice && ['length', 'content_filter'].includes(choice.finish_reason)) return false;
+    return Boolean(data.choices || data.content || data.response || data.answer || data.text);
+}
+
+function postJsonToYuanqi(appkey, body) {
+    const payload = JSON.stringify(body);
+    const options = {
+        hostname: YUANQI_HOST,
+        path: YUANQI_PATH,
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${appkey}`,
+            'Content-Type': 'application/json',
+            'Content-Length': Buffer.byteLength(payload)
+        },
+        timeout: 65000
+    };
+
+    return new Promise((resolve, reject) => {
+        const req = https.request(options, (res) => {
+            const chunks = [];
+            res.on('data', (chunk) => chunks.push(chunk));
+            res.on('end', () => {
+                const text = Buffer.concat(chunks).toString('utf8');
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch (err) {
+                    reject(new Error(`元器响应非 JSON: ${text.slice(0, 200)}`));
+                    return;
+                }
+                if (res.statusCode < 200 || res.statusCode >= 300) {
+                    reject(new Error(`元器 HTTP ${res.statusCode}: ${text.slice(0, 200)}`));
+                    return;
+                }
+                resolve(data);
+            });
+        });
+
+        req.on('timeout', () => {
+            req.destroy(new Error('元器请求超时'));
+        });
+        req.on('error', reject);
+        req.write(payload);
+        req.end();
+    });
+}
+
+async function handleYuanqiProxy(event) {
+    const body = parseBody(event);
+    const { agentType, messages, nocache, user_id, stream, ...extras } = body;
+    const appid = APPID_MAP[agentType];
+    const appkey = keyMap()[agentType];
+
+    if (!appid || !appkey) {
+        return jsonResponse(400, {
+            success: false,
+            error: '未知 agentType 或对应 KEY 未配置',
+            agentType
+        });
+    }
+
+    if (!Array.isArray(messages) || messages.length === 0) {
+        return jsonResponse(400, { success: false, error: 'messages 不能为空' });
+    }
+
+    const requestBody = {
+        assistant_id: appid,
+        user_id: user_id || `cloudbase-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        stream: Boolean(stream),
+        messages,
+        ...extras
+    };
+
+    const cacheKey = computeCacheKey(agentType, messages, extras);
+    if (!nocache && !requestBody.stream) {
+        const cached = getCached(cacheKey);
+        if (cached) return jsonResponse(200, { ...cached, fromCache: true });
+    }
+
+    const data = await postJsonToYuanqi(appkey, requestBody);
+    const result = { success: true, data };
+
+    if (!nocache && !requestBody.stream && shouldCache(result)) {
+        setCached(cacheKey, result);
+    }
+
+    return jsonResponse(200, result);
+}
 
 // ==================== Azure TTS 配置 ====================
 
@@ -84,6 +259,10 @@ function synthesizeSpeech(text) {
 exports.main = async (event, context) => {
     const { httpMethod, path, queryStringParameters } = event;
 
+    if (httpMethod === 'OPTIONS') {
+        return jsonResponse(204, {});
+    }
+
     // 路由：/proxy/tts
     if (path && path.endsWith('/tts')) {
         const text = (queryStringParameters && queryStringParameters.text) || '';
@@ -120,10 +299,10 @@ exports.main = async (event, context) => {
         }
     }
 
-    // 默认路由：原 proxy 转发逻辑（如有）
-    return {
-        statusCode: 200,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: 'HerShield Proxy OK' })
-    };
+    try {
+        return await handleYuanqiProxy(event);
+    } catch (err) {
+        console.error('proxy 转发失败:', err);
+        return jsonResponse(502, { success: false, error: err.message || 'proxy 转发失败' });
+    }
 };

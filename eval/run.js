@@ -15,7 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const DEFAULT_PROXY = 'https://her-shield-d7gyrtfxm65f3e782-1410225134.ap-shanghai.app.tcloudbase.com/proxy';
+const DEFAULT_PROXY = process.env.PROXY_URL || 'https://her-shield-d8g3dpm9ucee2058f-1410225134.ap-shanghai.app.tcloudbase.com/proxy';
 const YUANQI_DIRECT = 'https://yuanqi.tencent.com/openapi/v1/agent/chat/completions';
 const RADAR_APPID = '2037893130997763264';
 
