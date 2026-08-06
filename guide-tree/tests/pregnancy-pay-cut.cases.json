@@ -1,0 +1,26 @@
+{
+  "treeId": "pregnancy_pay_cut",
+  "treeVersion": "1.3.0-draft",
+  "cases": [
+    { "id": "P-01", "expectedTerminal": "PA", "answers": { "P1": "pregnancy_pay_cut", "P2": "employed", "P3": "written", "P4": "within_one_year", "P5": "pregnancy", "P6": "salary_reduced", "P7": "salary_benefit_reduced", "P8": "unsigned", "P9": ["payroll"], "P10": "none" } },
+    { "id": "P-02", "expectedTerminal": "PA", "answers": { "P1": "pregnancy_pay_cut", "P2": "employed", "P3": "oral", "P4": "within_one_year", "P5": "lactation", "P6": "transfer_only", "P7": "worse_conditions", "P8": "unsigned", "P9": ["chat_email"], "P10": "oral_communication" } },
+    { "id": "P-03", "expectedTerminal": "PE", "answers": { "P1": "pregnancy_pay_cut", "P2": "employed", "P3": "implied", "P3A": "action_hinted", "P4": "not_started" } },
+    { "id": "P-04", "expectedTerminal": "PE", "answers": { "P1": "pregnancy_pay_cut", "P2": "employed", "P3": "implied", "P3A": "attitude_only" } },
+    { "id": "P-05", "expectedTerminal": "PB", "answers": { "P1": "pregnancy_pay_cut", "P2": "employed", "P3": "written", "P4": "within_one_year", "P5": "pregnancy", "P6": "transfer_only", "P7": "no_obvious_change", "P8": "signed_under_pressure", "P9": ["chat_email"], "P10": "none" } },
+    { "id": "P-06", "expectedTerminal": "PF", "answers": { "P1": "pregnancy_pay_cut", "P2": "relation_uncertain", "P4": "within_one_year", "P5": "pregnancy", "P6": "exit_requested", "P8": "voluntary_resignation_submitted", "P9": ["pregnancy_record"], "P10": "none" } },
+    { "id": "P-07", "expectedTerminal": "PC", "answers": { "P1": "pregnancy_pay_cut", "P2": "employed", "P3": "written", "P4": "over_one_year", "P5": "pregnancy", "P6": "salary_reduced", "P7": "salary_benefit_reduced", "P8": "unsigned", "P9": ["chat_email"], "P10": "none" } },
+    { "id": "P-08", "expectedTerminal": "PD", "answers": { "P1": "pregnancy_pay_cut", "P2": "employed", "P3": "oral", "P4": "within_one_year", "P5": "pregnancy", "P6": "exit_requested", "P8": "unsigned", "P9": ["chat_email"], "P10": "arbitration_started" } },
+    { "id": "P-09", "expectedTerminal": "PA", "answers": { "P1": "pregnancy_pay_cut", "P2": "employed", "P3": "written", "P4": "within_one_year", "P5": "pregnancy", "P6": "transfer_only", "P7": "unsafe_work", "P8": "unsigned", "P9": ["pregnancy_record"], "P10": "none" } },
+    { "id": "P-10", "expectedTerminal": "OOS", "answers": { "P1": "pregnancy_pay_cut", "P2": "confirmed_unrelated" } },
+    { "id": "P-11", "expectedTerminal": "PB", "answers": { "P1": "pregnancy_pay_cut", "P2": "employed", "P3": "written", "P4": "within_one_year", "P5": "pregnancy", "P6": "transfer_only", "P7": "demotion_marginalization", "P8": "unsigned", "P9": ["chat_email"], "P10": "internal_written_complaint" } },
+    { "id": "P-12", "expectedTerminal": "PB", "answers": { "P1": "pregnancy_pay_cut", "P2": "employed", "P3": "oral", "P4": "within_one_year", "P5": "lactation", "P6": "both", "P7": "salary_benefit_reduced", "P8": "unsigned", "P9": ["payroll"], "P10": "external_complaint" } },
+    { "id": "P-13", "expectedTerminal": "PF", "answers": { "P1": "pregnancy_pay_cut", "P2": "relation_uncertain", "P4": "within_one_year", "P5": "uncertain", "P6": "relation_uncertain", "P9": ["pregnancy_record"], "P10": "none" } },
+    { "id": "P-14", "expectedTerminal": "PD", "answers": { "P1": "pregnancy_pay_cut", "P2": "termination_notice_related", "P4": "over_one_year", "P5": "pregnancy", "P6": "terminated", "P8": "unsigned", "P9": ["chat_email"], "P10": "arbitration_started" } },
+    { "id": "P-15", "expectedTerminal": "PE", "answers": { "P1": "pregnancy_pay_cut", "P2": "employed", "P3": "implied", "P3A": "action_hinted", "P4": "not_started" } },
+    { "id": "P-16", "expectedTerminal": "PA", "answers": { "P1": "pregnancy_pay_cut", "P2": "employed", "P3": "written", "P4": "within_one_year", "P5": "maternity_leave", "P6": "transfer_only", "P7": "no_obvious_change", "P8": "unsigned", "P9": ["contract_job_description"], "P10": "none" } },
+    { "id": "P-17", "expectedTerminal": "PA", "answers": { "P1": "pregnancy_pay_cut", "P2": "employed", "P3": "oral", "P4": "within_one_year", "P5": "uncertain", "P6": "relation_uncertain", "P9": ["none"], "P10": "oral_communication" } },
+    { "id": "P-18", "expectedTerminal": "PF", "answers": { "P1": "pregnancy_pay_cut", "P2": "left_due_to_pregnancy", "P4": "within_one_year", "P5": "pregnancy", "P6": "relation_uncertain", "P9": ["chat_email"], "P10": "internal_written_complaint" } },
+    { "id": "P-19", "expectedTerminal": "PF", "answers": { "P1": "pregnancy_pay_cut", "P2": "oral_dismissal_related", "P4": "uncertain", "P5": "uncertain", "P6": "terminated", "P8": "unsigned", "P9": ["none"], "P10": "none" } },
+    { "id": "P-20", "expectedTerminal": "PE", "answers": { "P1": "pregnancy_pay_cut", "P2": "employed", "P3": "implied", "P3A": "attitude_only" } }
+  ]
+}

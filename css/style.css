@@ -3961,3 +3961,209 @@ body {
     opacity: 1;
     pointer-events: auto;
 }
+
+/* ==================== 她行决策树 ==================== */
+.guide-tree-panel {
+    margin: 0 0 14px;
+    padding: 16px;
+    border: 1px solid #ded7eb;
+    border-left: 4px solid #5f8f72;
+    border-radius: 6px;
+    background: #fbfcf9;
+}
+
+.guide-tree-intro,
+.guide-tree-result-title,
+.guide-tree-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.guide-tree-intro strong,
+.guide-tree-result-title strong {
+    color: #2d4834;
+    font-size: 16px;
+}
+
+.guide-tree-intro p,
+.guide-tree-pending p,
+.guide-tree-document p {
+    margin: 5px 0 0;
+    color: #5a5f62;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
+.guide-tree-question h3 {
+    margin: 5px 0 14px;
+    color: #27352d;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.guide-tree-meta {
+    color: #557064;
+    font-size: 12px;
+}
+
+.guide-tree-options {
+    display: grid;
+    gap: 8px;
+}
+
+.guide-tree-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid #e0e4df;
+    border-radius: 4px;
+    color: #313937;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+.guide-tree-option:hover {
+    border-color: #89aa96;
+    background: #f4f8f4;
+}
+
+.guide-tree-option input {
+    width: 16px;
+    height: 16px;
+    margin: 2px 0 0;
+    accent-color: #5f8f72;
+    flex: 0 0 auto;
+}
+
+.guide-tree-actions {
+    justify-content: flex-end;
+    margin-top: 14px;
+}
+
+.guide-tree-result-title {
+    align-items: flex-start;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e4df;
+}
+
+.guide-tree-result-title span {
+    color: #557064;
+    font-size: 12px;
+    text-align: right;
+}
+
+.guide-tree-basis {
+    display: grid;
+    gap: 8px;
+    margin: 14px 0;
+    padding: 0;
+    list-style: none;
+}
+
+.guide-tree-basis li {
+    padding: 9px 10px;
+    border-left: 3px solid #93a9c5;
+    background: #f6f8fb;
+}
+
+.guide-tree-basis strong,
+.guide-tree-basis span {
+    display: block;
+}
+
+.guide-tree-basis strong {
+    color: #31455a;
+    font-size: 13px;
+}
+
+.guide-tree-basis span {
+    margin-top: 4px;
+    color: #59636d;
+    font-size: 12px;
+    line-height: 1.55;
+}
+
+.guide-tree-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin: 14px 0;
+}
+
+.guide-tree-fields label {
+    display: grid;
+    gap: 5px;
+    color: #45514a;
+    font-size: 12px;
+}
+
+.guide-tree-fields input {
+    min-width: 0;
+    padding: 8px 9px;
+    border: 1px solid #cfd8d1;
+    border-radius: 4px;
+    font: inherit;
+}
+
+.guide-tree-fields .btn-primary {
+    align-self: end;
+    justify-self: start;
+}
+
+.guide-tree-documents {
+    display: grid;
+    gap: 10px;
+    margin: 14px 0;
+}
+
+.guide-tree-document {
+    padding: 11px;
+    border: 1px solid #e0e4df;
+    border-radius: 4px;
+    background: #fff;
+}
+
+.guide-tree-document h4 {
+    margin: 0;
+    color: #2d4834;
+    font-size: 14px;
+}
+
+.guide-tree-document pre {
+    margin: 9px 0 0;
+    white-space: pre-wrap;
+    color: #3e4541;
+    font: 13px/1.65 inherit;
+}
+
+.guide-tree-loading,
+.guide-tree-pending,
+.guide-tree-error {
+    color: #4c5a51;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.guide-tree-error {
+    color: #9b3b3b;
+}
+
+@media (max-width: 560px) {
+    .guide-tree-intro,
+    .guide-tree-result-title {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .guide-tree-result-title span {
+        text-align: left;
+    }
+
+    .guide-tree-fields {
+        grid-template-columns: 1fr;
+    }
+}

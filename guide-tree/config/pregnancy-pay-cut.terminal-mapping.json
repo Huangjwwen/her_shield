@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "treeId": "pregnancy_pay_cut",
+  "treeVersion": "1.3.0-draft",
+  "status": "draft",
+  "terminals": {
+    "PA": {
+      "documentKeys": ["salary_objection", "evidence_catalog"],
+      "conditionalDocuments": [{ "documentKey": "restore_position_salary_request", "when": { "any": [{ "node": "P6", "value": "transfer_only" }, { "node": "P6", "value": "salary_reduced" }, { "node": "P6", "value": "both" }] } }],
+      "requiredLegalBasisKeys": ["women_rights_72"],
+      "conditionalLegalBasis": [
+        { "legalBasisKey": "female_worker_protection_5", "when": { "any": [{ "node": "P6", "value": "salary_reduced" }, { "node": "P6", "value": "both" }] } },
+        { "legalBasisKey": "women_rights_48", "when": { "any": [{ "node": "P6", "value": "salary_reduced" }, { "node": "P6", "value": "both" }, { "node": "P7", "value": "salary_benefit_reduced" }, { "node": "P7", "value": "demotion_marginalization" }] } },
+        { "legalBasisKey": "labor_contract_35", "when": { "all": [{ "any": [{ "node": "P6", "value": "transfer_only" }, { "node": "P6", "value": "both" }] }, { "field": "documentFields.contractTermsAffected", "op": "eq", "value": true }] } },
+        { "legalBasisKey": "women_rights_47", "when": { "node": "P7", "value": "unsafe_work" } },
+        { "legalBasisKey": "female_worker_protection_6", "when": { "all": [{ "node": "P7", "value": "unsafe_work" }, { "node": "P5", "value": "pregnancy" }, { "field": "documentFields.medicalProofAvailable", "op": "eq", "value": true }] } }
+      ]
+    },
+    "PB": {
+      "documentKeys": ["evidence_catalog"],
+      "conditionalDocuments": [{ "documentKey": "restore_position_salary_request", "when": { "any": [{ "node": "P6", "value": "transfer_only" }, { "node": "P6", "value": "salary_reduced" }, { "node": "P6", "value": "both" }] } }, { "documentKey": "arbitration_application_points", "when": { "all": [{ "any": [{ "node": "P6", "value": "transfer_only" }, { "node": "P6", "value": "salary_reduced" }, { "node": "P6", "value": "both" }] }, { "field": "documentFields.requestedDocumentKeys", "op": "contains", "value": "arbitration_application_points" }] } }, { "documentKey": "labor_inspection_materials", "when": { "all": [{ "node": "P10", "value": "external_complaint" }, { "field": "documentFields.requestedDocumentKeys", "op": "contains", "value": "labor_inspection_materials" }] } }],
+      "requiredLegalBasisKeys": ["women_rights_72"],
+      "conditionalLegalBasis": [
+        { "legalBasisKey": "female_worker_protection_5", "when": { "any": [{ "node": "P6", "value": "salary_reduced" }, { "node": "P6", "value": "both" }] } },
+        { "legalBasisKey": "women_rights_48", "when": { "any": [{ "node": "P6", "value": "salary_reduced" }, { "node": "P6", "value": "both" }, { "node": "P7", "value": "salary_benefit_reduced" }, { "node": "P7", "value": "demotion_marginalization" }] } },
+        { "legalBasisKey": "women_rights_74", "when": { "node": "P10", "value": "external_complaint" } },
+        { "legalBasisKey": "women_rights_83", "when": { "all": [{ "node": "P10", "value": "external_complaint" }, { "any": [{ "node": "P6", "value": "salary_reduced" }, { "node": "P6", "value": "both" }, { "node": "P7", "value": "salary_benefit_reduced" }, { "node": "P7", "value": "demotion_marginalization" }] }] } }
+      ]
+    },
+    "PC": { "documentKeys": ["legal_aid_questions", "evidence_catalog"], "requiredLegalBasisKeys": ["labor_dispute_arbitration_27", "women_rights_72"], "conditionalLegalBasis": [] },
+    "PD": { "documentKeys": ["arbitration_supplement_list", "evidence_catalog"], "requiredLegalBasisKeys": ["women_rights_72", "labor_dispute_arbitration_27"], "conditionalLegalBasis": [] },
+    "PE": { "documentKeys": ["evidence_catalog"], "requiredLegalBasisKeys": ["women_rights_72"], "conditionalLegalBasis": [{ "legalBasisKey": "female_worker_protection_5", "when": { "node": "P3A", "value": "action_hinted" } }, { "legalBasisKey": "women_rights_48", "when": { "node": "P3A", "value": "action_hinted" } }] },
+    "PF": { "documentKeys": ["evidence_catalog"], "requiredLegalBasisKeys": ["women_rights_72"], "conditionalLegalBasis": [{ "legalBasisKey": "female_worker_protection_5", "when": { "any": [{ "node": "P2", "value": "left_due_to_pregnancy" }, { "node": "P2", "value": "oral_dismissal_related" }, { "node": "P2", "value": "termination_notice_related" }, { "node": "P6", "value": "exit_requested" }, { "node": "P6", "value": "terminated" }] } }, { "legalBasisKey": "women_rights_48", "when": { "any": [{ "node": "P2", "value": "left_due_to_pregnancy" }, { "node": "P2", "value": "oral_dismissal_related" }, { "node": "P2", "value": "termination_notice_related" }, { "node": "P6", "value": "exit_requested" }, { "node": "P6", "value": "terminated" }] } }] },
+    "OOS": { "documentKeys": [], "requiredLegalBasisKeys": [], "conditionalLegalBasis": [] }
+  }
+}
