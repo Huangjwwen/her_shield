@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>项目说明书.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="%E5%A5%B9%E7%9B%BE%E9%A1%B9%E7%9B%AE%E8%AF%B4%E6%98%8E%E4%B9%A6">「她盾」项目说明书</h1>
+<h2 id="31-%E9%A1%B9%E7%9B%AE%E6%80%BB%E8%A7%88">3.1 项目总览</h2>
+<p>「她盾」是一款面向<strong>职场女性</strong>的 AI 法律陪伴工具,部署在公网,<strong>零安装、打开即用</strong>。用户在任意设备的浏览器中访问网站即可使用全部 6 大模块功能。</p>
+<h3 id="311-%E6%95%B4%E4%BD%93%E4%BD%BF%E7%94%A8%E6%B5%81%E7%A8%8B">3.1.1 整体使用流程</h3>
+<p><strong>思维导图风格 — 中心向四周辐射,模块按&quot;判断/证据/行动/支持&quot;四层着色:</strong></p>
+<pre><code class="language-mermaid"><div class="mermaid">mindmap
+  root((她盾<br/>职场女性<br/>权益守护))
+    🔍 判断层
+      她眼·言行雷达
+        🔴 高危/中危/低危/无风险 4 级
+        ⚖️ 要件式评估
+        📖 法条 + 类案
+        💬 三级话术
+        🔁 强制深度分析
+      她权·权益指南
+        🎯 8 类场景识别
+        🃏 权利卡片网格
+        💎 法律名/条款/原文蓝色高亮
+        🌸 温馨提示
+    🧾 证据层
+      她证·证据保全
+        🔐 SHA-256 浏览器端指纹
+        📄 存证凭证(可下载)
+        ☑️ 取证 checklist + 进度条
+        📚 6 大典型场景规则库
+    🧭 行动层
+      她行·维权导航
+        📏 竖直时间轴 6 步
+        📞 热线胶囊(12333/8/48/88)
+        ⏰ 时效字眼橙色高亮
+        📦 时效尾段独立卡片
+    💬 支持层
+      她心·情绪树洞
+        🚨 危机干预强制弹窗
+        🧠 CBT 轻度支持
+        🔊 云端TTS语音引导 + 降级兜底
+      她声·共鸣回响
+        🎭 三类敏感信息脱敏
+        🏷️ 主题标签筛选
+        📁 CloudBase 持久化
+        📚 真实判例改编
+</div></code></pre>
+<p><strong>完整用户旅程(从打开到完成):</strong></p>
+<pre><code class="language-mermaid"><div class="mermaid">flowchart LR
+    Start([🌐 打开网站]) --> Home[落地页·全功能导览]
+    Home --> Pick{选择当前需求}
+
+    Pick --> Judge[判断层]
+    Pick --> Evidence[证据层]
+    Pick --> Action[行动层]
+    Pick --> Support[支持层]
+
+    Judge -.导流.-> Evidence
+    Judge -.导流.-> Action
+    Evidence -.导流.-> Action
+    Support -.导流.-> Support
+
+    Judge --> Output[结构化输出]
+    Evidence --> Output
+    Action --> Output
+    Support --> Output
+
+    Output --> Done([🔒 关闭浏览器<br/>数据本地清除])
+</div></code></pre>
+<h3 id="312-%E5%85%B3%E9%94%AE%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99">3.1.2 关键设计原则</h3>
+<table>
+<thead>
+<tr>
+<th>原则</th>
+<th>实现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>零安装</strong></td>
+<td>纯 Web 应用,GitHub Pages 直接托管</td>
+</tr>
+<tr>
+<td><strong>隐私优先</strong></td>
+<td>用户输入不存储到服务器(除「她声」匿名故事自愿提交),证据指纹在浏览器内计算</td>
+</tr>
+<tr>
+<td><strong>召回优先</strong></td>
+<td>「言行雷达」门控宽松,拿不准就判涉及,绝不漏判;配套反误判按钮</td>
+</tr>
+<tr>
+<td><strong>结构化输出</strong></td>
+<td>所有判定结果为 JSON,法条 + 案号 + 法院 + 日期均可追溯</td>
+</tr>
+<tr>
+<td><strong>风险等级稳定</strong></td>
+<td>同样事实永远同样等级(代码节点确定性映射)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="32-%E5%90%84%E6%A8%A1%E5%9D%97%E8%AF%A6%E7%BB%86%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E">3.2 各模块详细使用说明</h2>
+<h3 id="321-%E5%A5%B9%E7%9C%BC%E8%A8%80%E8%A1%8C%E9%9B%B7%E8%BE%BE--%E8%AF%86%E5%88%AB%E8%81%8C%E5%9C%BA%E4%B8%8D%E5%BD%93%E8%A8%80%E8%A1%8C">3.2.1 她眼·言行雷达 — 识别职场不当言行</h3>
+<p><strong>入口:</strong> 主导航 → 「她眼·言行雷达」</p>
+<p><strong>使用步骤:</strong></p>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>操作</th>
+<th>反馈</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>在输入框描述发生的事(如:&quot;怀孕被降薪&quot;)</td>
+<td>输入框自动展开,可上传图片(聊天记录截图等)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>点击「<strong>🔍 识别</strong>」按钮</td>
+<td>显示「分析中...」loading,约 30-60 秒</td>
+</tr>
+<tr>
+<td>3</td>
+<td>查看结构化报告卡</td>
+<td>自上而下展示:</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><strong>① 风险标:</strong> 高危 / 中危 / 低危 / 无风险 + 一句话摘要</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><strong>② 暖心叙事 narrative:</strong> 4-5 段温暖文字,先接情绪再讲法律</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><strong>③ 三句话术:</strong> 委婉 / 坚定 / 正式 三种语气,带&quot;复制&quot;按钮</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><strong>④ 法律依据:</strong> 法律名称 + 条款序号 + 原文</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><strong>⑤ 相似案例:</strong> 法院 + 案号 + 日期 + 案情 + 判决 + 裁判要点</td>
+</tr>
+<tr>
+<td></td>
+<td></td>
+<td><strong>⑥ 判定依据(可折叠):</strong> 6 个要件状态 + 加重情节 + 严重度</td>
+</tr>
+<tr>
+<td>4</td>
+<td>若觉得 AI 判得不准</td>
+<td>点击「<strong>🔄 强制深度分析</strong>」按钮,跳过门控重新分析</td>
+</tr>
+</tbody>
+</table>
+<p><strong>界面元素:</strong></p>
+<table>
+<thead>
+<tr>
+<th>元素</th>
+<th>位置</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>输入框</td>
+<td>顶部</td>
+<td>多行文本框,placeholder 提示</td>
+</tr>
+<tr>
+<td>上传图片按钮</td>
+<td>输入框右下</td>
+<td>仅言行雷达保留(其他模块已去除)</td>
+</tr>
+<tr>
+<td>识别按钮</td>
+<td>输入框下方</td>
+<td>主按钮(暖紫色)</td>
+</tr>
+<tr>
+<td>历史记录</td>
+<td>输入框下方</td>
+<td>时间倒序,可逐条删除</td>
+</tr>
+<tr>
+<td>报告卡</td>
+<td>历史记录每条</td>
+<td>左侧颜色边框对应风险等级</td>
+</tr>
+</tbody>
+</table>
+<p><strong>风险等级颜色规范:</strong></p>
+<table>
+<thead>
+<tr>
+<th>等级</th>
+<th>颜色</th>
+<th>边框色</th>
+<th>背景色</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>🔴 高危</td>
+<td><code>#E5484D</code></td>
+<td>红</td>
+<td>浅红</td>
+</tr>
+<tr>
+<td>🟠 中危</td>
+<td><code>#F76808</code></td>
+<td>橙</td>
+<td>浅橙</td>
+</tr>
+<tr>
+<td>🟡 低危</td>
+<td><code>#F5A623</code></td>
+<td>黄</td>
+<td>浅黄</td>
+</tr>
+<tr>
+<td>🟢 无风险</td>
+<td><code>#30A46C</code></td>
+<td>绿</td>
+<td>浅绿</td>
+</tr>
+<tr>
+<td>🟣 异常</td>
+<td><code>#9370DB</code></td>
+<td>紫</td>
+<td>浅紫(工作流解析失败时)</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="322-%E5%A5%B9%E6%9D%83%E6%9D%83%E7%9B%8A%E6%8C%87%E5%8D%97--%E6%9F%A5%E8%AF%A2%E6%B3%95%E5%AE%9A%E6%9D%83%E5%88%A9%E5%8F%AF%E8%A7%86%E5%8C%96%E5%8D%87%E7%BA%A7">3.2.2 她权·权益指南 — 查询法定权利(可视化升级)</h3>
+<p><strong>入口:</strong> 主导航 → 「她权·权益指南」</p>
+<p><strong>使用步骤:</strong></p>
+<ol>
+<li>在输入框描述当前所处的职场场景(求职 / 在职 / 孕期 / 哺乳期 / 调岗 / 解雇等)</li>
+<li>点击「立即查询」按钮</li>
+<li>查看<strong>可视化权益图谱</strong></li>
+</ol>
+<p><strong>核心特性(2026-06 升级):</strong></p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>🎯 <strong>场景识别头部</strong></td>
+<td>顶部胶囊标签自动展示识别到的场景(8 类:🤰 孕产期 / 🔍 求职 / 💼 在职 / 📉 薪酬调岗 / 🚪 解雇 / ⚠️ 性骚扰 / ⚖️ 性别歧视 / 🏥 医疗保障)</td>
+</tr>
+<tr>
+<td>🃏 <strong>权利卡片网格</strong></td>
+<td>LLM 自然语言被解析为结构化卡片(自适应 1-3 列),每卡:<strong>序号徽标 + 权利名 + 蓝色法律引用胶囊 + 灰底法律原文段 + 💡 紫色白话解释</strong></td>
+</tr>
+<tr>
+<td>💎 <strong>法律名/条款号/原文三级蓝色高亮</strong></td>
+<td><code>《...》</code> + <code>第X条</code> + 原文段 三个层级独立颜色,即使解析失败兜底为纯文本时也保留高亮</td>
+</tr>
+<tr>
+<td>🌸 <strong>温馨提示独立暖黄卡</strong></td>
+<td>跟主卡片网格视觉分层</td>
+</tr>
+<tr>
+<td>🔄 <strong>重试按钮</strong></td>
+<td>跳过缓存重新查询,治理&quot;同问同答&quot;问题</td>
+</tr>
+</tbody>
+</table>
+<p><strong>示例输入:</strong> &quot;在职怀孕女性受到哪些法律保护&quot;</p>
+<hr>
+<h3 id="323-%E5%A5%B9%E8%AF%81%E8%AF%81%E6%8D%AE%E4%BF%9D%E5%85%A8--%E5%8F%96%E8%AF%81%E6%8C%87%E5%AF%BC--sha-256-%E6%8C%87%E7%BA%B9">3.2.3 她证·证据保全 — 取证指导 + SHA-256 指纹</h3>
+<p><strong>入口:</strong> 主导航 → 「她证·证据保全」</p>
+<p><strong>使用步骤:</strong></p>
+<ol>
+<li>在输入框描述需要取证的场景(如:&quot;怀孕被调岗想留证据&quot;)</li>
+<li>点击「生成取证清单」</li>
+<li>查看<strong>可勾选的结构化 checklist</strong>:AI 自动按案型归类生成的取证项,每完成一项点击 ☑️,<strong>进度条实时显示完成度</strong></li>
+<li>(可选)在「<strong>证据指纹</strong>」区上传文件 → 浏览器端实时计算 SHA-256 → 显示哈希值 → <strong>生成《存证凭证》</strong>(含文件名 + 哈希 + 时间戳)→ 下载留档</li>
+</ol>
+<p><strong>核心特性:</strong></p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>☑️ <strong>结构化 checklist</strong></td>
+<td>不再是大段文字,而是可勾选清单,完成情况一目了然</td>
+</tr>
+<tr>
+<td>📊 <strong>进度条</strong></td>
+<td>按勾选比例实时显示,降低用户&quot;无从下手&quot;的茫然</td>
+</tr>
+<tr>
+<td>📚 <strong>案型规则库</strong></td>
+<td>内置 6 大典型场景的证据规则;AI 自动分类用户描述到对应案型,按规则生成取证项</td>
+</tr>
+<tr>
+<td>🔐 <strong>SHA-256 指纹</strong></td>
+<td>浏览器端 Web Crypto 计算,原文件永不上传</td>
+</tr>
+<tr>
+<td>📄 <strong>《存证凭证》</strong></td>
+<td>文件名 + 哈希 + 时间戳,支持下载;后续可上传同文件验证哈希一致(<strong>防篡改演示</strong>)</td>
+</tr>
+<tr>
+<td>📝 <strong>Markdown 渲染</strong></td>
+<td>清单卡片、核心证据、注意事项等区域文本使用 Markdown 渲染,<strong>加粗</strong>等格式正常显示,不再裸露星号</td>
+</tr>
+<tr>
+<td>🔄 <strong>合法边界去重</strong></td>
+<td>解析 AI 回复时自动剔除原文中已有的&quot;合法边界提醒&quot;段落,防止与底部静态提示栏重复显示</td>
+</tr>
+</tbody>
+</table>
+<p><strong>SHA-256 指纹工作原理:</strong></p>
+<pre class="hljs"><code><div>用户选择文件 → FileReader 读取 ArrayBuffer
+            ↓
+window.crypto.subtle.digest('SHA-256', buffer)
+            ↓
+Uint8Array → hex string(64 字符)
+            ↓
+本地展示 + 生成《存证凭证》 + 复制到剪贴板
+原文件永不上传服务器
+</div></code></pre>
+<p><strong>防篡改演示流程:</strong></p>
+<pre class="hljs"><code><div>原文件 → SHA-256 → 哈希 A → 保存《存证凭证》
+                          ↓
+                  (一段时间后)
+                          ↓
+存证凭证 + 待验证文件 → 重新计算 SHA-256 → 哈希 B
+                          ↓
+A == B ? → &quot;未被篡改&quot; / &quot;已被篡改&quot;
+</div></code></pre>
+<hr>
+<h3 id="324-%E5%A5%B9%E8%A1%8C%E7%BB%B4%E6%9D%83%E5%AF%BC%E8%88%AA--%E5%85%AD%E6%AD%A5%E7%BB%B4%E6%9D%83%E8%B7%AF%E5%BE%84">3.2.4 她行·维权导航 — 六步维权路径</h3>
+<p><strong>入口:</strong> 主导航 → 「她行·维权导航」</p>
+<p><strong>使用步骤:</strong></p>
+<ol>
+<li>在输入框描述遇到的不公(如:&quot;怀孕被降薪我该怎么办&quot;)</li>
+<li>点击「查询维权路径」</li>
+<li>查看<strong>竖直时间轴</strong>:六步路径自顶向下排列</li>
+</ol>
+<p><strong>核心特性(2026-06 升级):</strong></p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>📏 <strong>竖直时间轴渲染</strong></td>
+<td>每一步 = 一个紫色圆形数字徽标 ① ② ③ + 白色光环 + 暖紫渐变竖线连接,每步内容卡片化展示</td>
+</tr>
+<tr>
+<td>📞 <strong>热线胶囊化</strong></td>
+<td>12333 / 12338 / 12348 / 12388 自动转换为<strong>暖黄色 📞 胶囊</strong>,点击直接 <code>tel:</code> 拨号(移动端体验更佳)</td>
+</tr>
+<tr>
+<td>⏰ <strong>时效字眼橙色高亮</strong></td>
+<td>&quot;1 年&quot;&quot;15 日&quot;&quot;3 年&quot; 等关键时效自动 ⏰ 橙色胶囊,强提醒避免错过窗口期</td>
+</tr>
+<tr>
+<td>📦 <strong>时效尾段独立暖橙卡片</strong></td>
+<td>跟主时间轴视觉分层,关键信息一眼可见</td>
+</tr>
+<tr>
+<td>🔄 <strong>重试按钮</strong></td>
+<td>跳过缓存重新规划</td>
+</tr>
+</tbody>
+</table>
+<p><strong>内置热线一键拨打:</strong></p>
+<table>
+<thead>
+<tr>
+<th>编号</th>
+<th>部门</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>12333</strong></td>
+<td>劳动监察</td>
+<td>欠薪、违法调岗、不提供产假</td>
+</tr>
+<tr>
+<td><strong>12338</strong></td>
+<td>妇联</td>
+<td>性别歧视、骚扰</td>
+</tr>
+<tr>
+<td><strong>12348</strong></td>
+<td>法律援助</td>
+<td>免费法律咨询、援助申请</td>
+</tr>
+<tr>
+<td><strong>12388</strong></td>
+<td>纪检监察</td>
+<td>涉公职人员</td>
+</tr>
+<tr>
+<td><strong>400-161-9995</strong></td>
+<td>心理援助</td>
+<td>自伤倾向</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="325-%E5%A5%B9%E5%BF%83%E6%83%85%E7%BB%AA%E6%A0%91%E6%B4%9E--%E5%85%B1%E6%83%85%E9%99%AA%E4%BC%B4--%E8%AF%AD%E9%9F%B3%E5%BC%95%E5%AF%BC">3.2.5 她心·情绪树洞 — 共情陪伴 + 语音引导</h3>
+<p><strong>入口:</strong> 主导航 → 「她心·情绪树洞」</p>
+<p><strong>使用步骤:</strong></p>
+<ol>
+<li>在输入框倾诉(如:&quot;我好难受&quot;&quot;我感觉是我太敏感了&quot;)</li>
+<li>点击「我想倾诉」</li>
+<li>查看 AI 共情回应(承认 → 正常化 → 陪伴 三步结构,<strong>已升级 CBT 轻度支持逻辑</strong>)</li>
+<li>(可选)点击「🔊 语音引导」播放放松引导词,再次点击停止</li>
+</ol>
+<p><strong>核心特性:</strong></p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>🧠 <strong>CBT 轻度支持</strong></td>
+<td>harbor 智能体 Prompt 升级,对自我否定、灾难化等表达温和&quot;重新理解&quot;,<strong>保持非说教、陪伴式体验</strong></td>
+</tr>
+<tr>
+<td>🔊 <strong>云端 TTS 语音引导 + 降级兜底</strong></td>
+<td>优先走 <code>/proxy/tts</code> 获取微软/腾讯云合成音频(音质自然);云端不可用时<strong>自动降级到浏览器原生 SpeechSynthesis</strong>,保证语音功能始终可用;支持播放 / 停止</td>
+</tr>
+<tr>
+<td>🚨 <strong>危机干预强制弹窗(会话防重复)</strong></td>
+<td>见下方说明</td>
+</tr>
+</tbody>
+</table>
+<p><strong>危机干预触发(强制层):</strong></p>
+<table>
+<thead>
+<tr>
+<th>触发关键词</th>
+<th>系统响应</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>&quot;自杀&quot;、&quot;活不下去&quot;、&quot;伤害自己&quot;、&quot;想死&quot;等</td>
+<td><strong>立即强制弹出模态框</strong>(本次会话内<strong>不可被普通 AI 回复覆盖</strong>):显示心理援助热线 400-161-9995 + 紧急联系建议 + 鼓励联系信任的人</td>
+</tr>
+</tbody>
+</table>
+<p><strong>为什么&quot;强制不可覆盖&quot;:</strong> 早期版本中,危机弹窗有时会被后续普通 AI 回复滚动覆盖,导致用户在情绪激动时看不到求助信息。本次升级把危机干预弹窗提升到<strong>模态层</strong>,<strong>只有用户主动关闭才能继续对话</strong>,确保紧急信息一定触达。</p>
+<p><strong>会话防重复机制:</strong> 同一次对话中,危机弹窗只出现一次;用户关闭后,后续输入中的危机关键词不会再次触发弹窗。这避免了处于危机中的用户因反复弹窗而受到<strong>二次打扰</strong>,同时保证首次触达的效果。</p>
+<hr>
+<h3 id="326-%E5%A5%B9%E5%A3%B0%E5%85%B1%E9%B8%A3%E5%9B%9E%E5%93%8D--%E5%8C%BF%E5%90%8D%E6%95%85%E4%BA%8B%E7%A4%BE%E5%8C%BA">3.2.6 她声·共鸣回响 — 匿名故事社区</h3>
+<p><strong>入口:</strong> 主导航 → 「她声·共鸣回响」</p>
+<p><strong>使用步骤:</strong></p>
+<ol>
+<li>浏览首页故事卡片(改编自真实判例和新闻)</li>
+<li>使用<strong>顶部标签筛选</strong>(性别歧视 / 性骚扰 / 怀孕调岗 / 同工不同酬 等),精准查找同类经历</li>
+<li>点击故事查看完整内容</li>
+<li>(可选)点击「提交我的故事」匿名发布;发布前<strong>前端自动扫描并打码</strong>手机号、身份证号、邮箱等敏感信息;发布后存储至 CloudBase 云数据库,公开可见</li>
+</ol>
+<p><strong>核心特性:</strong></p>
+<table>
+<thead>
+<tr>
+<th>特性</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>🎭 <strong>匿名化</strong></td>
+<td>无需注册,无需登录;不绑定身份</td>
+</tr>
+<tr>
+<td>🔒 <strong>三类敏感信息自动脱敏</strong></td>
+<td>发帖前正则识别 + 自动打码:<strong>手机号</strong>(11 位)/ <strong>身份证</strong>(18 位)/ <strong>邮箱</strong>(<code>@xxx.xxx</code> 格式),避免用户不小心写入泄露</td>
+</tr>
+<tr>
+<td>🏷️ <strong>标签筛选</strong></td>
+<td>按主题维度筛选故事,精准查找</td>
+</tr>
+<tr>
+<td>📁 <strong>CloudBase 真社区存储</strong></td>
+<td>故事持久化在云数据库,千万级文档容量</td>
+</tr>
+<tr>
+<td>💾 <strong>localStorage 本地缓存</strong></td>
+<td>历史浏览记录本地保存,无网络环境也能查看已读</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="33-%E5%AE%8C%E6%95%B4-demo-%E6%A1%88%E4%BE%8B">3.3 完整 Demo 案例</h2>
+<h3 id="demo-%E6%A1%88%E4%BE%8B-1%E5%A5%B9%E7%9C%BC%E8%A8%80%E8%A1%8C%E9%9B%B7%E8%BE%BE--%22%E6%80%80%E5%AD%95%E8%A2%AB%E9%99%8D%E8%96%AA%22">Demo 案例 1:她眼·言行雷达 — &quot;怀孕被降薪&quot;</h3>
+<h4 id="%E7%94%A8%E6%88%B7%E8%BE%93%E5%85%A5">用户输入</h4>
+<pre class="hljs"><code><div>怀孕被降薪
+</div></code></pre>
+<h4 id="%E7%B3%BB%E7%BB%9F%E5%93%8D%E5%BA%94%E5%AE%8C%E6%95%B4%E7%BB%93%E6%9E%84%E5%8C%96%E8%BE%93%E5%87%BA">系统响应(完整结构化输出)</h4>
+<p><strong>① 风险标</strong></p>
+<blockquote>
+<p>● <strong>高危</strong>  怀孕期间被降薪涉嫌性别歧视</p>
+</blockquote>
+<p><strong>② 暖心叙事</strong></p>
+<blockquote>
+<p>听到你在怀孕期间被降薪,我感到非常气愤和不平。这不仅仅是钱的问题,更是对你作为一位准妈妈和劳动者基本尊严的侵犯。你此刻的委屈和担忧,我完全能够理解。</p>
+<p>从你描述的情况来看,这件事在法律上很可能构成了基于婚育状况的性别歧视。简单来说,法律明文规定,不能因为女性怀孕、生育、哺乳就降低她的工资、辞退她或者给她&quot;穿小鞋&quot;。怀孕是女性的合法权益,不应该成为被不公平对待的理由。</p>
+<p>法律是站在你这边的。《女职工劳动保护特别规定》里写得清清楚楚:&quot;用人单位不得因女职工怀孕、生育、哺乳降低其工资&quot;。简单说就是,怀孕期间,你的工资一分钱都不能少。在类似的情况里,法院也多次支持了孕期女职工的合法权益,明确指出婚育状况是个人隐私,不能成为被降薪、解雇的借口。</p>
+<p>请相信,维护自己的权利不是&quot;找麻烦&quot;,而是在捍卫法律赋予每个人的公平。你并不是一个人在战斗,有很多人和法律条文在支持你。</p>
+<p>接下来,如果你想了解如何与公司正式沟通或投诉,可以看看「她行·行动导航」;想全面了解孕期女职工有哪些法定权利,可以参考「她权·权益指南」;如果想学习如何收集和保存证据,为可能的维权做准备,「她证·证据保全」模块会很有帮助。</p>
+</blockquote>
+<p><strong>③ 你可以这样回应</strong></p>
+<table>
+<thead>
+<tr>
+<th>语气</th>
+<th>话术</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>💗 <strong>委婉</strong></td>
+<td>领导,关于我怀孕后工资调整的事情,我想和您沟通一下。我理解公司可能有经营上的考虑,但根据国家规定,女职工在孕期是受到特殊保护的,工资待遇不应该因为怀孕而降低。我们能不能一起看看,有没有其他更合适的安排?</td>
+</tr>
+<tr>
+<td>🟠 <strong>坚定</strong></td>
+<td>我需要明确指出,因为我怀孕而降低我的薪资,这是违反《女职工劳动保护特别规定》的。我要求公司立即纠正这一决定,恢复我原有的薪酬标准。</td>
+</tr>
+<tr>
+<td>💼 <strong>正式</strong></td>
+<td>本人就怀孕期间被单方降薪一事,正式提出异议。根据《女职工劳动保护特别规定》第五条,用人单位不得因女职工怀孕降低其工资。现要求贵司在[具体日期]前书面回复,说明降薪依据并恢复本人原薪资待遇,否则本人将保留通过法律途径维护自身合法权益的权利。</td>
+</tr>
+</tbody>
+</table>
+<p><strong>④ 法律依据</strong></p>
+<ul>
+<li>
+<p><strong>《女职工劳动保护特别规定》第五条</strong>
+用人单位不得因女职工怀孕、生育、哺乳降低其工资、予以辞退、与其解除劳动或者聘用合同。</p>
+</li>
+<li>
+<p><strong>《中华人民共和国妇女权益保障法》第四十八条</strong>
+用人单位在录(聘)用女职工时,应当依法与其签订劳动(聘用)合同或者服务协议,劳动(聘用)合同或者服务协议中应当具备女职工特殊保护条款,并不得规定限制女职工结婚、生育等内容。</p>
+</li>
+</ul>
+<p><strong>⑤ 相似案例</strong></p>
+<blockquote>
+<p><strong>上海港行信息咨询有限公司与朱艳丽劳动合同纠纷二审民事判决书</strong>
+上海市第二中级人民法院 · (2020) 沪 02 民终 6339 号 · 2020-08-04</p>
+<ul>
+<li><strong>案情:</strong> 公司以员工入职时隐瞒怀孕为由主张解除劳动关系。</li>
+<li><strong>判决:</strong> 判决驳回上诉,维持原判,双方恢复劳动关系,公司支付工资。</li>
+<li><strong>裁判要点:</strong> 法院认为,劳动者的婚育状况属于个人隐私,不属于必须向用人单位说明的劳动合同基本情况。用人单位不得因此解除劳动合同,也不得将限制生育作为录用条件。本案中,公司未能证明员工隐瞒怀孕,其解除行为缺乏依据。</li>
+</ul>
+</blockquote>
+<p><strong>⑥ 查看判定依据(可折叠)</strong></p>
+<table>
+<thead>
+<tr>
+<th>要件</th>
+<th>状态</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>行为与性有关</td>
+<td><code>不适用</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>违背对方意愿</td>
+<td><code>不适用</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td>职场情境</td>
+<td><code>不适用</code></td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>基于性别或婚育状况的区别对待</strong></td>
+<td><code>满足</code></td>
+<td>因怀孕这一与性别直接相关的婚育状况而遭受不利待遇</td>
+</tr>
+<tr>
+<td><strong>发生在就业环节</strong></td>
+<td><code>满足</code></td>
+<td>发生在在职期间的薪酬调整环节</td>
+</tr>
+<tr>
+<td><strong>无合理职业资格依据</strong></td>
+<td><code>满足</code></td>
+<td>怀孕本身不构成降低薪酬的合理职业资格理由</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>严重度</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>制度性</td>
+<td>否</td>
+</tr>
+<tr>
+<td><strong>实质后果</strong></td>
+<td><strong>是</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>风险等级代码映射:</strong> <code>e1=满足</code> + <code>e2=满足</code> + <code>concrete_harm=是</code> → <strong>高危</strong> ✅</p>
+<hr>
+<h3 id="demo-%E6%A1%88%E4%BE%8B-2%E5%A5%B9%E6%9D%83%E6%9D%83%E7%9B%8A%E6%8C%87%E5%8D%97--%22%E5%9C%A8%E8%81%8C%E6%80%80%E5%AD%95%E5%A5%B3%E6%80%A7%E5%8F%97%E5%88%B0%E5%93%AA%E4%BA%9B%E6%B3%95%E5%BE%8B%E4%BF%9D%E6%8A%A4%22">Demo 案例 2:她权·权益指南 — &quot;在职怀孕女性受到哪些法律保护&quot;</h3>
+<h4 id="%E7%94%A8%E6%88%B7%E8%BE%93%E5%85%A5">用户输入</h4>
+<pre class="hljs"><code><div>在职怀孕女性受到哪些法律保护
+</div></code></pre>
+<h4 id="%E7%B3%BB%E7%BB%9F%E5%93%8D%E5%BA%94">系统响应</h4>
+<blockquote>
+<p>在职怀孕的女性,法律为你提供了多方面的保护,这些保护旨在保障你的健康、工作稳定和基本权益。下面我为你梳理一下主要的法定权利。</p>
+<p><strong>法律给你的权利包括:</strong></p>
+<p>· <strong>不被随意解雇的权利</strong>。根据《劳动合同法》第 42 条,用人单位在女职工孕期、产期、哺乳期,不得依照该法第 40 条、第 41 条的规定解除劳动合同。简单说,公司不能因为你怀孕、休产假或哺乳就单方面辞退你,除非你有严重违纪等特定情况。</p>
+<p>· <strong>获得产假的权利</strong>。根据《女职工劳动保护特别规定》第 7 条,女职工生育享受 98 天产假,其中产前可以休假 15 天;难产的,增加产假 15 天;生育多胞胎的,每多生育 1 个婴儿,增加产假 15 天。通俗讲,这是国家保障你生育后恢复身体和照顾宝宝的带薪假期。</p>
+<p>· <strong>产假期间工资待遇不变的权利</strong>。根据《女职工劳动保护特别规定》第 8 条,对已经参加生育保险的女职工,产假期间的生育津贴由生育保险基金支付;对未参加生育保险的,由用人单位按照女职工产假前工资的标准支付。这意味着,你休产假期间,收入来源是有保障的。</p>
+<p>· <strong>不被因怀孕而降低工资、辞退、解除劳动合同的权利</strong>,依据是《中华人民共和国妇女权益保障法》第 48 条,简单说就是公司不能因为你怀孕就给你降薪,更不能随便把你开除或者解除劳动关系。</p>
+<p>· <strong>你享有在劳动时间内进行产前检查的权利</strong>,所需时间计入劳动时间的权利,依据是《女职工劳动保护特别规定》第 6 条,就是说你去做产检的时间,公司要算你正常上班,不能扣你工资或者算你请假。</p>
+<p>· <strong>你享有怀孕 7 个月以上不被安排延长工作时间和夜班劳动的权利</strong>,依据是《女职工劳动保护特别规定》第 6 条,怀孕满 7 个月之后,公司不能让你加班,也不能安排你上夜班。</p>
+<p>· <strong>你享有生育享受 98 天产假的权利</strong>,其中产前可以休假 15 天,难产的增加产假 15 天,生育多胞胎的每多生育 1 个婴儿增加产假 15 天,依据是《女职工劳动保护特别规定》第 7 条,生宝宝的时候你有法定的产假可以休,遇到难产或者生多胞胎的情况还能多休对应的天数。</p>
+<p>· <strong>你享有产假期间的生育津贴</strong>,对已经参加生育保险的,按照用人单位上年度职工月平均工资的标准由生育保险基金支付;对未参加生育保险的,按照你产假前工资的标准由用人单位支付,依据是《女职工劳动保护特别规定》第 8 条,休产假的时候你也有收入,参加了生育保险就领生育津贴,没参加的话公司要按你之前的工资标准发给你。</p>
+<p><strong>温馨提示</strong></p>
+<p>你可以留意保存好怀孕的相关证明、产检记录、工资发放记录等材料,要是后续遇到权益被侵犯的情况,这些都能作为相关证据。</p>
+</blockquote>
+<hr>
+<h2 id="34-%E8%AF%84%E6%B5%8B%E6%95%B0%E6%8D%AE%E4%B8%8E%E8%B4%A8%E9%87%8F%E4%BF%9D%E9%9A%9C">3.4 评测数据与质量保障</h2>
+<h3 id="341-%E8%AF%84%E6%B5%8B%E4%BD%93%E7%B3%BB">3.4.1 评测体系</h3>
+<p>我们构建了 <strong>100 条标注测试集</strong> + 配套<strong>评测脚本</strong>(<code>eval/run.js</code>),所有评测过程公开可复现。</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>数据</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>测试集规模</td>
+<td><strong>100 条</strong> = 50 精标 + 50 变体</td>
+</tr>
+<tr>
+<td>判例锚定</td>
+<td><strong>17 条</strong>司法判例 + <strong>6 条</strong>法条 + <strong>27 条</strong>推导</td>
+</tr>
+<tr>
+<td>变体覆盖</td>
+<td>同义改写 15 / 细节扰动 12 / 干扰句 10 / 要件边界 8 / 长文本扩展 5</td>
+</tr>
+</tbody>
+</table>
+<h3 id="342-%E5%AE%9E%E6%B5%8B%E6%95%B0%E6%8D%AE">3.4.2 实测数据</h3>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>整体准确率</strong></td>
+<td><strong>79.0%</strong> (95% CI 71.0% – 87.0%)</td>
+</tr>
+<tr>
+<td><strong>高危召回率</strong></td>
+<td><strong>90.0%</strong> (45/50) — 法律 AI 最关键指标</td>
+</tr>
+<tr>
+<td><strong>无风险准确率</strong></td>
+<td><strong>100%</strong> (16/16) — 不刷存在感</td>
+</tr>
+<tr>
+<td>中危召回</td>
+<td>47.4% (9/19)</td>
+</tr>
+<tr>
+<td>低危召回</td>
+<td>60.0% (9/15)</td>
+</tr>
+<tr>
+<td><strong>±1 级容忍准确率</strong></td>
+<td><strong>96.0%</strong> — 误差仅相邻一级</td>
+</tr>
+<tr>
+<td>严重漏判(-2 级)</td>
+<td><strong>仅 4 条</strong> / 100</td>
+</tr>
+<tr>
+<td>完全相反判定</td>
+<td><strong>0 条</strong> / 100</td>
+</tr>
+</tbody>
+</table>
+<h3 id="343-%E6%96%B9%E6%B3%95%E5%AD%A6%E5%88%9B%E6%96%B0">3.4.3 方法学创新</h3>
+<p><strong>「事实层标注 + 代码机械映射」对齐校验</strong></p>
+<ul>
+<li>标注者只标&quot;要件事实&quot;(行为与性有关 / 违背意愿 / 区别对待 / 就业环节 / 制度性 / 实质后果),<strong>不标 risk_level</strong></li>
+<li>风险等级由产品中<strong>同一份 <code>compute_risk_level</code> 代码</strong>自动映射</li>
+<li>任何标准答案与产品输出的差异,<strong>都只可能来自 AI 对事实的判断</strong>,不来自标注者主观</li>
+</ul>
+<p><strong>意义:</strong> 答辩时可以直接说 — &quot;<strong>我们的标准答案与产品输出走同一份代码</strong>&quot;。</p>
+<hr>
+<h2 id="35-%E5%B7%A5%E7%A8%8B%E4%BA%AE%E7%82%B9%E7%BC%93%E5%AD%98%E7%AD%96%E7%95%A53-%E9%81%93%E9%98%B2%E7%BA%BF">3.5 工程亮点:缓存策略「3 道防线」</h2>
+<p>详细方案见 <code>BACKEND_CACHE_PROPOSAL.md</code>。这是针对&quot;同问不同答 → 加缓存 → 异常响应也缓存 → 重试无意义&quot;这一典型反模式的工程化解决:</p>
+<table>
+<thead>
+<tr>
+<th>防线</th>
+<th>实现</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>① <strong>写入白名单 <code>shouldCache()</code></strong></td>
+<td>代理只缓存 <code>finish_reason: stop</code> + content 非空的成功响应</td>
+<td>工作流 10003 / 内容审查截断 / 解析失败响应<strong>一律不缓存</strong>,重试有意义</td>
+</tr>
+<tr>
+<td>② <strong><code>nocache=true</code> 显式跳过</strong></td>
+<td>前端在用户点「强制深度分析」或「🔄 重试」时自动加该入参</td>
+<td>100% 重新打元器,答辩演示不暴露 fromCache</td>
+</tr>
+<tr>
+<td>③ <strong>30 分钟 TTL + 1000 LRU 上限</strong></td>
+<td>代理控制内存 + 元器侧改 prompt 后自动失效</td>
+<td>长期运行不堆积,prompt 调整后用户无感升级</td>
+</tr>
+</tbody>
+</table>
+<p><strong>前端 3 个模块已支持「🔄 重试」按钮:</strong> 言行雷达 / 权益指南 / 维权导航</p>
+<hr>
+<h2 id="36-%E9%83%A8%E7%BD%B2%E4%B8%8E%E8%AE%BF%E9%97%AE">3.6 部署与访问</h2>
+<h3 id="361-%E5%9C%A8%E7%BA%BF%E8%AE%BF%E9%97%AE">3.6.1 在线访问</h3>
+<p>直接访问:<strong>https://huangjwwen.github.io/her_shield/</strong></p>
+<p>无需注册、无需安装、任意现代浏览器(Chrome / Edge / Firefox / Safari)即可使用。</p>
+<h3 id="362-%E6%9C%AC%E5%9C%B0%E8%BF%90%E8%A1%8C%E5%BC%80%E5%8F%91%E8%80%85">3.6.2 本地运行(开发者)</h3>
+<pre class="hljs"><code><div>git <span class="hljs-built_in">clone</span> https://github.com/Huangjwwen/her_shield.git
+<span class="hljs-built_in">cd</span> her_shield
+npx http-server . -p 8080
+<span class="hljs-comment"># 浏览器打开 http://localhost:8080/features.html</span>
+</div></code></pre>
+<h3 id="363-%E8%AF%84%E6%B5%8B%E8%84%9A%E6%9C%AC%E8%BF%90%E8%A1%8C">3.6.3 评测脚本运行</h3>
+<pre class="hljs"><code><div><span class="hljs-comment"># 走代理(线上)</span>
+node <span class="hljs-built_in">eval</span>/run.js --output <span class="hljs-built_in">eval</span>/results.json
+
+<span class="hljs-comment"># 直连元器(需 KEY_RADAR)</span>
+node <span class="hljs-built_in">eval</span>/run.js --direct --key &lt;KEY_RADAR&gt; --output <span class="hljs-built_in">eval</span>/results-direct.json
+</div></code></pre>
+<hr>
+
+</body>
+</html>
