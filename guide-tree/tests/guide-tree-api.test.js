@@ -6,6 +6,19 @@ function event({ method, path, query, body }) {
 }
 
 async function run() {
+  const preflightResponse = await main({
+    httpMethod: 'OPTIONS',
+    path: '/api/guide-tree/resolve',
+    headers: {
+      Origin: 'https://huangjwwen.github.io',
+      'Access-Control-Request-Method': 'POST',
+      'Access-Control-Request-Headers': 'content-type'
+    }
+  });
+  assert.strictEqual(preflightResponse.statusCode, 204);
+  assert.strictEqual(preflightResponse.headers['Access-Control-Allow-Origin'], '*');
+  assert.ok(preflightResponse.headers['Access-Control-Allow-Methods'].includes('POST'));
+
   for (const treeId of ['recruit_discrimination', 'harassment', 'equal_pay_promotion', 'leave_benefits']) {
     const response = await main(event({ method: 'GET', path: '/api/guide-tree', query: { treeId } }));
     assert.strictEqual(response.statusCode, 200);

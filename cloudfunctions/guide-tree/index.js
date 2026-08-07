@@ -59,10 +59,18 @@ function getHeader(event, name) {
   return Object.entries(requestHeaders(event)).find(([key]) => key.toLowerCase() === lowered)?.[1];
 }
 
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+  'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
+  'Access-Control-Max-Age': '86400'
+};
+
 function response(statusCode, body, extraHeaders = {}) {
   return {
     statusCode,
     headers: {
+      ...corsHeaders,
       'Content-Type': 'application/json; charset=utf-8',
       'Cache-Control': 'no-store',
       ...extraHeaders
@@ -74,7 +82,7 @@ function response(statusCode, body, extraHeaders = {}) {
 function cacheableResponse(event, body) {
   const etag = makeEtag(body);
   if (getHeader(event, 'if-none-match') === etag) {
-    return { statusCode: 304, headers: { ETag: etag, 'Cache-Control': 'private, max-age=300' }, body: '' };
+    return { statusCode: 304, headers: { ...corsHeaders, ETag: etag, 'Cache-Control': 'private, max-age=300' }, body: '' };
   }
   return response(200, body, { ETag: etag, 'Cache-Control': 'private, max-age=300' });
 }
@@ -138,6 +146,11 @@ function loadTreePackage(treeId) {
 async function handle(event) {
   const method = (event.httpMethod || event.method || 'GET').toUpperCase();
   const requestPath = event.path || '';
+
+  if (method === 'OPTIONS') {
+    return { statusCode: 204, headers: { ...corsHeaders, 'Cache-Control': 'no-store' }, body: '' };
+  }
+
   const data = requestData(event);
 
   if (method === 'GET' && !requestPath.endsWith('/resolve') && !data.treeId) {
