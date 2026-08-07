@@ -3965,8 +3965,8 @@ body {
 /* ==================== 她行决策树 ==================== */
 .guide-workbench {
     display: grid;
-    gap: 16px;
-    margin-bottom: 14px;
+    gap: 12px;
+    margin-bottom: 10px;
 }
 
 .guide-flow-steps {
@@ -4020,7 +4020,7 @@ body {
 .guide-workspace {
     display: grid;
     grid-template-columns: minmax(0, 1.6fr) minmax(320px, 0.9fr);
-    gap: 16px;
+    gap: 14px;
     align-items: start;
 }
 
@@ -4034,7 +4034,7 @@ body {
 }
 
 .guide-tree-question-panel {
-    min-height: 300px;
+    min-height: 220px;
 }
 
 .guide-live-panel {
@@ -4084,7 +4084,7 @@ body {
 
 .guide-tree-intro {
     display: grid;
-    grid-template-columns: minmax(190px, 0.42fr) minmax(0, 1fr);
+    grid-template-columns: minmax(190px, 0.58fr) minmax(260px, 0.72fr);
     gap: 18px;
 }
 
@@ -4153,17 +4153,18 @@ body {
 
 .guide-tree-entry .guide-tree-actions {
     display: grid;
-    grid-template-columns: repeat(3, minmax(118px, 1fr));
-    gap: 12px;
+    grid-template-columns: 1fr;
+    gap: 8px;
     margin-top: 0;
 }
 
 .guide-tree-scene {
     flex: none;
-    min-height: 58px;
+    min-height: 42px;
+    padding: 8px 14px;
     white-space: normal;
-    text-align: center;
-    justify-content: center;
+    text-align: left;
+    justify-content: flex-start;
     line-height: 1.45;
 }
 
@@ -4373,6 +4374,6 @@ body {
     }
 
     .guide-tree-entry .guide-tree-actions {
-        grid-template-columns: repeat(2, minmax(150px, 1fr));
+        grid-template-columns: 1fr;
     }
 }
