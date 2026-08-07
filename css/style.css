@@ -3965,15 +3965,15 @@ body {
 /* ==================== 她行决策树 ==================== */
 .guide-workbench {
     display: grid;
-    gap: 14px;
+    gap: 16px;
     margin-bottom: 14px;
 }
 
 .guide-flow-steps {
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 8px;
-    padding: 10px;
+    gap: 6px;
+    padding: 9px 12px;
     border: 1px solid #dde5dc;
     border-radius: 6px;
     background: #f8faf7;
@@ -3985,7 +3985,7 @@ body {
     gap: 7px;
     min-width: 0;
     color: #68736c;
-    font-size: 12px;
+    font-size: 11px;
     line-height: 1.25;
 }
 
@@ -4019,14 +4019,14 @@ body {
 
 .guide-workspace {
     display: grid;
-    grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.75fr);
-    gap: 14px;
+    grid-template-columns: minmax(0, 1.6fr) minmax(320px, 0.9fr);
+    gap: 16px;
     align-items: start;
 }
 
 .guide-tree-panel {
     margin: 0;
-    padding: 16px;
+    padding: 18px;
     border: 1px solid #ded7eb;
     border-left: 4px solid #5f8f72;
     border-radius: 6px;
@@ -4034,13 +4034,13 @@ body {
 }
 
 .guide-tree-question-panel {
-    min-height: 260px;
+    min-height: 300px;
 }
 
 .guide-live-panel {
     display: grid;
     gap: 10px;
-    padding: 14px;
+    padding: 18px;
     border: 1px solid #dbe3dd;
     border-radius: 6px;
     background: #ffffff;
@@ -4077,9 +4077,15 @@ body {
 .guide-tree-result-title,
 .guide-tree-actions {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 12px;
+}
+
+.guide-tree-intro {
+    display: grid;
+    grid-template-columns: minmax(190px, 0.42fr) minmax(0, 1fr);
+    gap: 18px;
 }
 
 .guide-tree-intro strong,
@@ -4145,11 +4151,20 @@ body {
     margin-top: 14px;
 }
 
+.guide-tree-entry .guide-tree-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(118px, 1fr));
+    gap: 12px;
+    margin-top: 0;
+}
+
 .guide-tree-scene {
-    flex: 1 1 180px;
-    min-height: 40px;
+    flex: none;
+    min-height: 58px;
     white-space: normal;
-    text-align: left;
+    text-align: center;
+    justify-content: center;
+    line-height: 1.45;
 }
 
 .guide-tree-manual {
@@ -4320,6 +4335,10 @@ body {
         grid-template-columns: 1fr;
     }
 
+    .guide-tree-intro {
+        grid-template-columns: 1fr;
+    }
+
     .guide-tree-intro,
     .guide-tree-result-title {
         align-items: flex-start;
@@ -4339,7 +4358,21 @@ body {
         flex-direction: column;
     }
 
+    .guide-tree-entry .guide-tree-actions {
+        grid-template-columns: 1fr;
+    }
+
     .guide-tree-scene {
         width: 100%;
+    }
+}
+
+@media (min-width: 561px) and (max-width: 1180px) {
+    .guide-workspace {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .guide-tree-entry .guide-tree-actions {
+        grid-template-columns: repeat(2, minmax(150px, 1fr));
     }
 }
