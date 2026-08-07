@@ -48,6 +48,23 @@ const GUIDE_TREE_FIELD_LABELS = {
     professionalReviewQuestions: '想请专业人士核对的问题'
 };
 
+const GUIDE_TREE_STEPS = [
+    { key: 'basic', label: '基本情况' },
+    { key: 'type', label: '事件类型' },
+    { key: 'evidence', label: '证据状态' },
+    { key: 'action', label: '已采取行动' },
+    { key: 'timing', label: '时效判断' },
+    { key: 'result', label: '生成方案' }
+];
+
+const GUIDE_TREE_EVIDENCE_HINTS = {
+    pregnancy_pay_cut: '优先整理调岗/降薪通知、工资流水、孕产证明、劳动合同、岗位说明和沟通记录。',
+    recruit_discrimination: '优先保存招聘页面、岗位链接、聊天邮件、面试记录、拒录通知和投递记录。',
+    harassment: '优先保留聊天图片、录音录像、证人线索、事后记录和投诉处理记录；安全风险优先处理。',
+    equal_pay_promotion: '优先整理工资奖金、绩效、岗位职级、晋升标准、比较线索和沟通记录。',
+    leave_benefits: '优先整理假期申请、公司回复、工资流水、参保记录、津贴核定、医疗材料和合同制度。'
+};
+
 function guideTreeFieldLabel(field) {
     return GUIDE_TREE_FIELD_LABELS[field] || field;
 }
@@ -128,7 +145,41 @@ function guideTreeNext(tree, state, node, answer) {
 async function initGuideTree() {
     const mount = document.getElementById('guideTreeMount');
     if (!mount) return;
+    const progressMount = document.getElementById('guideTreeProgress');
+    const livePath = document.getElementById('guideLivePath');
+    const liveNext = document.getElementById('guideLiveNext');
+    const liveEvidence = document.getElementById('guideLiveEvidence');
+    const liveDocs = document.getElementById('guideLiveDocs');
     const state = { tree: null, catalog: null, currentNodeId: null, answers: {}, flags: [], path: [], terminal: null, documentFields: {}, online: true, aiEnhanced: false };
+    const nodeStep = (nodeId) => {
+        if (!nodeId) return 0;
+        if (['P4', 'L4'].includes(nodeId)) return 4;
+        if (['P9', 'R4', 'H7', 'E5', 'L5'].includes(nodeId)) return 2;
+        if (['P10', 'R6', 'H4A', 'H5', 'H6', 'H8', 'H8A', 'E6', 'L6'].includes(nodeId)) return 3;
+        return 1;
+    };
+    const stepIndex = () => {
+        if (state.terminal) return 5;
+        if (!state.tree) return 0;
+        return Math.max(1, ...state.path.map(nodeStep), nodeStep(state.currentNodeId));
+    };
+    const sceneTitle = () => {
+        if (!state.tree || !state.catalog) return '尚未开始';
+        const scene = state.catalog.scenes.find((item) => item.action && item.action.treeId === state.tree.treeId);
+        return scene ? scene.title : state.tree.treeId;
+    };
+    const renderProgress = () => {
+        if (!progressMount) return;
+        const active = stepIndex();
+        progressMount.innerHTML = GUIDE_TREE_STEPS.map((step, index) => `<span class="guide-flow-step ${index < active ? 'done' : ''} ${index === active ? 'active' : ''}"><span>${index + 1}</span>${guideTreeEscape(step.label)}</span>`).join('');
+    };
+    const renderLivePanel = (overrides = {}) => {
+        renderProgress();
+        if (livePath) livePath.textContent = overrides.path || (state.tree ? sceneTitle() : '尚未开始');
+        if (liveNext) liveNext.textContent = overrides.next || (state.currentNodeId && state.tree && state.tree.nodes[state.currentNodeId] ? state.tree.nodes[state.currentNodeId].title : '选择一个场景后进入逐题流程。');
+        if (liveEvidence) liveEvidence.textContent = overrides.evidence || (state.tree ? GUIDE_TREE_EVIDENCE_HINTS[state.tree.treeId] || '完成证据节点后会显示需要优先整理的材料。' : '完成证据节点后会显示需要优先整理的材料。');
+        if (liveDocs) liveDocs.textContent = overrides.documents || '到达终点后生成匹配文书。';
+    };
     const loadCatalog = async () => {
         try {
             const response = await fetch(guideTreeApiUrl());
@@ -161,6 +212,7 @@ async function initGuideTree() {
     const resetState = () => Object.assign(state, { tree: null, currentNodeId: null, answers: {}, flags: [], path: [], terminal: null, documentFields: {}, aiEnhanced: false });
     const selectTree = async (treeId) => {
         mount.innerHTML = '<div class="guide-tree-loading">正在加载场景...</div>';
+        renderLivePanel({ path: '正在加载场景', next: '正在读取该子树配置。' });
         state.tree = await loadTree(treeId);
         const startNode = state.tree.nodes[state.tree.startNodeId];
         const selfSelect = startNode && startNode.type === 'single' && startNode.options.find((option) => option.value === treeId && option.next);
@@ -168,12 +220,15 @@ async function initGuideTree() {
             state.answers[startNode.id] = treeId;
             state.path.push(startNode.id);
             state.currentNodeId = selfSelect.next;
+            renderLivePanel();
             renderQuestion();
             return;
         }
+        renderLivePanel();
         renderStart();
     };
     const renderStart = () => {
+        renderLivePanel();
         if (!state.tree) {
             const scenes = state.catalog.scenes.filter((scene) => scene.availability === 'full');
             const options = scenes.map((scene) => `<button type="button" class="btn-small guide-tree-scene" data-tree-id="${guideTreeEscape(scene.action.treeId)}">${guideTreeEscape(scene.title)}</button>`).join('');
@@ -222,6 +277,7 @@ async function initGuideTree() {
     const renderQuestion = () => {
         const node = state.tree.nodes[state.currentNodeId];
         if (!node) return renderStart();
+        renderLivePanel({ next: node.title });
         const back = state.path.length ? '<button type="button" class="btn-small guide-tree-back">返回上一题</button>' : '';
         const multiple = node.type === 'multi';
         const options = node.options.map((option) => `<label class="guide-tree-option"><input type="${multiple ? 'checkbox' : 'radio'}" name="guide-tree-answer" value="${guideTreeEscape(option.value)}"> <span>${guideTreeEscape(option.label)}</span></label>`).join('');
@@ -234,6 +290,7 @@ async function initGuideTree() {
             state.path.push(node.id);
             if (next.terminal) {
                 state.terminal = next.terminal;
+                renderLivePanel({ next: '正在提交后端复核并生成方案。' });
                 resolve();
                 return;
             }
@@ -242,6 +299,7 @@ async function initGuideTree() {
                 return;
             }
             state.currentNodeId = next.next;
+            renderLivePanel();
             renderQuestion();
         };
         if (multiple) {
@@ -266,6 +324,13 @@ async function initGuideTree() {
         });
     };
     const renderResult = (result) => {
+        const readyDocs = result.documents.filter((document) => document.status === 'ready').map((document) => document.title);
+        renderLivePanel({
+            path: `${sceneTitle()} / ${result.terminal.title}`,
+            next: result.actionPlan ? '已生成专属维权行动方案。' : '已完成后端复核，请核对法律依据和文书。',
+            evidence: result.documents.some((document) => document.documentKey === 'evidence_catalog') ? '已生成证据目录，请按目录补齐原始材料和时间线。' : (GUIDE_TREE_EVIDENCE_HINTS[result.treeId] || '请按当前路径补齐材料。'),
+            documents: readyDocs.length ? readyDocs.join('、') : '当前终点不生成本项目文书。'
+        });
         const bases = result.legalBasis.map((basis) => `<li><strong>${guideTreeEscape(basis.lawName)}${guideTreeEscape(basis.article)}</strong><span>${guideTreeEscape(basis.displayText)}</span></li>`).join('');
         const missing = [...new Set(result.documents.flatMap((document) => document.missingFields || []))];
         const fieldInputs = missing.map((field) => `<label>${guideTreeEscape(guideTreeFieldLabel(field))}<input type="text" data-guide-tree-field="${guideTreeEscape(field)}" value="${guideTreeEscape(state.documentFields[field] || '')}" placeholder="请填写${guideTreeEscape(guideTreeFieldLabel(field))}"></label>`).join('');
@@ -316,6 +381,7 @@ async function initGuideTree() {
     };
     const resolve = async () => {
         mount.innerHTML = '<div class="guide-tree-loading">正在生成专属维权方案...</div>';
+        renderLivePanel({ next: '正在生成专属维权方案。' });
         try {
             const response = await fetch(guideTreeApiUrl('/resolve'), {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -335,6 +401,7 @@ async function initGuideTree() {
     };
     try {
         state.catalog = await loadCatalog();
+        renderLivePanel();
         renderStart();
     } catch (_) {
         mount.innerHTML = '<div class="guide-tree-error">维权场景暂时无法加载。</div>';

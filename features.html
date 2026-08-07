@@ -190,7 +190,30 @@
                         <p>获取分步维权路径</p>
                     </div>
                     <div class="chat-body">
-                        <section class="guide-tree-panel" id="guideTreeMount" aria-live="polite"></section>
+                        <section class="guide-workbench" aria-label="她行维权导航工作台">
+                            <nav class="guide-flow-steps" id="guideTreeProgress" aria-label="流程进度"></nav>
+                            <div class="guide-workspace">
+                                <section class="guide-tree-panel guide-tree-question-panel" id="guideTreeMount" aria-live="polite"></section>
+                                <aside class="guide-live-panel" id="guideTreeLivePanel" aria-live="polite">
+                                    <div class="guide-live-section">
+                                        <span class="guide-live-kicker">当前路径</span>
+                                        <strong id="guideLivePath">尚未开始</strong>
+                                    </div>
+                                    <div class="guide-live-section">
+                                        <span class="guide-live-kicker">下一步</span>
+                                        <p id="guideLiveNext">选择一个场景后进入逐题流程。</p>
+                                    </div>
+                                    <div class="guide-live-section">
+                                        <span class="guide-live-kicker">证据提示</span>
+                                        <p id="guideLiveEvidence">完成证据节点后会显示需要优先整理的材料。</p>
+                                    </div>
+                                    <div class="guide-live-section">
+                                        <span class="guide-live-kicker">文书包</span>
+                                        <p id="guideLiveDocs">到达终点后生成匹配文书。</p>
+                                    </div>
+                                </aside>
+                            </div>
+                        </section>
                         <div class="chat-history" id="guideHistoryList">
                             <p class="history-empty">暂无对话记录，开始查询吧～</p>
                         </div>
