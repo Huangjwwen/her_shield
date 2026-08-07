@@ -4152,6 +4152,36 @@ body {
     text-align: left;
 }
 
+.guide-tree-manual {
+    display: grid;
+    gap: 12px;
+}
+
+.guide-tree-manual strong {
+    color: #2d4834;
+    font-size: 16px;
+}
+
+.guide-tree-manual textarea {
+    width: 100%;
+    min-height: 108px;
+    resize: vertical;
+    padding: 10px 12px;
+    border: 1px solid #cfd8d1;
+    border-radius: 5px;
+    background: #fff;
+    color: #304038;
+    font: inherit;
+    line-height: 1.6;
+}
+
+.guide-tree-manual-result p {
+    margin: 0 0 8px;
+    color: #4c5a51;
+    font-size: 13px;
+    line-height: 1.6;
+}
+
 .guide-tree-result-title {
     align-items: flex-start;
     padding-bottom: 10px;

@@ -209,6 +209,54 @@ async function initGuideTree() {
             return response.json();
         }
     };
+    const classifyText = async (text) => {
+        try {
+            const response = await fetch(guideTreeApiUrl('/classify'), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text })
+            });
+            if (!response.ok) throw new Error('classify unavailable');
+            return (await response.json()).candidates || [];
+        } catch (_) {
+            const normalized = text.replace(/\s+/g, '');
+            return state.catalog.scenes
+                .map((scene, priority) => ({
+                    scene,
+                    score: (scene.classificationKeywords || []).filter((keyword) => normalized.includes(keyword)).length,
+                    priority
+                }))
+                .filter((item) => item.score > 0)
+                .sort((left, right) => right.score - left.score || left.priority - right.priority)
+                .slice(0, 2)
+                .map((item) => ({ treeId: item.scene.action.treeId, title: item.scene.title }));
+        }
+    };
+    const renderManualEntry = () => {
+        renderLivePanel({ path: '手动描述', next: '用 1-2 句话描述情况，系统会匹配最多两个候选场景。' });
+        mount.innerHTML = `<div class="guide-tree-manual"><strong>我想直接描述情况</strong><textarea id="guideTreeManualInput" maxlength="500" placeholder="请用 1-2 句话简单描述你遇到的情况"></textarea><div class="guide-tree-actions"><button type="button" class="btn-small guide-tree-manual-back">返回选择场景</button><button type="button" class="btn-primary guide-tree-manual-submit">匹配场景</button></div><div class="guide-tree-manual-result" id="guideTreeManualResult"></div></div>`;
+        mount.querySelector('.guide-tree-manual-back').addEventListener('click', () => {
+            resetState();
+            renderStart();
+        });
+        mount.querySelector('.guide-tree-manual-submit').addEventListener('click', async () => {
+            const input = mount.querySelector('#guideTreeManualInput');
+            const resultMount = mount.querySelector('#guideTreeManualResult');
+            const text = input.value.trim();
+            if (!text) {
+                resultMount.innerHTML = '<p class="guide-tree-error">请先简单描述你的情况。</p>';
+                return;
+            }
+            resultMount.innerHTML = '<p class="guide-tree-loading">正在匹配场景...</p>';
+            const candidates = await classifyText(text);
+            if (!candidates.length) {
+                resultMount.innerHTML = '<p>暂时无法判断属于哪类场景。你可以返回重新选择，或换一种更具体的描述。</p>';
+                return;
+            }
+            resultMount.innerHTML = `<p>根据描述，可能属于：</p><div class="guide-tree-actions">${candidates.map((candidate) => `<button type="button" class="btn-small guide-tree-candidate" data-tree-id="${guideTreeEscape(candidate.treeId)}">${guideTreeEscape(candidate.title)}</button>`).join('')}</div>`;
+            resultMount.querySelectorAll('.guide-tree-candidate').forEach((button) => button.addEventListener('click', () => selectTree(button.dataset.treeId)));
+        });
+    };
     const resetState = () => Object.assign(state, { tree: null, currentNodeId: null, answers: {}, flags: [], path: [], terminal: null, documentFields: {}, aiEnhanced: false });
     const selectTree = async (treeId) => {
         mount.innerHTML = '<div class="guide-tree-loading">正在加载场景...</div>';
@@ -241,13 +289,7 @@ async function initGuideTree() {
                 }
             }));
             const other = mount.querySelector('.guide-tree-other');
-            if (other) other.addEventListener('click', () => {
-                const input = document.getElementById('guideInput');
-                if (input) {
-                    input.focus();
-                    input.placeholder = '请手动描述你遇到的问题，系统会调用她行智能体生成维权路径。';
-                }
-            });
+            if (other) other.addEventListener('click', renderManualEntry);
             return;
         }
         const scene = state.catalog.scenes.find((item) => item.action && item.action.treeId === state.tree.treeId);
