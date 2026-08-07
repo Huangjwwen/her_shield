@@ -4094,6 +4094,27 @@ body {
     line-height: 1.55;
 }
 
+.guide-tree-plan {
+    margin: 12px 0;
+    padding: 10px 12px;
+    border-left: 3px solid #7b8f6f;
+    background: #f8faf7;
+}
+
+.guide-tree-plan h4 {
+    margin: 0 0 6px;
+    color: #2d4834;
+    font-size: 14px;
+}
+
+.guide-tree-plan p {
+    margin: 0;
+    color: #46534b;
+    font-size: 13px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+}
+
 .guide-tree-fields {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));

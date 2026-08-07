@@ -83,6 +83,11 @@
           "setFlags": [
             "local_rule_required"
           ]
+        },
+        {
+          "label": "明确确认不是产假、哺乳时间或生育待遇争议",
+          "value": "confirmed_unrelated",
+          "terminal": "OOS"
         }
       ]
     },
