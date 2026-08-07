@@ -3964,29 +3964,50 @@ body {
 
 /* ==================== 她行决策树 ==================== */
 .guide-workbench {
+    --guide-ink: #26382f;
+    --guide-muted: #66756c;
+    --guide-green: #5f8f72;
+    --guide-green-dark: #3f6f52;
+    --guide-line: #dce7dd;
+    --guide-paper: #fffefa;
+    --guide-soft: #f6faf5;
+    --guide-lavender: #8b71d8;
+    --guide-lavender-soft: #f5f1ff;
     display: grid;
-    gap: 12px;
-    margin-bottom: 10px;
+    gap: 16px;
+    margin-bottom: 14px;
 }
 
 .guide-flow-steps {
     display: grid;
     grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 6px;
-    padding: 9px 12px;
-    border: 1px solid #dde5dc;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid var(--guide-line);
     border-radius: 6px;
-    background: #f8faf7;
+    background: linear-gradient(180deg, #ffffff 0%, var(--guide-soft) 100%);
+    box-shadow: 0 6px 18px rgba(74, 94, 80, 0.05);
 }
 
 .guide-flow-step {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 7px;
     min-width: 0;
-    color: #68736c;
-    font-size: 11px;
+    color: var(--guide-muted);
+    font-size: 12px;
     line-height: 1.25;
+}
+
+.guide-flow-step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 11px;
+    right: -9px;
+    width: 8px;
+    height: 1px;
+    background: #cddad1;
 }
 
 .guide-flow-step span {
@@ -4006,14 +4027,14 @@ body {
 
 .guide-flow-step.done,
 .guide-flow-step.active {
-    color: #284d34;
+    color: var(--guide-ink);
     font-weight: 600;
 }
 
 .guide-flow-step.done span,
 .guide-flow-step.active span {
-    border-color: #5f8f72;
-    background: #5f8f72;
+    border-color: var(--guide-green);
+    background: var(--guide-green);
     color: #fff;
 }
 
@@ -4027,10 +4048,11 @@ body {
 .guide-tree-panel {
     margin: 0;
     padding: 26px 28px;
-    border: 1px solid #ded7eb;
-    border-left: 4px solid #5f8f72;
+    border: 1px solid #d9e4dc;
+    border-left: 5px solid var(--guide-green);
     border-radius: 6px;
-    background: #fbfcf9;
+    background: var(--guide-paper);
+    box-shadow: 0 10px 24px rgba(73, 88, 78, 0.06);
 }
 
 .guide-tree-question-panel {
@@ -4041,10 +4063,10 @@ body {
     display: grid;
     gap: 14px;
     padding: 24px;
-    border: 1px solid #dbe3dd;
+    border: 1px solid var(--guide-line);
     border-radius: 6px;
-    background: #ffffff;
-    box-shadow: 0 8px 20px rgba(68, 87, 74, 0.06);
+    background: linear-gradient(180deg, #ffffff 0%, #fbfdfb 100%);
+    box-shadow: 0 12px 28px rgba(68, 87, 74, 0.08);
 }
 
 .guide-live-section {
@@ -4060,7 +4082,7 @@ body {
 .guide-live-kicker {
     display: block;
     margin-bottom: 8px;
-    color: #6b7c70;
+    color: var(--guide-green-dark);
     font-size: 13px;
     font-weight: 700;
 }
@@ -4068,7 +4090,7 @@ body {
 .guide-live-section strong,
 .guide-live-section p {
     margin: 0;
-    color: #304038;
+    color: var(--guide-ink);
     font-size: 16px;
     line-height: 1.7;
 }
@@ -4090,7 +4112,7 @@ body {
 
 .guide-tree-intro strong,
 .guide-tree-result-title strong {
-    color: #2d4834;
+    color: var(--guide-ink);
     font-size: 22px;
     line-height: 1.4;
 }
@@ -4099,20 +4121,20 @@ body {
 .guide-tree-pending p,
 .guide-tree-document p {
     margin: 10px 0 0;
-    color: #5a5f62;
+    color: var(--guide-muted);
     font-size: 16px;
     line-height: 1.75;
 }
 
 .guide-tree-question h3 {
     margin: 5px 0 14px;
-    color: #27352d;
+    color: var(--guide-ink);
     font-size: 16px;
     line-height: 1.5;
 }
 
 .guide-tree-meta {
-    color: #557064;
+    color: var(--guide-green-dark);
     font-size: 12px;
 }
 
@@ -4135,15 +4157,15 @@ body {
 }
 
 .guide-tree-option:hover {
-    border-color: #89aa96;
-    background: #f4f8f4;
+    border-color: #8fb19a;
+    background: var(--guide-soft);
 }
 
 .guide-tree-option input {
     width: 16px;
     height: 16px;
     margin: 2px 0 0;
-    accent-color: #5f8f72;
+    accent-color: var(--guide-green);
     flex: 0 0 auto;
 }
 
@@ -4167,7 +4189,19 @@ body {
     text-align: center;
     justify-content: center;
     font-size: 17px;
+    font-weight: 700;
     line-height: 1.45;
+    color: #5f48ad;
+    border: 1px solid #d8ccef;
+    background: linear-gradient(180deg, #ffffff 0%, var(--guide-lavender-soft) 100%);
+    box-shadow: 0 8px 18px rgba(108, 86, 166, 0.08);
+}
+
+.guide-tree-scene:hover {
+    color: var(--guide-green-dark);
+    border-color: #9fc5a9;
+    background: linear-gradient(180deg, #ffffff 0%, #f3faf2 100%);
+    transform: translateY(-1px);
 }
 
 .guide-tree-manual {
@@ -4176,7 +4210,7 @@ body {
 }
 
 .guide-tree-manual strong {
-    color: #2d4834;
+    color: var(--guide-ink);
     font-size: 16px;
 }
 
@@ -4188,14 +4222,14 @@ body {
     border: 1px solid #cfd8d1;
     border-radius: 5px;
     background: #fff;
-    color: #304038;
+    color: var(--guide-ink);
     font: inherit;
     line-height: 1.6;
 }
 
 .guide-tree-manual-result p {
     margin: 0 0 8px;
-    color: #4c5a51;
+    color: var(--guide-muted);
     font-size: 13px;
     line-height: 1.6;
 }
@@ -4207,7 +4241,7 @@ body {
 }
 
 .guide-tree-result-title span {
-    color: #557064;
+    color: var(--guide-green-dark);
     font-size: 12px;
     text-align: right;
 }
@@ -4246,19 +4280,19 @@ body {
 .guide-tree-plan {
     margin: 12px 0;
     padding: 10px 12px;
-    border-left: 3px solid #7b8f6f;
-    background: #f8faf7;
+    border-left: 3px solid var(--guide-green);
+    background: var(--guide-soft);
 }
 
 .guide-tree-plan h4 {
     margin: 0 0 6px;
-    color: #2d4834;
+    color: var(--guide-ink);
     font-size: 14px;
 }
 
 .guide-tree-plan p {
     margin: 0;
-    color: #46534b;
+    color: var(--guide-muted);
     font-size: 13px;
     line-height: 1.7;
     white-space: pre-wrap;
@@ -4306,7 +4340,7 @@ body {
 
 .guide-tree-document h4 {
     margin: 0;
-    color: #2d4834;
+    color: var(--guide-ink);
     font-size: 14px;
 }
 
@@ -4320,7 +4354,7 @@ body {
 .guide-tree-loading,
 .guide-tree-pending,
 .guide-tree-error {
-    color: #4c5a51;
+    color: var(--guide-muted);
     font-size: 14px;
     line-height: 1.6;
 }
