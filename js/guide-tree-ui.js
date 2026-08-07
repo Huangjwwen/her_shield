@@ -12,6 +12,104 @@ function guideTreeEscape(value) {
     return node.innerHTML;
 }
 
+function guideTreeXmlEscape(value) {
+    return String(value == null ? '' : value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&apos;');
+}
+
+function guideTreeSafeFileName(value) {
+    return String(value || 'guide-tree-document')
+        .replace(/[\\/:*?"<>|]/g, '_')
+        .replace(/\s+/g, '_')
+        .slice(0, 80) || 'guide-tree-document';
+}
+
+const GUIDE_TREE_CRC_TABLE = (() => {
+    const table = new Uint32Array(256);
+    for (let i = 0; i < 256; i += 1) {
+        let value = i;
+        for (let bit = 0; bit < 8; bit += 1) value = value & 1 ? 0xedb88320 ^ (value >>> 1) : value >>> 1;
+        table[i] = value >>> 0;
+    }
+    return table;
+})();
+
+function guideTreeCrc32(bytes) {
+    let crc = 0xffffffff;
+    for (let i = 0; i < bytes.length; i += 1) crc = GUIDE_TREE_CRC_TABLE[(crc ^ bytes[i]) & 0xff] ^ (crc >>> 8);
+    return (crc ^ 0xffffffff) >>> 0;
+}
+
+function guideTreeZip(files) {
+    const encoder = new TextEncoder();
+    const chunks = [];
+    const central = [];
+    let offset = 0;
+    const u16 = (value) => [value & 0xff, (value >>> 8) & 0xff];
+    const u32 = (value) => [value & 0xff, (value >>> 8) & 0xff, (value >>> 16) & 0xff, (value >>> 24) & 0xff];
+    const push = (target, values) => target.push(Uint8Array.from(values));
+    files.forEach((file) => {
+        const name = encoder.encode(file.name);
+        const content = encoder.encode(file.content);
+        const crc = guideTreeCrc32(content);
+        const localOffset = offset;
+        const local = [];
+        push(local, [...u32(0x04034b50), ...u16(20), ...u16(0), ...u16(0), ...u16(0), ...u16(0), ...u32(crc), ...u32(content.length), ...u32(content.length), ...u16(name.length), ...u16(0)]);
+        local.push(name, content);
+        local.forEach((chunk) => { chunks.push(chunk); offset += chunk.length; });
+        push(central, [...u32(0x02014b50), ...u16(20), ...u16(20), ...u16(0), ...u16(0), ...u16(0), ...u16(0), ...u32(crc), ...u32(content.length), ...u32(content.length), ...u16(name.length), ...u16(0), ...u16(0), ...u16(0), ...u16(0), ...u32(0), ...u32(localOffset)]);
+        central.push(name);
+    });
+    const centralSize = central.reduce((sum, chunk) => sum + chunk.length, 0);
+    const centralOffset = offset;
+    const end = Uint8Array.from([...u32(0x06054b50), ...u16(0), ...u16(0), ...u16(files.length), ...u16(files.length), ...u32(centralSize), ...u32(centralOffset), ...u16(0)]);
+    const total = chunks.reduce((sum, chunk) => sum + chunk.length, 0) + centralSize + end.length;
+    const output = new Uint8Array(total);
+    let cursor = 0;
+    [...chunks, ...central, end].forEach((chunk) => {
+        output.set(chunk, cursor);
+        cursor += chunk.length;
+    });
+    return output;
+}
+
+function guideTreeDocxParagraph(text, options = {}) {
+    const size = options.title ? 32 : 24;
+    const align = options.title ? '<w:jc w:val="center"/>' : '';
+    const bold = options.title ? '<w:b/>' : '';
+    return `<w:p><w:pPr>${align}<w:rPr>${bold}<w:sz w:val="${size}"/></w:rPr></w:pPr><w:r><w:rPr>${bold}<w:sz w:val="${size}"/></w:rPr><w:t xml:space="preserve">${guideTreeXmlEscape(text)}</w:t></w:r></w:p>`;
+}
+
+function guideTreeCreateDocx(title, text) {
+    const paragraphs = String(text || '').split(/\r?\n/).map((line) => (line ? guideTreeDocxParagraph(line) : '<w:p/>')).join('');
+    const documentXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>${guideTreeDocxParagraph(title, { title: true })}<w:p/>${paragraphs}<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1440" w:right="1440" w:bottom="1440" w:left="1440" w:header="720" w:footer="720" w:gutter="0"/></w:sectPr></w:body></w:document>`;
+    return guideTreeZip([
+        { name: '[Content_Types].xml', content: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>' },
+        { name: '_rels/.rels', content: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>' },
+        { name: 'word/document.xml', content: documentXml }
+    ]);
+}
+
+function guideTreeDownloadDocument(doc, result) {
+    if (!doc || doc.status !== 'ready') return;
+    const date = new Date().toISOString().slice(0, 10);
+    const owner = result && result.documentFields && result.documentFields.userName ? `_${guideTreeSafeFileName(result.documentFields.userName)}` : '';
+    const fileName = `${guideTreeSafeFileName(doc.title)}${owner}_${date}.docx`;
+    const blob = new Blob([guideTreeCreateDocx(doc.title, doc.text)], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 const GUIDE_TREE_FIELD_LABELS = {
     userName: '你的姓名',
     companyName: '单位/公司名称',
@@ -380,8 +478,14 @@ async function initGuideTree() {
         const actionPlan = result.actionPlan ? `<section class="guide-tree-plan"><h4>行动方案</h4><p>${guideTreeEscape(result.actionPlan)}</p></section>` : '';
         const documentNotes = result.documentNotes ? `<section class="guide-tree-plan"><h4>文书说明</h4><p>${guideTreeEscape(result.documentNotes)}</p></section>` : '';
         const statusText = state.aiEnhanced ? '已生成智能体增强方案' : state.online ? '已完成后端复核' : '待联网提交复核';
-        const documents = result.documents.map((document) => `<article class="guide-tree-document"><h4>${guideTreeEscape(document.title)}</h4>${document.status === 'ready' ? `<pre>${guideTreeEscape(document.text)}</pre>` : '<p>补充必要信息后可生成。</p>'}</article>`).join('');
+        const documents = result.documents.map((document, index) => `<article class="guide-tree-document"><div class="guide-tree-document-head"><h4>${guideTreeEscape(document.title)}</h4>${document.status === 'ready' ? `<button type="button" class="btn-small guide-tree-download-doc" data-guide-tree-document="${index}" title="下载 Word 版本">下载 Word</button>` : ''}</div>${document.status === 'ready' ? `<pre>${guideTreeEscape(document.text)}</pre>` : '<p>补充必要信息后可生成。</p>'}</article>`).join('');
         mount.innerHTML = `<div class="guide-tree-result"><div class="guide-tree-result-title"><strong>${guideTreeEscape(result.terminal.title)}</strong><span>${statusText}</span></div>${caseSummary}${actionPlan}${bases ? `<ul class="guide-tree-basis">${bases}</ul>` : ''}${fieldInputs ? `<div class="guide-tree-fields">${fieldInputs}<button type="button" class="btn-primary guide-tree-regenerate">生成文书</button></div>` : ''}${documentNotes}<div class="guide-tree-documents">${documents}</div><button type="button" class="btn-small guide-tree-restart">重新开始</button></div>`;
+        mount.querySelectorAll('.guide-tree-download-doc').forEach((button) => {
+            button.addEventListener('click', () => {
+                const doc = result.documents[Number(button.dataset.guideTreeDocument)];
+                guideTreeDownloadDocument(doc, { ...result, documentFields: state.documentFields });
+            });
+        });
         const regenerate = mount.querySelector('.guide-tree-regenerate');
         if (regenerate) regenerate.addEventListener('click', () => {
             collectFields();
