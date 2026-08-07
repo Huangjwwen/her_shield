@@ -18,5 +18,6 @@
   {"id":"L-17","expectedTerminal":"LC","answers":{"L0":"confirmed","L1":"maternity_pay_unpaid","L3":"employer_pay_unpaid","L3A":"employer_payment","L4":"over_one_year","L5":["payroll"],"L6":"no_formal_action"}},
   {"id":"L-18","expectedTerminal":"LD","answers":{"L0":"confirmed","L1":"maternity_pay_unpaid","L3":"employer_pay_unpaid","L3A":"employer_payment","L4":"over_one_year","L5":["payroll"],"L6":"arbitration_started"}},
   {"id":"L-19","expectedTerminal":"LB","answers":{"L0":"confirmed","L1":"lactation_time_denied","L2":"partial_approval","L5":["leave_application","company_reply"],"L6":"internal_failed"}},
-  {"id":"L-20","expectedTerminal":"LD","answers":{"L0":"confirmed","L1":"maternity_allowance_issue","L3":"employer_received_not_paid","L3A":"employer_payment","L4":"within_one_year","L5":["allowance_record"],"L6":"arbitration_started"}}
+  {"id":"L-20","expectedTerminal":"LD","answers":{"L0":"confirmed","L1":"maternity_allowance_issue","L3":"employer_received_not_paid","L3A":"employer_payment","L4":"within_one_year","L5":["allowance_record"],"L6":"arbitration_started"}},
+  {"id":"L-21","expectedTerminal":"OOS","answers":{"L0":"confirmed","L1":"confirmed_unrelated"}}
 ]

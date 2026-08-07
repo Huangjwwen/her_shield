@@ -1,6 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const https = require('https');
+
+const YUANQI_HOST = 'yuanqi.tencent.com';
+const YUANQI_PATH = '/openapi/v1/agent/chat/completions';
+const GUIDE_ASSISTANT_ID = '2041721348920706112';
 
 function resolveExistingPath(candidates) {
   const existing = candidates.find((candidate) => fs.existsSync(candidate));
@@ -101,6 +106,151 @@ function requestData(event) {
   return { ...(event.queryStringParameters || {}), ...parseBody(event) };
 }
 
+function extractTextFromYuanqi(data) {
+  if (!data) return '';
+  if (data.choices && data.choices.length > 0) {
+    const message = data.choices[0].message || data.choices[0].delta || {};
+    const content = message.content;
+    if (typeof content === 'string') return content;
+    if (Array.isArray(content)) return content.map((item) => (typeof item === 'string' ? item : item.text || '')).join('');
+  }
+  return data.content || data.response || data.answer || data.text || '';
+}
+
+function parseJsonObject(text) {
+  const raw = String(text || '').trim();
+  if (!raw) throw new Error('empty model response');
+  try {
+    return JSON.parse(raw);
+  } catch (_) {
+    const fenced = raw.match(/```(?:json)?\s*([\s\S]*?)```/i);
+    if (fenced) return JSON.parse(fenced[1]);
+    const start = raw.indexOf('{');
+    const end = raw.lastIndexOf('}');
+    if (start >= 0 && end > start) return JSON.parse(raw.slice(start, end + 1));
+    throw new Error('model response is not JSON');
+  }
+}
+
+function clampText(value, maxLength) {
+  return String(value || '').replace(/\s+\n/g, '\n').trim().slice(0, maxLength);
+}
+
+function sanitizeEnhancement(value, result) {
+  const readyDocs = new Map(result.documents.filter((document) => document.status === 'ready').map((document) => [document.documentKey, document]));
+  const enhanced = {
+    caseSummary: clampText(value.case_summary || value.caseSummary, 1200),
+    actionPlan: clampText(value.action_plan || value.actionPlan, 1800),
+    documentNotes: clampText(value.document_notes || value.documentNotes, 1000),
+    documents: []
+  };
+  const documents = Array.isArray(value.documents) ? value.documents : [];
+  documents.forEach((document) => {
+    const key = document && document.documentKey;
+    if (!readyDocs.has(key)) return;
+    const text = clampText(document.text, 8000);
+    if (text) enhanced.documents.push({ documentKey: key, text });
+  });
+  return enhanced.caseSummary || enhanced.actionPlan || enhanced.documentNotes || enhanced.documents.length ? enhanced : null;
+}
+
+function postJsonToYuanqi(appkey, body) {
+  const payload = JSON.stringify(body);
+  const options = {
+    hostname: YUANQI_HOST,
+    path: YUANQI_PATH,
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${appkey}`,
+      'Content-Type': 'application/json',
+      'Content-Length': Buffer.byteLength(payload)
+    },
+    timeout: Number(process.env.GUIDE_TREE_AI_TIMEOUT_MS || 25000)
+  };
+
+  return new Promise((resolve, reject) => {
+    const req = https.request(options, (res) => {
+      const chunks = [];
+      res.on('data', (chunk) => chunks.push(chunk));
+      res.on('end', () => {
+        const text = Buffer.concat(chunks).toString('utf8');
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch (_) {
+          reject(new Error(`MODEL_BAD_JSON: ${text.slice(0, 200)}`));
+          return;
+        }
+        if (res.statusCode < 200 || res.statusCode >= 300) {
+          reject(new Error(`MODEL_HTTP_${res.statusCode}: ${text.slice(0, 200)}`));
+          return;
+        }
+        resolve(data);
+      });
+    });
+    req.on('timeout', () => req.destroy(new Error('MODEL_TIMEOUT')));
+    req.on('error', reject);
+    req.write(payload);
+    req.end();
+  });
+}
+
+async function callGuideModel(appkey, body) {
+  if (typeof exports._mockPostJsonToYuanqi === 'function') return exports._mockPostJsonToYuanqi(appkey, body);
+  return postJsonToYuanqi(appkey, body);
+}
+
+function buildEnhancementPrompt(result) {
+  const documents = result.documents
+    .filter((document) => document.status === 'ready')
+    .map((document) => ({ documentKey: document.documentKey, title: document.title, text: document.text }));
+  return [
+    '你是“她行·维权导航”的后端语言整理模块。你只负责把已经由规则引擎复算的结构化结果整理得更清晰，不得改变法律路径、终点、文书白名单或法律依据。',
+    '禁止新增用户未提供的事实，禁止承诺胜诉、禁止断言单位一定违法。缺少事实时使用“待补充/建议核对”。',
+    '请仅返回 JSON，不要 Markdown。结构必须为：{"case_summary":"...","action_plan":"...","document_notes":"...","documents":[{"documentKey":"...","text":"..."}]}。',
+    'documents 只能改写输入中已有 documentKey 的正文，不得新增文书，不得删除必要事实字段。',
+    `规则结果：${JSON.stringify({
+      treeId: result.treeId,
+      treeVersion: result.treeVersion,
+      terminal: result.terminal,
+      answers: result.canonicalAnswers,
+      flags: result.canonicalFlags,
+      legalBasis: result.legalBasis,
+      documents
+    })}`
+  ].join('\n\n');
+}
+
+async function enhanceResultWithGuideAgent(result, modelEnabled) {
+  const appkey = process.env.KEY_GUIDE;
+  const hasReadyDocuments = result.documents.some((document) => document.status === 'ready');
+  if (!modelEnabled) return { aiEnhanced: false, aiStatus: 'skipped' };
+  if (!appkey) return { aiEnhanced: false, aiStatus: 'missing_key' };
+  if (result.terminal.scopeStatus === 'out_of_scope' || !hasReadyDocuments) return { aiEnhanced: false, aiStatus: 'skipped' };
+  try {
+    const data = await callGuideModel(appkey, {
+      assistant_id: GUIDE_ASSISTANT_ID,
+      user_id: `guide-tree-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+      stream: false,
+      messages: [{ role: 'user', content: buildEnhancementPrompt(result) }]
+    });
+    const enhanced = sanitizeEnhancement(parseJsonObject(extractTextFromYuanqi(data)), result);
+    if (!enhanced) return { aiEnhanced: false, aiStatus: 'empty' };
+    const enhancedByKey = new Map(enhanced.documents.map((document) => [document.documentKey, document.text]));
+    result.documents = result.documents.map((document) => (
+      document.status === 'ready' && enhancedByKey.has(document.documentKey)
+        ? { ...document, text: enhancedByKey.get(document.documentKey), aiEnhanced: true }
+        : document
+    ));
+    result.caseSummary = enhanced.caseSummary;
+    result.actionPlan = enhanced.actionPlan;
+    result.documentNotes = enhanced.documentNotes;
+    return { aiEnhanced: true, aiStatus: 'enhanced' };
+  } catch (error) {
+    return { aiEnhanced: false, aiStatus: 'fallback', aiError: error.message };
+  }
+}
+
 function assertTree(treeId, tree) {
   if (treeId !== tree.treeId) throw new Error('TREE_NOT_FOUND: treeId is not available');
 }
@@ -189,7 +339,9 @@ async function handle(event) {
       throw new Error('INVALID_PATH: submitted path does not match the replayed path');
     }
     const decisionId = `dec_${crypto.createHash('sha1').update(`${config.tree.treeId}:${config.tree.treeVersion}:${JSON.stringify(result.canonicalAnswers)}`).digest('hex').slice(0, 16)}`;
-    return response(200, { status: 'ok', decisionId, reviewStatus: config.tree.status, aiEnhanced: false, result });
+    const modelEnabled = data.aiEnhanced !== false && process.env.GUIDE_TREE_AI_ENABLED !== 'false';
+    const enhancement = await enhanceResultWithGuideAgent(result, modelEnabled);
+    return response(200, { status: 'ok', decisionId, reviewStatus: config.tree.status, ...enhancement, result });
   }
 
   return response(404, { error: 'TREE_NOT_FOUND', message: 'Unknown guide-tree route' });

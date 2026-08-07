@@ -1,5 +1,6 @@
 const assert = require('assert');
-const { main } = require('../../cloudfunctions/guide-tree/index');
+const guideTreeModule = require('../../cloudfunctions/guide-tree/index');
+const { main } = guideTreeModule;
 
 function event({ method, path, query, body }) {
   return { httpMethod: method, path, queryStringParameters: query, body: body ? JSON.stringify(body) : undefined };
@@ -43,16 +44,49 @@ async function run() {
     body: {
       treeId: 'pregnancy_pay_cut', treeVersion: '1.3.0-draft', path: ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8', 'P9', 'P10'], answers,
       documentFields: { userName: '测试用户', companyName: '测试公司', eventDate: '2026-08-01', currentRole: '测试岗位', caseTitle: '孕期降薪', effectiveDate: '2026-08-01' },
-      flags: [{ node: 'P8', flag: 'signed_under_pressure' }]
+      flags: [{ node: 'P8', flag: 'signed_under_pressure' }],
+      aiEnhanced: false
     }
   }));
   assert.strictEqual(resolveResponse.statusCode, 200);
+  assert.strictEqual(JSON.parse(resolveResponse.body).aiStatus, 'skipped');
   const resolved = JSON.parse(resolveResponse.body).result;
   assert.strictEqual(resolved.terminal.id, 'PA');
   assert.deepStrictEqual(resolved.canonicalFlags, []);
   assert.deepStrictEqual(resolved.legalBasis.map((item) => item.legalBasisKey).sort(), ['female_worker_protection_5', 'women_rights_48', 'women_rights_72']);
   assert.ok(resolved.documents.every((document) => document.status === 'ready'));
   assert.ok(resolved.documents.every((document) => !Object.hasOwn(document, 'fullText')));
+
+  const oldKey = process.env.KEY_GUIDE;
+  process.env.KEY_GUIDE = 'test-key';
+  guideTreeModule._mockPostJsonToYuanqi = async () => ({
+    choices: [{
+      message: {
+        content: JSON.stringify({
+          case_summary: '用户处于孕期降薪路径，已补充必要字段。',
+          action_plan: '先固定通知和工资变化，再书面提出异议。',
+          document_notes: '以下文书基于当前路径生成，提交前请核对事实。',
+          documents: [{ documentKey: 'salary_objection', text: 'AI 增强后的调岗降薪异议函正文' }]
+        })
+      }
+    }]
+  });
+  const enhancedResponse = await main(event({
+    method: 'POST',
+    path: '/api/guide-tree/resolve',
+    body: {
+      treeId: 'pregnancy_pay_cut', treeVersion: '1.3.0-draft', path: ['P1', 'P2', 'P3', 'P4', 'P5', 'P6', 'P7', 'P8', 'P9', 'P10'], answers,
+      documentFields: { userName: '测试用户', companyName: '测试公司', eventDate: '2026-08-01', currentRole: '测试岗位', caseTitle: '孕期降薪', effectiveDate: '2026-08-01' }
+    }
+  }));
+  delete guideTreeModule._mockPostJsonToYuanqi;
+  if (oldKey === undefined) delete process.env.KEY_GUIDE; else process.env.KEY_GUIDE = oldKey;
+  const enhancedPayload = JSON.parse(enhancedResponse.body);
+  assert.strictEqual(enhancedResponse.statusCode, 200);
+  assert.strictEqual(enhancedPayload.aiEnhanced, true);
+  assert.strictEqual(enhancedPayload.result.caseSummary, '用户处于孕期降薪路径，已补充必要字段。');
+  assert.ok(enhancedPayload.result.actionPlan.includes('书面提出异议'));
+  assert.strictEqual(enhancedPayload.result.documents.find((document) => document.documentKey === 'salary_objection').text, 'AI 增强后的调岗降薪异议函正文');
 
   const invalidPathResponse = await main(event({ method: 'POST', path: '/api/guide-tree/resolve', body: { treeId: 'pregnancy_pay_cut', treeVersion: '1.3.0-draft', path: ['P1'], answers } }));
   assert.strictEqual(invalidPathResponse.statusCode, 400);

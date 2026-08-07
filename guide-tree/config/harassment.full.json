@@ -42,6 +42,11 @@
           "label": "跟踪或威胁",
           "value": "stalking_threat",
           "next": "H3"
+        },
+        {
+          "label": "明确确认不是性骚扰或投诉后报复",
+          "value": "confirmed_unrelated",
+          "terminal": "OOS"
         }
       ]
     },
