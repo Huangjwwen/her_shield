@@ -4342,10 +4342,29 @@ body {
     background: #fff;
 }
 
+.guide-tree-document-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
 .guide-tree-document h4 {
     margin: 0;
     color: var(--guide-ink);
     font-size: 14px;
+}
+
+.guide-tree-download-doc {
+    flex: 0 0 auto;
+    border-color: #d7c7f0;
+    color: var(--guide-purple-dark);
+    background: var(--guide-purple-soft);
+}
+
+.guide-tree-download-doc:hover {
+    border-color: #b9a6e8;
+    background: #f1eaff;
 }
 
 .guide-tree-document pre {
