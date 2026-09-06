@@ -14,10 +14,19 @@
     "test:guide-tree": "node guide-tree/tests/guide-tree-api.test.js && node guide-tree/tests/five-tree-api.test.js",
     "install-electron": "npm install electron --save-dev"
   },
-  "keywords": ["women", "rights", "workplace", "legal", "electron"],
+  "keywords": [
+    "women",
+    "rights",
+    "workplace",
+    "legal",
+    "electron"
+  ],
   "author": "大赛参赛作品",
   "license": "MIT",
   "devDependencies": {
     "electron": "^28.0.0"
+  },
+  "dependencies": {
+    "mermaid": "^10.9.8"
   }
 }

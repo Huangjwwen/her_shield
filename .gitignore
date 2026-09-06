@@ -143,3 +143,10 @@ vite.config.ts.timestamp-*
 
 # 评测运行结果(每次执行覆盖)
 eval/results*.json
+
+# Evaluation runtime artifacts
+eval/__pycache__/
+eval/agent_eval_checkpoints/
+eval/official_source_cache/
+eval/supplemental_source_cache/
+eval/*.err
